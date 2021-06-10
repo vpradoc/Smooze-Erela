@@ -1,0 +1,26 @@
+{
+  "name": "smooze",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@iamtraction/google-translate": "^1.1.2",
+    "aki-api": "^5.2.1",
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "fs": "0.0.1-security",
+    "mal-scraper": "^2.11.3",
+    "moment": "^2.29.1",
+    "moment-duration-format": "^2.3.2",
+    "mongoose": "^5.12.13",
+    "parse-ms": "^3.0.0",
+    "weather-js": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
