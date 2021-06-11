@@ -38,5 +38,8 @@ exports.run =  async (client, message, args) => {
 
 exports.help = {
     name:"clima",
-    aliases:["weather"]
+    aliases:["weather"],
+    description: "Comando para saber informações do clima de uma cidade!",
+    usage: "<prefix>clima",
+    category: "Information"
 }

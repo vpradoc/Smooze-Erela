@@ -31,5 +31,8 @@ exports.run = (client, message, args) => {
 
 exports.help = {
     name: "avatar",
-    aliases: ["foto"]
+    aliases: ["foto"],
+    description: "Comando para pegar o avatar de um usuário!",
+    usage: "<prefix>avatar",
+    category: "Information"
 }

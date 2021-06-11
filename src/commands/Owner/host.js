@@ -29,4 +29,7 @@ exports.run = async(client, message, args) => {
 exports.help = {
     name: "host",
     aliases: ["uptime", "hospedagem"],
+    description: "Comando para saber informações da host!",
+    usage: "<prefix>host",
+    category: "Owner"
 }

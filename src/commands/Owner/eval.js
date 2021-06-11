@@ -15,4 +15,7 @@ exports.run = async (client, message, args) => {
   exports.help = {
     name: "eval",
     aliases: [],
+    description: "Comando para executar ações no bot!",
+    usage: "<prefix>eval",
+    category: "Owner"
   };

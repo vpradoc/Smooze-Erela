@@ -97,5 +97,8 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name: "anime",
-    aliases: [" "]
+    aliases: [" "],
+    description: "Comando para saber informações sobre um anime de sua escolha!",
+    usage: "<prefix>anime",
+    category: "Miscellaneous"
 }

@@ -41,5 +41,8 @@ exports.run = async (client, message, args) => {
     }}
 exports.help = {
     name: "spotify",
-    aliases: ['spotify', 'sptf']
+    aliases: ['spotify', 'sptf'],
+    description: "Comando para saber informações da música de um usuário!",
+    usage: "<prefix>spotify",
+    category: "Information"
 }

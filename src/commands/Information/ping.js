@@ -4,5 +4,8 @@ exports.run = (client, message, args) => {
 
 exports.help = {
     name: "ping",
-    aliases: ["pong"]
+    aliases: ["pong"],
+    description: "Comando para saber informações do pingd de um usuário!",
+    usage: "<prefix>ping",
+    category: "Information"
 }

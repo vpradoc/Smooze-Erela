@@ -131,4 +131,7 @@ exports.run = async (client, message, args) => {
 exports.help = {
   name: "userinfo",
   aliases: ["uinfo", "ui"],
+  description: "Comando para saber informações de um usuário!",
+  usage: "<prefix>userinfo",
+  category: "Information"
 };

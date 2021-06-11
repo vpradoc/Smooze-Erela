@@ -137,4 +137,7 @@ exports.run = (client, message, args) => {
 exports.help = {
   name: "entrada",
   aliases: [],
+  description: "Comando para configurar a mensagem de entrada de um usuário!",
+  usage: "<prefix>entrada",
+  category: "Config",
 };

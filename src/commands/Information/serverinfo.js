@@ -89,4 +89,7 @@ exports.run = (client, message, args) => {
 exports.help = {
   name: "serverinfo",
   aliases: ["sinfo", "si"],
+  description: "Comando para saber informações do servidor!",
+  usage: "<prefix>serverinfo",
+  category: "Information"
   };

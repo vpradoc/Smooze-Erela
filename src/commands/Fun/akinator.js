@@ -119,4 +119,7 @@ message.channel
 exports.help = {
   name: "akinator",
   aliases: ["aki"],
+  description: "Comando para jogar uma partida de Akinator!",
+  usage: "<prefix>akinator",
+  category: "Fun",
 };

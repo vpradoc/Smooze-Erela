@@ -24,5 +24,8 @@ message.channel.send(`🌈 | ${message.author} - Eu acho que o(a) **${user.nickn
 exports.help = {
   name: "gay",
   aliases: [" "],
+  description: "Comando para saber o quanto gay é um usuário!",
+  usage: "<prefix>gay",
+  category: "Fun",
   
 }

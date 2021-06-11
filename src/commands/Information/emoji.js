@@ -43,5 +43,8 @@ exports.run = async (client, message, args) => {
 }
 exports.help = {
   name: "emoji",
-  aliases: ["emojiinfo"]
+  aliases: ["emojiinfo"],
+  description: "Comando para saber informações de um emoji!",
+  usage: "<prefix>emoji",
+  category: "Information"
 };

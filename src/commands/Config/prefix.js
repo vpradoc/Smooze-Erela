@@ -29,4 +29,7 @@ exports.run = (client, message, args) => {
 exports.help = {
   name: "prefix",
   aliases: ["prefixo"],
+  description: "Comando para configurar o prefixo do BOT em seu servidor!",
+  usage: "<prefix>prefix",
+  category: "Config",
 };

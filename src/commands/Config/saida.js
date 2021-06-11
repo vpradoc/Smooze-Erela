@@ -137,4 +137,7 @@ exports.run = (client, message, args) => {
 exports.help = {
   name: "saida",
   aliases: ["exit", "byebye"],
+  description: "Comando para configurar a mensagem de saída de um usuário!",
+  usage: "<prefix>saida",
+  category: "Config",
 };

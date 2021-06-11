@@ -27,5 +27,8 @@ exports.run = async(client, message, args) => {
 }
 exports.help = {
     name: "daily",
-    aliases:["diario"]
+    aliases:["diario"],
+    description: "Comando para pegar seus coins diários!",
+    usage: "<prefix>daily",
+    category: "Economy",
 }

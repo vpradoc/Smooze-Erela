@@ -32,5 +32,8 @@ exports.run = async(client, message, args) => {
 
 exports.help = {
     name:"coins",
-    aliases:["dinheiro"]
+    aliases:["dinheiro"],
+    description: "Comando para saber quantos coins você tem!",
+    usage: "<prefix>daily",
+    category: "Economy",
 }
