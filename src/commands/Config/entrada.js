@@ -3,7 +3,7 @@ const Guild = require("../../database/Schemas/Guild");
 
 exports.run = (client, message, args) => {
 
-  if(!message.author.hasPermission("MANAGE_GUILD")) return message.channel.send(`${message.author}, você precisa da permissão \`MANAGE_GUILD\` para executar o comando!`)
+  if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send(`${message.author}, você precisa da permissão \`MANAGE_GUILD\` para executar o comando!`)
 
   Guild.findOne({ _id: message.guild.id }, async function (err, server) {
     if (args[0] == "canal") {
