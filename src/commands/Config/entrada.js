@@ -1,9 +1,12 @@
 const discord = require("discord.js");
+const Emojis = require("../../utils/Emojis");
 const Guild = require("../../database/Schemas/Guild");
 
 exports.run = (client, message, args) => {
-
-  if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send(`${message.author}, você precisa da permissão \`MANAGE_GUILD\` para executar o comando!`)
+  if (!message.member.hasPermission("MANAGE_GUILD"))
+    return message.channel.send(
+      `${Emojis.Errado} - ${message.author}, você precisa da permissão \`MANAGE_GUILD\` para executar o comando!`
+    );
 
   Guild.findOne({ _id: message.guild.id }, async function (err, server) {
     if (args[0] == "canal") {
@@ -13,15 +16,15 @@ exports.run = (client, message, args) => {
 
       if (!canal) {
         return message.channel.send(
-          `${message.author}, por favor escolha um canal para que seja setado o sistema!`
+          `${Emojis.Errado} - ${message.author}, por favor escolha um canal para que seja setado o sistema!`
         );
       } else if (canal.id === server.entrada.channel) {
         return message.channel.send(
-          `${message.author}, o canal escolhido já está em uso!`
+          `${Emojis.Errado} - ${message.author}, o canal escolhido já está em uso!`
         );
       } else {
         message.channel.send(
-          `${message.author}, o canal **<#${canal.id}>** receberá as mensagens de entrada apartir de agora!`
+          `${Emojis.Certo} - ${message.author}, o canal **<#${canal.id}>** receberá as mensagens de entrada apartir de agora!`
         );
         await Guild.findOneAndUpdate(
           { _id: message.guild.id },
@@ -36,19 +39,19 @@ exports.run = (client, message, args) => {
 
       if (!msg) {
         return message.channel.send(
-          `${message.author}, você não inseriu nenhuma mensagem!`
+          `${Emojis.Errado} - ${message.author}, você não inseriu nenhuma mensagem!`
         );
       } else if (msg.lenght > 100) {
         return message.chennel.send(
-          `${message.author}, a mensagem escolhida é muito grande! O limite é de 100 caracteres.`
+          `${Emojis.Errado} - ${message.author}, a mensagem escolhida é muito grande! O limite é de 100 caracteres.`
         );
       } else if (msg === server.entrada.msg) {
         return message.channel.send(
-          `${message.author}, a mensagem escolhida já está em uso!`
+          `${Emojis.Errado} - ${message.author}, a mensagem escolhida já está em uso!`
         );
       } else {
         message.channel.send(
-          `${message.author}, a mensagem foi alterada para \`\`\`diff\n- ${msg}\`\`\``
+          `${Emojis.Certo} - ${message.author}, a mensagem foi alterada para \`\`\`diff\n- ${msg}\`\`\``
         );
         await Guild.findOneAndUpdate(
           { _id: message.guild.id },
@@ -61,10 +64,12 @@ exports.run = (client, message, args) => {
 
     if (args[0] == "on") {
       if (server.entrada.status) {
-        message.channel.send(`${message.author}, o sistema já está ativado!`);
+        message.channel.send(
+          `${Emojis.Errado} - ${message.author}, o sistema já está ativado!`
+        );
       } else {
         message.channel.send(
-          `${message.author}, o sistema foi ativado com sucesso!`
+          `${Emojis.Certo} - ${message.author}, o sistema foi \`ativado\` com sucesso!`
         );
         await Guild.findOneAndUpdate(
           { _id: message.guild.id },
@@ -82,7 +87,7 @@ exports.run = (client, message, args) => {
         );
       } else {
         message.channel.send(
-          `${message.author}, o sistema foi desativado com sucesso!`
+          `${Emojis.Certo} - ${message.author}, o sistema foi \`desativado\` com sucesso!`
         );
         await Guild.findOneAndUpdate(
           { _id: message.guild.id },
@@ -93,50 +98,72 @@ exports.run = (client, message, args) => {
       return;
     }
 
-    let INFO = new discord.MessageEmbed()
+    if (args[0] == "help") {
+      let INFO = new discord.MessageEmbed()
+        .setColor(process.env.EMBED_COLOR)
+        .setDescription(
+          `**Adicionais:**\nPara mencionar o membro, insira **{member}**\nPara inserir somente o nome utilize **{name}**\nPara inserir o total de membros do servidor, use **{total}**`
+        )
+        .setAuthor(
+          `${message.guild.name} - Entrada`,
+          message.guild.iconURL({ dynamic: true })
+        )
+        .addFields(
+          {
+            name: "Canal Escolhido:",
+            value:
+              server.entrada.channel == "null"
+                ? "Nenhum"
+                : `<#${server.entrada.channel}>`,
+          },
+          {
+            name: "Mensagem:",
+            value:
+              server.entrada.msg == "null"
+                ? "Nenhuma mensagem"
+                : `\`\`\`diff\n- ${server.entrada.msg}\`\`\``,
+          },
+          {
+            name: "Status do Sistema:",
+            value: `No momento o sistema se encontra **${
+              server.entrada.status ? "ativado" : "desativado"
+            }**`,
+          }
+        )
+        .setFooter(
+          `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,
+          message.author.displayAvatarURL({ dynamic: true })
+        )
+        .setThumbnail(message.guild.iconURL({ dynamic: true }));
+
+      message.channel.send(INFO);
+
+      return;
+    }
+
+    let HELP = new discord.MessageEmbed()
       .setColor(process.env.EMBED_COLOR)
-      .setDescription(
-        `**Adicionais:**\nPara mencionar o membro, insira **{member}**\nPara inserir somente o nome utilize **{name}**\nPara inserir o total de membros do servidor, use **{total}**`
-      )
       .setAuthor(
-        `${message.guild.name} - Entrada`,
+        `${client.user.username} - Sistema de Welcome/Entrada`,
         message.guild.iconURL({ dynamic: true })
       )
-      .addFields(
-        {
-          name: "Canal Escolhido:",
-          value:
-            server.entrada.channel == "null"
-              ? "Nenhum"
-              : `<#${server.entrada.channel}>`,
-        },
-        {
-          name: "Mensagem:",
-          value:
-            server.entrada.msg == "null"
-              ? "Nenhuma mensagem"
-              : `\`\`\`diff\n- ${server.entrada.msg}\`\`\``,
-        },
-        {
-          name: "Status do Sistema:",
-          value: `No momento o sistema se encontra **${
-            server.entrada.status ? "ativado" : "desativado"
-          }**`,
-        }
-      )
+      .addField(`${Emojis.Smooze} O Sistema se encontra: \`${
+        server.entrada.status ? "ativado" : "desativado"
+      }\``,
+        `\`\`\`${server.prefix}entrada msg <Mensagem>\n${server.prefix}entrada canal <Canal>\n${server.prefix}entrada <on/off>\n${server.prefix}entrada set <Mensagem/Embed>\n${server.prefix}entrada help\n${server.prefix}entrada test\`\`\``)
       .setFooter(
         `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,
         message.author.displayAvatarURL({ dynamic: true })
       )
       .setThumbnail(message.guild.iconURL({ dynamic: true }));
 
-    message.channel.send(INFO);
+    message.channel.send(HELP);
   });
 };
 
 exports.help = {
   name: "entrada",
-  aliases: [],
+  aliases: ["welcome"],
   description: "Comando para configurar a mensagem de entrada de um usuário!",
   usage: "<prefix>entrada",
   category: "Config",
