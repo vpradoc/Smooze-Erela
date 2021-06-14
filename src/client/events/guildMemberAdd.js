@@ -10,7 +10,8 @@ module.exports = (client, member) => {
             client.channels.cache.get(server.entrada.channel).send(server.entrada.msg
                 .replace(/{member}/g, `<@${member.id}>`)
                 .replace(/{name}/g, `${member.user.username}`)
-                .replace(/{total}/g, guild.memberCount))
+                .replace(/{total}/g, guild.memberCount)
+                .replace(/{guild}/g, guild.name))
             }
 
     })

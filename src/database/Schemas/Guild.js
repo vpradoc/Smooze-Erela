@@ -5,14 +5,22 @@ let guildSchema = new Schema({
     _id: {type: String, required: true},
     prefix: {type: String, default: "s."},
     entrada: {
+        modelo: {type: String, default: "null"},
         status: {type: Boolean, default: false},
         channel: {type: String, default: "null"},
-        msg: {type: String, default: "null"}
+        msg: {type: String, default: "null"},
+        //--------------------EMBED--------------------//
+        embedtitulo: {type: String, default: "null"},
+        embedimage: {type: String, default: "null"}
     },
     saida: {
+        modelo: {type: String, default: "null"},
         status: {type: Boolean, default: false},
         channel: {type: String, default: "null"},
-        msg: {type: String, default: "null"}
+        msg: {type: String, default: "null"},
+        //--------------------EMBED--------------------//
+        embedtitulo: {type: String, default: "null"},
+        embedimage: {type: String, default: "null"}
     }
 })
 
