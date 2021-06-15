@@ -11,14 +11,12 @@ module.exports = async (client) => {
     },
   ];
 
+  client.user.setStatus("idle")
+
   function setStatus() {
     var randomStatus = status[Math.floor(Math.random() * status.length)];
     client.user.setActivity(randomStatus.name);
   }
 
-  client.user.setStatus("dnd");
-  setStatus();
-  setInterval(() => {
-    setStatus();
-  }, 10 * 1000);
+
 };
