@@ -5,6 +5,7 @@ let userSchema = new Schema({
   _id: { type: String },
   coins: { type: Number, default: 0 },
   daily: { type: Number, default: 0 },
+  gay: {type: String, default:'null'}
 });
 
 const User = mongoose.model("Users", userSchema);

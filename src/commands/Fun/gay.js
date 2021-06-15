@@ -1,23 +1,35 @@
 const Discord = require('discord.js');
+const mongoose = require('mongoose')
+const User = require('../../database/Schemas/User')
 
 exports.run = async (client, message, args) => {
   
-    const user = message.guild.member(
-        client.users.cache.get(args[0]) ||
+
+    const pessoa = message.guild.member(
+          client.users.cache.get(args[0]) ||
           message.mentions.members.first() ||
           message.author
 )
- 
-if(user.id == '650504527434350602')
-return message.channel.send(`🌈 | ${message.author} - Eu acho que o(a) **${user.nickname !== null ? `${user.nickname}` : `${user.user.username}`}** 100% gay!`)
 
-if(user.id == '680943469228982357')
-return message.channel.send(`🌈 | ${message.author} - Eu acho que o(a) **${user.nickname !== null ? `${user.nickname}` : `${user.user.username}`}** 0% gay!`)
+User.findOne({_id: pessoa.id}, async function(err, user){
 
+  const randomnumber = Math.floor(Math.random() *100)
 
-message.channel.send(`🌈 | ${message.author} - Eu acho que o(a) **${user.nickname !== null ? `${user.nickname}` : `${user.user.username}`}** ${Math.floor(Math.random() *100)}% gay!`)
+  const embed1 = new Discord.MessageEmbed()
+  .setColor(process.env.EMBED_COLOR)
+  .setDescription(`🌈 | ${message.author} - Eu acho o(a) **${pessoa.nickname !== null ? `${pessoa.nickname}` : `${pessoa.user.username}`}** ${randomnumber}% gay!`)
 
-
+  const embed2 = new Discord.MessageEmbed()
+  .setColor(process.env.EMBED_COLOR)
+  .setDescription(`🌈 | ${message.author} - Eu acho o(a) **${pessoa.nickname !== null ? `${pessoa.nickname}` : `${pessoa.user.username}`}** ${user.gay}% gay!`)
+  
+  if(user.gay == 'null') {
+    message.channel.send(embed1)
+    await User.findOneAndUpdate({_id: pessoa.id}, {$set: {gay: randomnumber}}) 
+  } else{
+message.channel.send(embed2)
+}
+    })
 }
 
 exports.help = {

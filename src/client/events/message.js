@@ -37,7 +37,7 @@ try {
     return cmdFile.run(client, message, args)
   }
 } else {
-  User.create({_id: message.author.id})
+  User.create({_id: message.author.id, gay: Math.floor(Math.random() *100)})
 } 
 } else {
   Guild.create({_id: message.guild.id})
