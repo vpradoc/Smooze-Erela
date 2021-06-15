@@ -14,19 +14,14 @@ exports.run = async (client, message, args) => {
   const dev = client.users.cache.get('680943469228982357')
   const uptime = moment.duration(client.uptime).format("h [horas] m [minutos] e s [segundos]").replace("minsutos", "minutos");
   const usersize = client.users.cache.size
-  const status = {
-    online: ' 🟢 Online',
-    idle: ' 🟠 Ausente',
-    dnd: ' 🔴 Não pertubar',
-    offline: ' ⚫️ Offline'
-  }
+
 
 
   const embed = new discord.MessageEmbed()
     .setColor('#FFFF00')
     .setThumbnail(botAvatar)
     .setAuthor(`Smooze`, client.user.displayAvatarURL())
-    .addField(`**Informações Básicas**`, `${Emojis.Coroa} Dono: **[Vinicius](https://github.com/Splitze)** | !VPC#9522 \n${Emojis.Calendario} Data da criação: **${formatDate('DD/MM/YYYY, às HH:mm:ss', date)}**\n👤 Usuários: **${usersize}**\n🏠 Servidores: **${servsize}**`)
+    .addField(`**Informações Básicas**`, `${Emojis.Coroa} Dono: **[Vinicius](https://github.com/Splitze)** | ${dev.tag} \n${Emojis.Calendario} Data da criação: **${formatDate('DD/MM/YYYY, às HH:mm:ss', date)}**\n👤 Usuários: **${usersize}**\n🏠 Servidores: **${servsize}**`)
     .addField(`**Informações Técnicas**`, `${Emojis.DJs} Livraria: **Discord.Js - v${discord.version}** \n${Emojis.Node} Versão do Node: **[${process.version}](https://nodejs.org/en/)**\n${Emojis.Cama} Tempo online: **${uptime}**\n${Emojis.Bateria} RAM Usada: **${((process.memoryUsage().heapUsed / 1024) / 1024).toFixed(2)}MB**\n${Emojis.Wifi} Ping: **${client.ws.ping}ms**\n${Emojis.Heroku} Hospedagem: **[Heroku](https://www.heroku.com/)**\n${Emojis.Linux} Sistema Operacional: **${os.platform}**`)
     .addField(`**Meu Convite**`, `**[Me coloque em seu servidor!](https://discord.com/oauth2/authorize?client_id=700681803098226778&permissions=20887631278&scope=bot)**`)
     .setFooter(
