@@ -37,11 +37,15 @@ exports.run = (client, message, args) => {
     if (args[0] == "set") {
       const tipo = args[1];
 
+      
       if (!tipo) {
         return message.channel.send(
           `${Emojis.Errado} - ${message.author}, por favor escolha um tipo de mensagem **<embed/mensagem>**.`
         );
-      } else if (tipo === server.entrada.modelo) {
+      } else if(!tipo === "mensagem", "embed") {
+        return message.channel.send(`${Emojis.Errado} - ${message.author}, escolha um tipo de mensagem válido!`)
+      } 
+      else if (tipo === server.entrada.modelo) {
         return message.channel.send(
           `${Emojis.Errado} - ${message.author}, o tipo de mensagem escolhido já está em uso!`
         );

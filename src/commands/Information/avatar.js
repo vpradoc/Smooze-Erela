@@ -17,7 +17,7 @@ exports.run = (client, message, args) => {
 
     const EMBED = new discord.MessageEmbed()
 
-      .setTitle(`${user.nickname ? user.nickname : user.username}`)
+      .setTitle(`${user.nickname ? user.nickname : user.user.username}`)
       .setColor(process.env.EMBED_COLOR)
       .setDescription(`<:camera:797207483248410704> Clique **[aqui](${avatar})** para baixar o avatar.`)
       .setImage(avatar)
