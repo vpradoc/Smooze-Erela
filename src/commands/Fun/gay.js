@@ -9,7 +9,7 @@ exports.run = async (client, message, args) => {
 )
  
 let gays = ["380769875553157120", "276704578379055104", "251544627742638090"];
-  if (!owners.some(x => x == message.author.id)) return;
+  if (gays) return message.channel.send(`🌈 | ${message.author} - Eu acho que o(a) **${user.nickname !== null ? `${user.nickname}` : `${user.user.username}`}** 100% gay!`)
 if(user.id == '650504527434350602')
 return message.channel.send(`🌈 | ${message.author} - Eu acho que o(a) **${user.nickname !== null ? `${user.nickname}` : `${user.user.username}`}** 100% gay!`)
 
