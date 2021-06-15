@@ -6,7 +6,7 @@ exports.run =  async (client, message, args) => {
 
     weather.find({search: args.join(" "), degreeType: 'C'}, function (error, result){
         // 'C' can be changed to 'F' for farneheit results
-        if(error) return message.channel.send(error);
+        if(error) return 
         if(!args[0]) return message.channel.send('Por favor, coloque um local!')
 
         if(result === undefined || result.length === 0) return message.channel.send('Localização inválida!');
