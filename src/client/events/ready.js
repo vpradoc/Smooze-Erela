@@ -4,22 +4,17 @@ module.exports = async (client) => {
 
   const status = [
     {
-      name: `👤 Usuários: ${client.users.cache.size} `,
-      type: "WATCHING"
+      name: `${client.users.cache.size} usuários!`,
     },
     {
-      name: `🏠 Servidores: ${client.guilds.cache.size}`,
-      type: "PLAYING"
+      name: `${client.guilds.cache.size} servidores!`,
     },
   ];
-
-  client.user.setStatus("idle")
-
-  function setMsg() {
+  setInterval(() => {
     var randomStatus = status[Math.floor(Math.random() * status.length)];
     client.user.setActivity(randomStatus.name);
-  }
+  }, 10 * 1000);
 
-  client.user.setStatus("idle")
+  client.user.setStatus("idle");
+}
 
-};

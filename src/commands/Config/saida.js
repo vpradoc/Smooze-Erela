@@ -263,7 +263,7 @@ exports.run = (client, message, args) => {
         )
         .addField(
           `${Emojis.Smooze} - Informações pré-definidas:`,
-          `\`\`\`{member} - Menciona o usuário\n{name} - Nome do usuário\n{total} - Total de membros do servidor\n{guild} - Nome do servidor\n{quebra} - Quebra a linha\`\`\``
+          `\`\`\`\n{name} - Nome do usuário\n{total} - Total de membros do servidor\n{guild} - Nome do servidor\n{quebra} - Quebra a linha\`\`\``
         )
         .addField(
           `Estrutura:`,
