@@ -11,7 +11,9 @@ let guildSchema = new Schema({
         msg: {type: String, default: "null"},
         //--------------------EMBED--------------------//
         embedtitulo: {type: String, default: "null"},
-        embedimage: {type: String, default: "null"}
+        embedimage: {type: String, default: "null"},
+        embedavatar: {type:Boolean, default: false},
+        embeddescription: {type: String, default: "null"}
     },
     saida: {
         modelo: {type: String, default: "null"},
@@ -20,7 +22,9 @@ let guildSchema = new Schema({
         msg: {type: String, default: "null"},
         //--------------------EMBED--------------------//
         embedtitulo: {type: String, default: "null"},
-        embedimage: {type: String, default: "null"}
+        embedimage: {type: String, default: "null"},
+        embedavatar: {type:Boolean, default: false},
+        embeddescription: {type: String, default: "null"}
     }
 })
 

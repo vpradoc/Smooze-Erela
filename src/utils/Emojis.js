@@ -1,6 +1,6 @@
 module.exports = {
-Certo: "✅",
-Errado: "❌",
+Certo: "<:certo:854457863304118272>",
+Errado: "<:errado:854457060091887676>",
 Pergunta: "<:interrogao:797207530870407189>",
 Pensando: "🤔",
 Nervoso: "😠",
@@ -18,8 +18,8 @@ Cama: "<:cama:798535883732287508>",
 Wifi: "<:wifi:797207638500442173>",
 Heroku: "<:heroku:798340915583909899>",
 Linux: "<:linux:798341832169488415>",
-
-
+Diversão: "🎢",
+Tempo: "<:relogio:854459214763917344>",
 
 
 

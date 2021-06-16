@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const moment = require("moment");
+const Emojis = require("../../utils/Emojis");
 
 exports.run = async (client, message, args) => {
   moment.locale("pt-BR");
@@ -102,7 +103,7 @@ exports.run = async (client, message, args) => {
         },
 
         {
-          name: ":birthday: Entrada no Servidor:",
+          name: `${Emojis.Tempo} Entrada no Servidor:`,
           value: joined,
           inline: true,
         },

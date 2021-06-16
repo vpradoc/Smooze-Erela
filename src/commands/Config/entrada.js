@@ -42,8 +42,6 @@ exports.run = (client, message, args) => {
         return message.channel.send(
           `${Emojis.Errado} - ${message.author}, por favor escolha um tipo de mensagem **<embed/mensagem>**.`
         );
-      } else if(!tipo === "mensagem", "embed") {
-        return message.channel.send(`${Emojis.Errado} - ${message.author}, escolha um tipo de mensagem válido!`)
       } 
       else if (tipo === server.entrada.modelo) {
         return message.channel.send(
@@ -57,8 +55,136 @@ exports.run = (client, message, args) => {
           { _id: message.guild.id },
           { $set: { "entrada.modelo": tipo } }
         );
+      } if(tipo === "embed") {
+        const embedconfig = new discord.MessageEmbed()
+        .setColor(process.env.EMBED_COLOR)
+        .setTitle(`Configuração da Embed`)
+        .addField(`Os utilitários do \`${server.prefix}entrada help\` podem ser aplicados!`, `**${server.prefix}entrada avatar** - Adiciona o avatar do membro na embed\n**${server.prefix}entrada titulo** - Muda o título da embed\n**${server.prefix}entrada description** - Define uma mensagem para a embed\n**${server.prefix}entrada imagem** - Define uma imagem para a embed!`)
+        return message.channel.send(embedconfig)
+      }
+      return;
+    }
+
+    if (args[0] == "msg") {
+      let msg = args.slice(1).join(" ");
+
+      if (!msg) {
+        return message.channel.send(
+          `${Emojis.Errado} - ${message.author}, você não inseriu nenhuma mensagem!`
+        );
+      } else if (msg.lenght > 100) {
+        return message.chennel.send(
+          `${Emojis.Errado} - ${message.author}, a mensagem escolhida é muito grande! O limite é de 100 caracteres.`
+        );
+      } else if (msg === server.entrada.msg) {
+        return message.channel.send(
+          `${Emojis.Errado} - ${message.author}, a mensagem escolhida já está em uso!`
+        );
+      } else {
+        message.channel.send(
+          `${Emojis.Certo} - ${message.author}, a mensagem foi alterada para \`\`\`diff\n- ${msg}\`\`\``
+        );
+        await Guild.findOneAndUpdate(
+          { _id: message.guild.id },
+          { $set: { "entrada.msg": msg } }
+        );
       }
 
+      return;
+    }
+
+    if (args[0] == "imagem") {
+
+      const imagem = args[1]
+
+      if(server.entrada.modelo !== "embed") {
+        return message.channel.send(`${Emojis.Errado} - O sistema de entrada deve estar em formato \`embed\`!`)
+      }else if(imagem === server.entrada.embedimage) {
+        return message.channel.send(`${Emojis.Errado} - A imagem escolhida já se encontra em uso!`)
+      } else {
+        message.channel.send(`${Emojis.Certo} - Imagem definida com sucesso!`)
+        await Guild.findOneAndUpdate(
+          {_id: message.guild.id},
+          {$set: {"entrada.embedimage": imagem}}
+        )
+      }
+      return;
+    }
+
+    if (args[0] == "avatar") {
+
+      if(server.entrada.modelo !== "embed") {
+        return message.channel.send(`${Emojis.Errado} - O sistema de entrada deve estar em formato \`embed\`!`)
+      }else if(server.entrada.embedavatar) {
+        return message.channel.send(`${Emojis.Errado} - O sistema já se encontra ativo!`)
+      } else {
+        message.channel.send(`${Emojis.Certo} - O sistema foi ativado com sucesso!`)
+        await Guild.findOneAndUpdate(
+          {_id: message.guild.id},
+          {$set: {"entrada.embedavatar": true}}
+        )
+      }
+      return;
+    }
+    if (args[0] == "titulo") {
+
+      if(server.entrada.modelo !== "embed") {
+        return message.channel.send(`${Emojis.Errado} - O sistema de entrada deve estar em formato \`embed\`!`)
+      }
+      let titulo = args.slice(1).join(" ");
+
+      if (!titulo) {
+        return message.channel.send(
+          `${Emojis.Errado} - ${message.author}, você não inseriu nenhuma mensagem!`
+        );
+      } else if (titulo.lenght > 30) {
+        return message.chennel.send(
+          `${Emojis.Errado} - ${message.author}, a mensagem escolhida é muito grande! O limite é de 30 caracteres.`
+        );
+      } else if (titulo === server.entrada.embedtitulo) {
+        return message.channel.send(
+          `${Emojis.Errado} - ${message.author}, a mensagem escolhida já está em uso!`
+        );
+      } else {
+        message.channel.send(
+          `${Emojis.Certo} - ${message.author}, a mensagem foi alterada para \`\`\`diff\n- ${titulo}\`\`\``
+        );
+        await Guild.findOneAndUpdate(
+          {_id: message.guild.id},
+          {$set: {"entrada.embedtitulo": titulo}}
+        )
+      }
+      return;
+    }
+
+    if (args[0] == "description") {
+
+      if(server.entrada.modelo !== "embed") {
+        return message.channel.send(`${Emojis.Errado} - O sistema de entrada deve estar em formato \`embed\`!`)
+      }
+      let descrição = args.slice(1).join(" ");
+
+      if (!descrição) {
+        return message.channel.send(
+          `${Emojis.Errado} - ${message.author}, você não inseriu nenhuma mensagem!`
+        );
+      } else if (descrição.lenght > 100) {
+        return message.chennel.send(
+          `${Emojis.Errado} - ${message.author}, a mensagem escolhida é muito grande! O limite é de 100 caracteres.`
+        );
+      } else if (descrição === server.entrada.embeddescription) {
+        return message.channel.send(
+          `${Emojis.Errado} - ${message.author}, a mensagem escolhida já está em uso!`
+        );
+      } else {
+        message.channel.send(
+          `${Emojis.Certo} - ${message.author}, a mensagem foi alterada para \`\`\`diff\n- ${descrição}\`\`\``
+        );
+        await Guild.findOneAndUpdate(
+          {_id: message.guild.id},
+          {$set: {"entrada.embeddescription": descrição}}
+        )
+      }
       return;
     }
 
@@ -137,7 +263,7 @@ exports.run = (client, message, args) => {
         )
         .addField(
           `${Emojis.Smooze} - Informações pré-definidas:`,
-          `\`\`\`{member} - Menciona o usuário\n{name} - Nome do usuário\n{total} - Total de membros do servidor\n{guild} - Nome do servidor\`\`\``
+          `\`\`\`{member} - Menciona o usuário\n{name} - Nome do usuário\n{total} - Total de membros do servidor\n{guild} - Nome do servidor\n{quebra} - Quebra a linha\`\`\``
         )
         .addField(
           `Estrutura:`,
