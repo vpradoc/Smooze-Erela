@@ -2,11 +2,11 @@ const Discord = require('discord.js')
 
 exports.run = async (client, message, args) => {
 
-  if (!args[0]) return message.reply(`Coloque um emoji válido para que eu consiga avaliar!`).then(m => m.delete({ timeout: 5000 }))
+  if (!args[0]) return message.reply(`Coloque um emoji válido para que eu consiga avaliar!`)
 
   const emoji = message.guild.emojis.cache.find(x => x.id == args[0].replace(/\D/g, '')) || message.guild.emojis.cache.find(x => x.name === `${args[0]}`)
 
-  if (!emoji) return message.reply(`Coloque um emoji válido para que eu consiga avaliar!`).then(m => m.delete({ timeout: 5000 }))
+  if (!emoji) return message.reply(`Coloque um emoji válido para que eu consiga avaliar!`)
 
   const image = emoji.url
   const IDENTIFICADOR = emoji.identifier
