@@ -1,9 +1,25 @@
-const malScraper = require("mal-scraper")
+const malScraper = require("mal-scraper");
 const translate = require("@iamtraction/google-translate");
 const moment = require("moment");
-const discord = require('discord.js')
-exports.run = async(client, message, args) => {
+const discord = require("discord.js");
+const Command = require("../../structures/Command.js");
 
+module.exports = class Anime extends Command {
+  constructor(client) {
+    super(client);
+    this.client = client;
+
+    this.name = "anime";
+    this.aliases = [];
+    this.category = "Miscellaneous";
+    this.description = "Comando para que eu envie informações de um anime!";
+    this.usage = "anime";
+
+    this.enabled = true;
+    this.guild = true;
+  }
+
+  async run(message, args, prefix) {
     const search = args.join(" ");
 
     if (!search)
@@ -13,14 +29,11 @@ exports.run = async(client, message, args) => {
 
     const data = await malScraper.getInfoFromName(search);
 
-
     const date = data.aired.split(" to ").map((x) => x.replace(",", ""));
 
     const ANIME = new discord.MessageEmbed()
-        .setColor(process.env.EMBED_COLOR)
-      .setDescription(
-        `**[${data.title}](${data.url})**`
-      )
+      .setColor(process.env.EMBED_COLOR)
+      .setDescription(`**[${data.title}](${data.url})**`)
       .setThumbnail(data.picture)
       .addFields(
         {
@@ -94,11 +107,4 @@ exports.run = async(client, message, args) => {
       return message.channel.send(`${message.author}, anime não encontrado.`);
     });
   }
-
-exports.help = {
-    name: "anime",
-    aliases: [" "],
-    description: "Comando para saber informações sobre um anime de sua escolha!",
-    usage: "<prefix>anime",
-    category: "Miscellaneous"
-}
+};

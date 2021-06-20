@@ -1,20 +1,29 @@
-const Discord = require('discord.js');
-const mongoose = require('mongoose')
-const User = require('../../database/Schemas/User')
-const Emojis = require('../../utils/Emojis')
+const Discord = require("discord.js");
+const mongoose = require("mongoose");
+const User = require("../../database/Schemas/User");
+const Emojis = require("../../utils/Emojis");
+const Command = require("../../structures/Command.js");
 
-exports.run = async (client, message, args) => {
-  
-    const result = Math.floor(Math.random() *6)
-    
-    message.channel.send(`${Emojis.Dado} - ${message.author}, você jogou os dados e obteve como resultado o número **${result}**`)
-}
+module.exports = class Dados extends Command {
+  constructor(client) {
+    super(client);
+    this.client = client;
 
-exports.help = {
-  name: "dados",
-  aliases: [],
-  description: "Comando para jogar os dados!",
-  usage: "<prefix>dados",
-  category: "Fun",
-  
-}
+    this.name = "dados";
+    this.aliases = [];
+    this.category = "Fun";
+    this.description = "Comando para que eu jogue os dados!";
+    this.usage = "dados";
+
+    this.enabled = true;
+    this.guild = true;
+  }
+
+  async run(message, args, prefix) {
+    const result = Math.floor(Math.random() * 6);
+
+    message.channel.send(
+      `${Emojis.Dado} - ${message.author}, você jogou os dados e obteve como resultado o número **${result}**`
+    );
+  }
+};

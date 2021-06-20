@@ -9,6 +9,7 @@
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
     "fs": "0.0.1-security",
+    "klaw": "^3.0.0",
     "mal-scraper": "^2.11.3",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
@@ -16,6 +17,7 @@
     "node-fetch": "^2.6.1",
     "os": "^0.1.1",
     "parse-ms": "^3.0.0",
+    "path": "^0.12.7",
     "weather-js": "^2.0.0"
   },
   "devDependencies": {},

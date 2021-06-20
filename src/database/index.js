@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const logger = require('../utils/logger')
 
 module.exports = {
 
@@ -12,10 +11,10 @@ module.exports = {
                 useFindAndModify: false
             })
 
-            logger.sucess('Mongoose Conectada!')
+            console.log('Mongoose Conectada!')
 
         } catch(err) {
-            if(err) return logger.error('Database error:' + err)
+            if(err) return console.log('Database error:' + err)
         }
     }
 

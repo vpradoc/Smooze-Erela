@@ -2,10 +2,28 @@ const Discord = require("discord.js");
 const mongoose = require("mongoose");
 const fetch = require("node-fetch");
 const Emojis = require("../../utils/Emojis");
+const Command = require("../../structures/Command.js");
 
-exports.run = async (client, message, args) => {
+module.exports = class Slap extends Command {
+  constructor(client) {
+    super(client);
+    this.client = client;
+
+    this.name = "slap";
+    this.aliases = ["tapa"];
+    this.category = "Fun";
+    this.description =
+      "Comando para dar um tapa em um(a) usuário(a)!";
+    this.usage = "slap";
+
+    this.enabled = true;
+    this.guild = true;
+  }
+
+  async run(message, args, prefix) {
+
   const user =
-    client.users.cache.get(args[0]) ||
+    this.client.users.cache.get(args[0]) ||
     message.mentions.members.first()
 
   if (!user) {
@@ -37,11 +55,4 @@ exports.run = async (client, message, args) => {
     message.channel.send(embed);
   }
 };
-
-exports.help = {
-  name: "slap",
-  aliases: ["tapa"],
-  description: "Comando para dar um tapa em um(a) usuário(a)!",
-  usage: "<prefix>slap",
-  category: "Fun",
-};
+}

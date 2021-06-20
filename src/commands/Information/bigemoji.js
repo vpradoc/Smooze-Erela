@@ -1,38 +1,52 @@
-const Discord = require('discord.js')
-const Emojis = require('../../utils/Emojis')
+const Discord = require("discord.js");
+const Command = require("../../structures/Command.js");
+const Emojis = require("../../utils/Emojis");
 
-exports.run = async (client, message, args) => {
+module.exports = class Bigemoji extends Command {
+  constructor(client) {
+    super(client);
+    this.client = client;
 
-  if (!args[0]) return message.reply(`Coloque um emoji para que eu consiga avaliar!`)
+    this.name = "bigemoji";
+    this.aliases = ["bemoji"];
+    this.category = "Information";
+    this.description =
+      "Comando para que eu envie um emoji em um tamanho familia!";
+    this.usage = "bigemoji";
 
-  const emoji = message.guild.emojis.cache.find(x => x.id == args[0].replace(/\D/g, '')) || message.guild.emojis.cache.find(x => x.name === `${args[0]}`)
+    this.enabled = true;
+    this.guild = true;
+  }
 
-  if (!emoji) return message.reply(`Coloque um emoji válido para que eu consiga avaliar!`)
+  async run(message, args, prefix) {
+    if (!args[0])
+      return message.reply(`Coloque um emoji para que eu consiga avaliar!`);
 
-  const image = emoji.url
-  const IDENTIFICADOR = emoji.identifier
-  const Nome = emoji.name
-  const id = emoji.id
-  const animado = emoji.animated
-  const Tempo = emoji.createdAt
-  const Embed = new Discord.MessageEmbed()
-    .setDescription(`**${Emojis.Dado} Aqui está seu emoji:**`)
-    .setColor(process.env.EMBED_COLOR)
-    .setImage(image)
-    .setFooter(
-      `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,
-      message.author.displayAvatarURL({ dynamic: true })
-    );
+    const emoji =
+      message.guild.emojis.cache.find(
+        (x) => x.id == args[0].replace(/\D/g, "")
+      ) || message.guild.emojis.cache.find((x) => x.name === `${args[0]}`);
 
-  if (emoji) return message.channel.send(Embed)
+    if (!emoji)
+      return message.reply(
+        `Coloque um emoji válido para que eu consiga avaliar!`
+      );
 
+    const image = emoji.url;
+    const IDENTIFICADOR = emoji.identifier;
+    const Nome = emoji.name;
+    const id = emoji.id;
+    const animado = emoji.animated;
+    const Tempo = emoji.createdAt;
+    const Embed = new Discord.MessageEmbed()
+      .setDescription(`**${Emojis.Dado} Aqui está seu emoji:**`)
+      .setColor(process.env.EMBED_COLOR)
+      .setImage(image)
+      .setFooter(
+        `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,
+        message.author.displayAvatarURL({ dynamic: true })
+      );
 
-
-}
-exports.help = {
-  name: "bigemoji",
-  aliases: ["bemoji"],
-  description: "Comando para pegar um emoji em tamanho familia!",
-  usage: "<prefix>bigemoji",
-  category: "Information"
+    if (emoji) return message.channel.send(Embed);
+  }
 };

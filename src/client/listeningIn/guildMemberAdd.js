@@ -1,14 +1,18 @@
 const discord = require("discord.js");
 const Guild = require("../../database/Schemas/Guild");
 
-module.exports = (client, member) => {
-
+module.exports = class {
+    constructor(client) {
+      this.client = client
+    }
+  
+  async run(member) {
     let guild = member.guild;
 
-    Guild.findOne({ _id: guild.id }, async function (err, server) {
+    Guild.findOne({ _id: guild.id }, async (err, server) => {
 
         if(server.entrada.status) {
-            let canal = client.channels.cache.get(server.entrada.channel)
+            let canal = this.client.channels.cache.get(server.entrada.channel)
 
             
 
@@ -40,4 +44,5 @@ module.exports = (client, member) => {
             }}
 
     })
+}
 }

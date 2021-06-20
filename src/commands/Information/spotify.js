@@ -1,48 +1,68 @@
-const Discord = require('discord.js')
+const Discord = require("discord.js");
+const Command = require("../../structures/Command.js");
+const Emojis = require("../../utils/Emojis");
 
-exports.run = async (client, message, args) => {
+module.exports = class Spotify extends Command {
+  constructor(client) {
+    super(client);
+    this.client = client;
 
+    this.name = "spotify";
+    this.aliases = ["sptf"];
+    this.category = "Information";
+    this.description =
+      "Comando para que eu envie informações da musica que um usuário está ouvindo!";
+    this.usage = "spotify";
+
+    this.enabled = true;
+    this.guild = true;
+  }
+
+  async run(message, args, prefix) {
     const user =
-    message.mentions.users.first() ||
-    client.users.cache.get(args[0]) ||
-    message.author;
+      message.mentions.users.first() ||
+      this.client.users.cache.get(args[0]) ||
+      message.author;
 
-    if (!user.presence.activities.find(f => f.name === "Spotify")) { 
-
-        return message.channel.send(`${message.author}, este membro não está escutando nenhuma música no **Spotify** no momento, ou então está usando um status personalizado.`)
-   
+    if (!user.presence.activities.find((f) => f.name === "Spotify")) {
+      return message.channel.send(
+        `${message.author}, este membro não está escutando nenhuma música no **Spotify** no momento, ou então está usando um status personalizado.`
+      );
     } else {
+      if (user.presence.activities.find((x) => x.name === "Spotify")) {
+        const spotify = user.presence.activities.find(
+          (x) => x.name == "Spotify"
+        );
 
+        let trackIMG = spotify.assets.largeImageURL();
+        let trackURL = `https://open.spotify.com/track/${spotify.syncID}`;
+        let trackName = spotify.details;
+        let trackAuthor = spotify.state;
+        let trackAlbum = spotify.assets.largeText;
+        let trackTIME = spotify.timestamps.end - spotify.timestamps.start;
 
-    if(user.presence.activities.find(x => x.name === "Spotify")) {
+        const embed = new Discord.MessageEmbed()
+          .setAuthor(
+            `Informações da música que o ${user.username} está ouvindo agora`
+          )
+          .setColor(process.env.EMBED_COLOR)
+          .setThumbnail(`${trackIMG}`)
+          .setTimestamp()
+          .addField(`${Emojis.Fone} Música: `, `${trackName}`, true)
+          .addField(`${Emojis.Disco} Álbum:`, `${trackAlbum}`, true)
+          .addField(`${Emojis.Microfone} Autor: `, `${trackAuthor}`, false)
+          .addField(
+            "<:spotify:797207602513575967> Ouça no Spotify: ",
+            `Clique **[aqui](${trackURL})** para escutar junto!`,
+            false
+          )
+          .setFooter(
+            `Pedido por ${message.author.username}`,
+            message.author.avatarURL()
+          );
 
-      const spotify =  user.presence.activities.find(x => x.name == "Spotify")
-
-            let trackIMG = spotify.assets.largeImageURL()
-            let trackURL = `https://open.spotify.com/track/${spotify.syncID}`
-            let trackName = spotify.details
-            let trackAuthor = spotify.state
-            let trackAlbum = spotify.assets.largeText
-            let trackTIME = spotify.timestamps.end - spotify.timestamps.start
-            
-            const embed = new Discord.MessageEmbed()
-            .setAuthor(`Informações da música que o ${user.username} está ouvindo agora`, `https://cdn.discordapp.com/attachments/750068088740905092/787751821795655690/408668371039682560.png`)
-            .setColor(process.env.EMBED_COLOR)
-            .setThumbnail(`${trackIMG}`)
-            .setTimestamp()
-            .addField('<:fone:798180146745442314> Música: ', `${trackName}`, true)
-            .addField('<:disco:797207521298612284> Álbum:', `${trackAlbum}`, true)
-            .addField('<:microfone:797207572808466452> Autor: ', `${trackAuthor}`, false)
-            .addField('<:spotify:797207602513575967> Ouça no Spotify: ', `Clique **[aqui](${trackURL})** para escutar junto!`, false)
-            .setFooter(`Pedido por ${message.author.username}`, message.author.avatarURL())
-
-            message.channel.send(embed);
-    } 
-    }}
-exports.help = {
-    name: "spotify",
-    aliases: ['spotify', 'sptf'],
-    description: "Comando para saber informações da música de um usuário!",
-    usage: "<prefix>spotify",
-    category: "Information"
-}
+        message.channel.send(embed);
+      }
+    }
+  }
+};
