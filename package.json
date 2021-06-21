@@ -18,7 +18,9 @@
     "os": "^0.1.1",
     "parse-ms": "^3.0.0",
     "path": "^0.12.7",
-    "weather-js": "^2.0.0"
+    "srod-v2": "^1.0.2",
+    "weather-js": "^2.0.0",
+    "ws": "^7.5.0"
   },
   "devDependencies": {},
   "scripts": {

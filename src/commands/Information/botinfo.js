@@ -11,7 +11,7 @@ module.exports = class Botinfo extends Command {
     this.client = client;
 
     this.name = "botinfo";
-    this.aliases = ["binfo"];
+    this.aliases = ["binfo", "bi"];
     this.category = "Information";
     this.description = "Comando para que eu envie as informações do BOT!";
     this.usage = "botinfo";

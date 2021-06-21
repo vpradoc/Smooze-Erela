@@ -9,7 +9,7 @@ module.exports = class Userinfo extends Command {
     this.client = client;
 
     this.name = "userinfo";
-    this.aliases = ["uinfo"];
+    this.aliases = ["uinfo", "ui"];
     this.category = "Information";
     this.description = "Comando para que eu envie suas informações técnicas!";
     this.usage = "userinfo";
@@ -33,8 +33,8 @@ module.exports = class Userinfo extends Command {
         let devices = Object.keys(user.presence.clientStatus);
 
         let deviceList = devices.map((x) => {
-          if (x === "desktop") return "💻 COMPUTADOR";
-          else if (x === "mobile") return "📱 CELULAR";
+          if (x === "desktop") return "COMPUTADOR";
+          else if (x === "mobile") return "CELULAR";
           else return " ";
         });
 
@@ -70,7 +70,7 @@ module.exports = class Userinfo extends Command {
           ROLES.length > 10
             ? ROLES.map((r) => r)
                 .slice(0, 10)
-                .join(", ") + `e mais ${Number(ROLES.length - 10)} cargos`
+                .join(", ") + `**e mais ${Number(ROLES.length - 10)} cargos!**`
             : ROLES.map((r) => r).join(", ");
 
       let presence;
@@ -91,46 +91,29 @@ module.exports = class Userinfo extends Command {
 
       const USERINFO = new Discord.MessageEmbed()
         .setColor(message.guild.member(user.id).roles.highest.hexColor)
-        .setTitle(flags + user.user.username)
         .addFields(
           {
-            name: ":video_game: Jogando:",
-            value: `\`\`\`diff\n- ${presence}\`\`\``,
+            name: `${
+              message.guild.owner === user
+                ? `${Emojis.Coroa} ${flags.replace("-", " ")}${user.user.username}`
+                : `${flags} ${user.user.username}`
+            }\n**Informações Pessoais:**`,
+            value: `**${Emojis.Bust} Tag:**\n\`${user.user.tag}\`
+                    **${Emojis.Id} Id:**\n\`${user.user.id}\`
+                    **${Emojis.Calendario} Criação da conta:**\n${created}\n`
           },
           {
-            name: ":paperclip: Nome do Usuário:",
-            value: user.user.tag,
-            inline: true,
+            name: `**Informações do Status**`,
+            value: `**${Emojis.Dado} Jogando:**\n\`${presence}\`
+                    **${Emojis.Wifi} Dispositivo:**\n${device}
+                    **${Emojis.Robo} É um BOT?:**\n${
+              user.user.bot ? "Sim" : "Não"
+            }\n`,
           },
           {
-            name: ":paperclips: Nickname no Servidor:",
-            value: !!user.nickname ? user.nickname : "Nenhum Nickname",
-            inline: true,
-          },
-          {
-            name: "Dispositivo:",
-            value: String(device).replace("null", "Nenhum"),
-          },
-          { name: "ID:", value: user.id },
-          {
-            name: "<:calendario:798254558480433152> Conta Criada:",
-            value: created,
-            inline: true,
-          },
-
-          {
-            name: `${Emojis.Tempo} Entrada no Servidor:`,
-            value: joined,
-            inline: true,
-          },
-          {
-            name: ":robot: É bot?",
-            value: user.user.bot ? "Sim" : "Não",
-            inline: true,
-          },
-          {
-            name: `:speaking_head: Cargos no Servidor`,
-            value: roles,
+            name: `**Informações do Servidor**`,
+            value: `**${Emojis.Calendario} Entrada no Servidor:**\n${joined}
+                    **${Emojis.Id} Cargos:**\n${roles}\n`,
           }
         )
         .setThumbnail(user.user.displayAvatarURL({ dynamic: true }))

@@ -1,6 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const Guild = require("../../database/Schemas/Guild");
 const Command = require("../../structures/Command.js");
+const Emojis = require("../../utils/Emojis");
 
 module.exports = class Help extends Command {
   constructor(client) {
@@ -100,23 +101,23 @@ module.exports = class Help extends Command {
 
         HELP.addFields(
           {
-            name: "Config",
+            name: `${Emojis.Engrenagem} **Config**`,
             value: `\`${Config.map((x) => `${x}`).join(" - ")}\``,
           },
           {
-            name: "Economy",
+            name: `${Emojis.Dinheiro} **Economy**`,
             value: `\`${Economy.map((x) => `${x}`).join(" - ")}\``,
           },
           {
-            name: "Fun",
+            name: `${Emojis.Gapple} **Fun**`,
             value: `\`${Fun.map((x) => `${x}`).join(" - ")}\``,
           },
           {
-            name: "Information",
+            name: `${Emojis.Id} **Information**`,
             value: `\`${Information.map((x) => `${x}`).join(" - ")}\``,
           },
           {
-            name: "Miscellaneous",
+            name: `${Emojis.Pergunta} **Miscellaneous**`,
             value: `\`${Miscellaneous.map((x) => `${x}`).join(" - ")}\``,
           }
         );

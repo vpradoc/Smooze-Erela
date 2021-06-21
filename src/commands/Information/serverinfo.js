@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const moment = require("moment");
 const Command = require("../../structures/Command.js");
+const Emojis = require("../../utils/Emojis.js");
 
 module.exports = class Serverinfo extends Command {
   constructor(client) {
@@ -8,7 +9,7 @@ module.exports = class Serverinfo extends Command {
     this.client = client;
 
     this.name = "serverinfo";
-    this.aliases = [];
+    this.aliases = ["si", "sinfo"];
     this.category = "Information";
     this.description = "Comando para que eu envie informações de seu servidor!";
     this.usage = "serverinfo";
@@ -24,7 +25,7 @@ module.exports = class Serverinfo extends Command {
       let boost =
         message.guild.premiumSubscriptionCount === 0
           ? "O servidor não conta com Nitro Boost's"
-          : `${message.guild.premiumSubscriptionCount} Boost(s) ( Level Server: ${message.guild.premiumTier} )`;
+          : `${message.guild.premiumSubscriptionCount} Boost(s) (Nível: ${message.guild.premiumTier})`;
 
       let channels = [
         `Texto: ${
@@ -36,7 +37,7 @@ module.exports = class Serverinfo extends Command {
       ].join("\n");
 
       const SERVERINFO = new Discord.MessageEmbed()
-        .setAuthor(`Informações do servidor`)
+        .setAuthor(`${message.guild.name}`, message.guild.iconURL({dynamic: true}))
         .setColor(process.env.EMBED_COLOR)
         .setTimestamp()
         .setFooter(
@@ -46,83 +47,28 @@ module.exports = class Serverinfo extends Command {
         .setThumbnail(message.guild.iconURL({ dynamic: true }))
         .addFields(
           {
-            name: "<:id:798255861561819148>  **ID DO SERVIDOR**",
-            value: `\`\`\`\n${message.guild.id}\`\`\``,
-            inline: true,
+            name: `**Informações do Servidor**`,
+            value: `${Emojis.Coroa} **Dono:**\n${message.guild.owner.user.tag}
+                    ${Emojis.Id} **Id:**\n${message.guild.id}
+                    ${Emojis.Calendario} **Data da criação:**\n${moment(message.guild.createdAt).format("L")} (${moment(message.guild.createdAt).startOf("day").fromNow()})
+                    ${Emojis.Smooze} **Data da minha entrada:**\n${moment(message.guild.member(this.client.user.id).joinedAt).format("L")} (${moment(message.guild.member(this.client.user.id).joinedAt).startOf("day").fromNow()})\n`
           },
           {
-            name: "<:coroa:802924330925162546>  **Proprietário(a)**",
-            value: `\`\`\`\n${message.guild.owner.user.tag}\`\`\``,
-            inline: true,
+            name: `**Estrutura do servidor:**`,
+            value: `${Emojis.Fone} **Total de Canais:**\n${message.guild.channels.cache.size - message.guild.channels.cache.filter((x) => x.type == "category").size}
+                    ${Emojis.Robo} **Bots:**\n${message.guild.members.cache.filter((x) => x.user.bot).size.toLocaleString()}
+                    ${Emojis.Boost} **Boost's:**\n${boost}\n`
           },
           {
-            name: `:loud_sound:  **Total de Canais** ( **${
-              message.guild.channels.cache.size -
-              message.guild.channels.cache.filter((x) => x.type == "category")
-                .size
-            }** )`,
-            value: channels,
-            inline: false,
-          },
-          {
-            name: ":robot:  **Bots**",
-            value: message.guild.members.cache
-              .filter((x) => x.user.bot)
-              .size.toLocaleString(),
-            inline: true,
-          },
-          {
-            name: "<:calendario:798254558480433152>  **Data de Criação**",
-            value: `${moment(message.guild.createdAt).format("L")} ( ${moment(
-              message.guild.createdAt
-            )
-              .startOf("day")
-              .fromNow()} )`,
-            inline: true,
-          },
-          {
-            name: ":birthday:  **Data da minha Entrada**",
-            value: `${moment(
-              message.guild.member(this.client.user.id).joinedAt
-            ).format("L")} ( ${moment(
-              message.guild.member(this.client.user.id).joinedAt
-            )
-              .startOf("day")
-              .fromNow()} )`,
-            inline: false,
-          },
-          {
-            name: "<:boost:798251201765965855>  **Quantidade / Nível Nitro Boost**",
-            value: boost,
-            inline: true,
-          },
-          {
-            name: ":bust_in_silhouette:  **Total de Usuários**",
-            value: message.guild.memberCount.toLocaleString(),
-            inline: false,
-          },
-          {
-            name: "Status dos Membros:",
-            value: `Online: ${
-              message.guild.members.cache
-                .map((x) => x.presence.status)
-                .filter((x) => x == "online").length
-            }\nAusente: ${
-              message.guild.members.cache
-                .map((x) => x.presence.status)
-                .filter((x) => x == "idle").length
-            }\nOcupado: ${
-              message.guild.members.cache
-                .map((x) => x.presence.status)
-                .filter((x) => x == "dnd").length
-            }\nOffline: ${
-              message.guild.members.cache
-                .map((x) => x.presence.status)
-                .filter((x) => x == "offline").length
-            }`,
-            inline: true,
-          }
-        );
+          name: `**Membros:** \`${message.guild.memberCount.toLocaleString()}\``,
+          value: `
+                  🟢 **Online:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "online").length}\`
+                  🟡 **Ausente:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "idle").length}\`
+                  🔴 **Ocupado:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "dnd").length}\`
+                  ⚫ **Offline:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "offline").length}\``
+          })
+
+          if(message.guild.bannerURL !== "null" ) SERVERINFO.setImage(message.guild.bannerURL({dynamic: true, format: "jpg", size: 2048}))
 
       message.channel.send(SERVERINFO);
     } catch (err) {

@@ -1,7 +1,7 @@
 const User = require("../../database/Schemas/User");
 const discord = require("discord.js");
 const Command = require("../../structures/Command.js");
-
+const Emojis = require('../../utils/Emojis.js')
 module.exports = class Coins extends Command {
   constructor(client) {
     super(client);
@@ -32,8 +32,8 @@ module.exports = class Coins extends Command {
 
       const embed = new discord.MessageEmbed()
         .setColor(process.env.EMBED_COLOR)
-        .setTitle(`<:dinheiro:852258064957833226> Saldo Bancário:`)
-        .addField(`:coin: Coins:`, `${coins}`)
+        .setTitle(`${Emojis.Dinheiro} **Saldo Bancário:**`)
+        .addField(`${Emojis.Coin} **Coins:**`, `${coins}`)
         .setThumbnail(pessoa.displayAvatarURL())
         .setFooter(
           `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,
