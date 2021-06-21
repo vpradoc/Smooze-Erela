@@ -1,8 +1,8 @@
+const Command = require("../../structures/Command");
+const ClientEmbed = require("../../structures/ClientEmbed");
 const Emojis = require("../../utils/Emojis");
 const { Aki } = require("aki-api");
-const discord = require("discord.js");
 const akinator = new Set();
-const Command = require("../../structures/Command.js");
 
 module.exports = class Akinator extends Command {
   constructor(client) {
@@ -10,16 +10,16 @@ module.exports = class Akinator extends Command {
     this.client = client;
 
     this.name = "akinator";
-    this.aliases = ["aki"];
     this.category = "Fun";
-    this.description = "Comando para jogar uma partida de Akinator!";
+    this.description = "Comando para jogar um Akinator.";
     this.usage = "akinator";
+    this.aliases = ["aki"];
 
     this.enabled = true;
-    this.guild = true;
+    this.guildOnly = true;
   }
 
-  async run(message, args, prefix) {
+  async run(message, args, prefix,) {
     const emojis = [
       Emojis.Certo,
       Emojis.Errado,
@@ -40,13 +40,11 @@ module.exports = class Akinator extends Command {
       .send(`${message.author}, estou começando sua partida.`)
       .then(async (x) => {
         // ================= Parte para iniciar o Game
-        const region = "pt";
-        const aki = new Aki(region);
+        const aki = new Aki('pt');
         await aki.start();
         // ================= Parte para iniciar o Game
 
-        const EMBED = new discord.MessageEmbed()
-          .setColor(process.env.EMBED_COLOR)
+        const EMBED = new ClientEmbed(message.author)
           .setTitle(`${aki.currentStep + 1}ª Pergunta`)
           .setThumbnail("https://i.imgur.com/6MPgU4x.png")
           .addField(
@@ -60,7 +58,7 @@ module.exports = class Akinator extends Command {
 
           const collector = msg.createReactionCollector(
             (reaction, user) =>
-              emojis.includes(reaction.emoji.name) &&
+              emojis.includes(reaction.emoji.id) &&
               user.id === message.author.id,
             {
               time: 60000 * 10,
@@ -69,12 +67,12 @@ module.exports = class Akinator extends Command {
 
           collector
             .on("end", () => akinator.delete(message.author.id))
-            .on("collect", async ({ emoji, users }) => {
+            .on("collect", async (emoji, users) => {
               users.remove(message.author).catch(() => null);
 
-              if (emoji.name === Emojis.Aki_Cancel) return collector.stop();
+              if (emoji.id === Emojis.Smooze) return collector.stop();
 
-              await aki.step(emojis.indexOf(emoji.name));
+              await aki.step(emojis.indexOf(emoji.id));
 
               if (aki.progress >= 80 || aki.currentStep >= 78) {
                 await aki.win();
@@ -82,8 +80,7 @@ module.exports = class Akinator extends Command {
                 collector.stop();
 
                 message.channel.send(
-                  new discord.MessageEmbed()
-                    .setColor(process.env.EMBED_COLOR)
+                  new ClientEmbed(author)
                     .setTitle(`Este é seu Personagem?`)
                     .setDescription(
                       `> **${aki.answers[0].name}**\n\n> ${aki.answers[0].description}\n> Rank: **#${aki.answers[0].ranking}**\nResponda com **SIM** caso eu tenha acertado e com **NÃO** caso eu tenha errado.`
@@ -109,15 +106,14 @@ module.exports = class Akinator extends Command {
 
                     message.channel.send(
                       isWinner
-                        ? `Como eu já sabia, acertei mais uma vez...`
-                        : `Ok, ok você ganhou dessa vez... Nos vemos na próxima!`
+                        ? `Como esperado de mim, acertei mais uma vez`
+                        : `Você ganhou esta partida`
                     );
                   })
                   .catch(() => null);
               } else {
                 msg.edit(
-                  new discord.MessageEmbed()
-                    .setColor(process.env.EMBED_COLOR)
+                  new ClientEmbed(author)
                     .setTitle(`${aki.currentStep + 1}ª Pergunta`)
                     .setThumbnail(`https://i.imgur.com/6MPgU4x.png`)
                     .addField(
