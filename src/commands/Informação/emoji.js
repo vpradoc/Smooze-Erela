@@ -8,7 +8,7 @@ module.exports = class Emoji extends Command {
 
     this.name = "emoji";
     this.aliases = [];
-    this.category = "Information";
+    this.category = "Informação"
     this.description = "Comando para que eu envie informações de um emoji!";
     this.usage = "emoji";
 

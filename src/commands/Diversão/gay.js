@@ -9,7 +9,7 @@ module.exports = class Entrada extends Command {
 
     this.name = "gay";
     this.aliases = [];
-    this.category = "Fun";
+    this.category = "Diversão";
     this.description = "Comando para saber se o quanto gay é um(a) usuário(a)!";
     this.usage = "gay";
 

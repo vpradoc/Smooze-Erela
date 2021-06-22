@@ -15,6 +15,8 @@ try {
   Guild.findOne({_id: message.guild.id}, async (err, server) => {
   User.findOne({_id: message.author.id}, async (err, user) => {
   if(message.author.bot == true) return
+  if(user.blacklist === true) return
+
 
   if(server){
   if(user){
@@ -32,6 +34,20 @@ try {
     .setFooter(`Smooze`, this.client.user.displayAvatarURL())
     .setTimestamp()
     message.channel.send(embed)
+  }
+
+  let xp = user.Exp.xp
+  let level = user.Exp.level
+  let nextLevel = user.Exp.nextLevel * level
+  let xpGive = Math.floor(Math.random() * 5) + 1
+
+  await User.findOneAndUpdate({_id: message.author.id}, {$set: {'Exp.xp': xp + xpGive}})
+
+  if(xp >= nextLevel) {
+    await User.findOneAndUpdate({_id: message.author.id}, {$set: {'Exp.xp': 0, 'Exp.level': level + 1}})
+  
+    message.channel.send(`${message.author}, você acaba de subir para o level **${level + 1}**!`)
+    message.react(`🎆`)
   }
 
   if (message.content.indexOf(prefix) !== 0) return;

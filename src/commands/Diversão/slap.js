@@ -11,7 +11,7 @@ module.exports = class Slap extends Command {
 
     this.name = "slap";
     this.aliases = ["tapa"];
-    this.category = "Fun";
+    this.category = "Diversão";
     this.description =
       "Comando para dar um tapa em um(a) usuário(a)!";
     this.usage = "slap";

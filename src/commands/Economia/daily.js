@@ -11,7 +11,7 @@ module.exports = class Daily extends Command {
 
     this.name = "daily";
     this.aliases = ["diario"];
-    this.category = "Economy";
+    this.category = "Economia";
     this.description = "Comando para resgatar seu premio diário!";
     this.usage = "daily";
 

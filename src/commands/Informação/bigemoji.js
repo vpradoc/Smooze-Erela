@@ -9,7 +9,7 @@ module.exports = class Bigemoji extends Command {
 
     this.name = "bigemoji";
     this.aliases = ["bemoji"];
-    this.category = "Information";
+    this.category = "Informação";
     this.description =
       "Comando para que eu envie um emoji em um tamanho familia!";
     this.usage = "bigemoji";

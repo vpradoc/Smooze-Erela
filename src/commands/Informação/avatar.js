@@ -8,7 +8,7 @@ module.exports = class Avatar extends Command {
 
     this.name = "avatar";
     this.aliases = ["foto"];
-    this.category = "Information";
+    this.category = "Informação";
     this.description =
       "Comando para que eu envite o avatar de um(a) usuário(a)!";
     this.usage = "avatar";

@@ -11,7 +11,7 @@ module.exports = class Anime extends Command {
 
     this.name = "anime";
     this.aliases = [];
-    this.category = "Miscellaneous";
+    this.category = "Outros";
     this.description = "Comando para que eu envie informações de um anime!";
     this.usage = "anime";
 

@@ -1,5 +1,6 @@
 const discord = require("discord.js");
 const Guild = require("../../database/Schemas/Guild");
+const { Welcomer } = require("canvacord")
 
 module.exports = class {
     constructor(client) {
@@ -15,9 +16,7 @@ module.exports = class {
         if(server.entrada.status) {
             let canal = this.client.channels.cache.get(server.entrada.channel)
 
-            
-
-                if(server.entrada.modelo === "embed") {
+           if(server.entrada.modelo === "embed") {
                     let embed = new discord.MessageEmbed()
                     .setColor(process.env.EMBED_COLOR)
                     .setTitle(`${server.entrada.embedtitulo.replace(/{member}/g, `<@${member.id}>`)

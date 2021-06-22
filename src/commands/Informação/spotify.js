@@ -9,7 +9,7 @@ module.exports = class Spotify extends Command {
 
     this.name = "spotify";
     this.aliases = ["sptf"];
-    this.category = "Information";
+    this.category = "Informação"
     this.description =
       "Comando para que eu envie informações da musica que um usuário está ouvindo!";
     this.usage = "spotify";

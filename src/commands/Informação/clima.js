@@ -9,7 +9,7 @@ module.exports = class Clima extends Command {
 
     this.name = "clima";
     this.aliases = ["tempo"];
-    this.category = "Information";
+    this.category = "Informação"
     this.description =
       "Comando para que eu envie informações do clima de uma cidade!";
     this.usage = "clima";
@@ -45,7 +45,7 @@ module.exports = class Clima extends Command {
             true
           )
           .addField("☁️ Sensação Térmica:", `${current.feelslike}°`, true)
-          .addField("🌡️ Unidade de Medida:", "C", true)
+          .addField("🌡️ Unidade de Medida:", "Celsius", true)
           .addField("💦 Umidade do Ar:", `${current.humidity}%`, true)
           .addField(
             "<:termometro:852534998430253126> Temperatura:",

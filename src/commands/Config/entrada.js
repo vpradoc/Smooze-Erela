@@ -54,15 +54,15 @@ module.exports = class Entrada extends Command {
       if (args[0] == "set") {
         const tipo = args[1];
 
-        const options = ["mensagem", "embed"];
+        const options = ["mensagem", "embed", "card"];
 
         if (!options.some((x) => x === tipo.toLowerCase())) {
           return message.channel.send(
-            `${Emojis.Errado} - ${message.author}, por favor escolha um tipo de mensagem válido **<embed/mensagem>**!`
+            `${Emojis.Errado} - ${message.author}, por favor escolha um tipo de mensagem válido **<embed/mensagem/card>**!`
           );
         } else if (!tipo) {
           return message.channel.send(
-            `${Emojis.Errado} - ${message.author}, por favor escolha um tipo de mensagem **<embed/mensagem>**.`
+            `${Emojis.Errado} - ${message.author}, por favor escolha um tipo de mensagem **<embed/mensagem/card>**.`
           );
         } else if (tipo === server.entrada.modelo) {
           return message.channel.send(

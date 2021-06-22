@@ -3,16 +3,16 @@ const fetch = require("node-fetch");
 const Emojis = require("../../utils/Emojis");
 const Command = require("../../structures/Command.js");
 
-module.exports = class Carinho extends Command {
+module.exports = class Abraço extends Command {
   constructor(client) {
     super(client);
     this.client = client;
 
-    this.name = "carinho";
-    this.aliases = ["pat"];
-    this.category = "Fun";
-    this.description = "Comando para fazer um carinho em um(a) usuário(a)!";
-    this.usage = "entrada";
+    this.name = "abraço";
+    this.aliases = ["hug"];
+    this.category = "Diversão";
+    this.description = "Comando para abraçar um(a) usuário(a)!";
+    this.usage = "hug";
 
     this.enabled = true;
     this.guild = true;
@@ -24,14 +24,14 @@ module.exports = class Carinho extends Command {
 
     if (!user) {
       message.channel.send(
-        `${Emojis.Errado} - ${message.author}, você deve escolher um membro para fazer carinho!`
+        `${Emojis.Errado} - ${message.author}, você deve escolher um membro para ganhar um abraço!`
       );
     } else if (user === message.author) {
       message.channel.send(
-        `${Emojis.Errado} - ${message.author}, você não pode fazer carinho em sí mesmo!`
+        `${Emojis.Errado} - ${message.author}, você não pode dar um abraço em sí mesmo!`
       );
     } else {
-      const gif = await fetch("https://nekos.life/api/v2/img/pat").then((res) =>
+      const gif = await fetch("https://nekos.life/api/v2/img/hug").then((res) =>
         res.json()
       );
 
@@ -40,7 +40,7 @@ module.exports = class Carinho extends Command {
         .setDescription(
           `**${
             message.author.username ? message.author : message.author.username
-          } fez um carinho no(a) <@${user.id}>!**`
+          } deu um abraço no(a) <@${user.id}>!**`
         )
         .setFooter(
           `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,

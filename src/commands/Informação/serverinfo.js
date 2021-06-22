@@ -10,7 +10,7 @@ module.exports = class Serverinfo extends Command {
 
     this.name = "serverinfo";
     this.aliases = ["si", "sinfo"];
-    this.category = "Information";
+    this.category = "Informação"
     this.description = "Comando para que eu envie informações de seu servidor!";
     this.usage = "serverinfo";
 
@@ -48,24 +48,16 @@ module.exports = class Serverinfo extends Command {
         .addFields(
           {
             name: `**Informações do Servidor**`,
-            value: `${Emojis.Coroa} **Dono:**\n${message.guild.owner.user.tag}
-                    ${Emojis.Id} **Id:**\n${message.guild.id}
-                    ${Emojis.Calendario} **Data da criação:**\n${moment(message.guild.createdAt).format("L")} (${moment(message.guild.createdAt).startOf("day").fromNow()})
-                    ${Emojis.Smooze} **Data da minha entrada:**\n${moment(message.guild.member(this.client.user.id).joinedAt).format("L")} (${moment(message.guild.member(this.client.user.id).joinedAt).startOf("day").fromNow()})\n`
+            value: `${Emojis.Coroa} **Dono:**\n${message.guild.owner.user.tag}\n${Emojis.Id} **Id:**\n${message.guild.id}\n${Emojis.Calendario} **Data da criação:**\n${moment(message.guild.createdAt).format("L")} (${moment(message.guild.createdAt).startOf("day").fromNow()})\n${Emojis.Smooze} **Data da minha entrada:**\n${moment(message.guild.member(this.client.user.id).joinedAt).format("L")} (${moment(message.guild.member(this.client.user.id).joinedAt).startOf("day").fromNow()})\n`
           },
           {
             name: `**Estrutura do servidor:**`,
-            value: `${Emojis.Fone} **Total de Canais:**\n${message.guild.channels.cache.size - message.guild.channels.cache.filter((x) => x.type == "category").size}
-                    ${Emojis.Robo} **Bots:**\n${message.guild.members.cache.filter((x) => x.user.bot).size.toLocaleString()}
-                    ${Emojis.Boost} **Boost's:**\n${boost}\n`
+            value: `${Emojis.Fone} **Total de Canais:**\n${message.guild.channels.cache.size - message.guild.channels.cache.filter((x) => x.type == "category").size}\n${Emojis.Robo} **Bots:**\n${message.guild.members.cache.filter((x) => x.user.bot).size.toLocaleString()}\n${Emojis.Boost} **Boost's:**\n${boost}\n`
           },
           {
           name: `**Membros:** \`${message.guild.memberCount.toLocaleString()}\``,
           value: `
-                  🟢 **Online:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "online").length}\`
-                  🟡 **Ausente:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "idle").length}\`
-                  🔴 **Ocupado:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "dnd").length}\`
-                  ⚫ **Offline:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "offline").length}\``
+                  🟢 **Online:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "online").length}\`\n🟡 **Ausente:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "idle").length}\`\n🔴 **Ocupado:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "dnd").length}\`\n⚫ **Offline:** \`${message.guild.members.cache.map((x) => x.presence.status).filter((x) => x == "offline").length}\``
           })
 
           if(message.guild.bannerURL !== "null" ) SERVERINFO.setImage(message.guild.bannerURL({dynamic: true, format: "jpg", size: 2048}))

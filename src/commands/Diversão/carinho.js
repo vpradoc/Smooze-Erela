@@ -3,16 +3,16 @@ const fetch = require("node-fetch");
 const Emojis = require("../../utils/Emojis");
 const Command = require("../../structures/Command.js");
 
-module.exports = class Kiss extends Command {
+module.exports = class Carinho extends Command {
   constructor(client) {
     super(client);
     this.client = client;
 
-    this.name = "kiss";
-    this.aliases = ["beijar"];
-    this.category = "Fun";
-    this.description = "Comando para dar um beijo em um(a) usuário(a)!";
-    this.usage = "kiss";
+    this.name = "carinho";
+    this.aliases = ["pat"];
+    this.category = "Diversão";
+    this.description = "Comando para fazer um carinho em um(a) usuário(a)!";
+    this.usage = "entrada";
 
     this.enabled = true;
     this.guild = true;
@@ -24,15 +24,15 @@ module.exports = class Kiss extends Command {
 
     if (!user) {
       message.channel.send(
-        `${Emojis.Errado} - ${message.author}, você deve escolher um membro para levar o beijo!`
+        `${Emojis.Errado} - ${message.author}, você deve escolher um membro para fazer carinho!`
       );
     } else if (user === message.author) {
       message.channel.send(
-        `${Emojis.Errado} - ${message.author}, você não pode dar um beijo em sí mesmo!`
+        `${Emojis.Errado} - ${message.author}, você não pode fazer carinho em sí mesmo!`
       );
     } else {
-      const gif = await fetch("https://nekos.life/api/v2/img/kiss").then(
-        (res) => res.json()
+      const gif = await fetch("https://nekos.life/api/v2/img/pat").then((res) =>
+        res.json()
       );
 
       const embed = new Discord.MessageEmbed()
@@ -40,7 +40,7 @@ module.exports = class Kiss extends Command {
         .setDescription(
           `**${
             message.author.username ? message.author : message.author.username
-          } deu um beijo no(a) <@${user.id}>!**`
+          } fez um carinho no(a) <@${user.id}>!**`
         )
         .setFooter(
           `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,

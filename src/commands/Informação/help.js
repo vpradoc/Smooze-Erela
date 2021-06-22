@@ -10,7 +10,7 @@ module.exports = class Help extends Command {
 
     this.name = "help";
     this.aliases = ["ajuda"];
-    this.category = "Information";
+    this.category = "Informação"
     this.description = "Comando para que eu envie minha lista de utilidades!";
     this.usage = "help";
 
@@ -22,10 +22,10 @@ module.exports = class Help extends Command {
     Guild.findOne({ _id: message.guild.id }, async (err, server) => {
       const data = [];
       const Config = [];
-      const Economy = [];
-      const Fun = [];
-      const Information = [];
-      const Miscellaneous = [];
+      const Economia = [];
+      const Diversão = [];
+      const Informação = [];
+      const Outros = [];
       const { commands } = message.client;
 
       if (args[0]) {
@@ -85,40 +85,40 @@ module.exports = class Help extends Command {
           .setTimestamp();
 
         HELP.setDescription(`Olá ${message.author.username}, sou o **\`Smooze\`**, um bot criado em JavaScript.
-    Posso executar comandos diversos para fazer com que meus usuários se sintam a vontade em seus servidores.\n
+    Posso executar comandos diversos para fazer com que meus usuários se sintam a vontade em seus servidores. No momento eu conto com \`${this.client.commands.size}\` funcionalidades.\n
     Para saber mais sobre algum dos comandos listados abaixo, utilize **${prefix}help <comando>**! \n`);
         commands.map((command) => {
           if (command.category === "Config")
             Config.push(command.name);
-          else if (command.category === "Economy")
-            Economy.push(command.name);
-          else if (command.category === "Fun") Fun.push(command.name);
-          else if (command.category === "Information")
-            Information.push(command.name);
-          else if (command.category === "Miscellaneous")
-            Miscellaneous.push(command.name);
+          else if (command.category === "Economia")
+            Economia.push(command.name);
+          else if (command.category === "Diversão") Diversão.push(command.name);
+          else if (command.category === "Informação")
+            Informação.push(command.name);
+          else if (command.category === "Outros")
+            Outros.push(command.name);
         });
 
         HELP.addFields(
           {
             name: `${Emojis.Engrenagem} **Config**`,
-            value: `\`${Config.map((x) => `${x}`).join(" - ")}\``,
+            value: ` \`${Config.map((x) => `${x}`).join(" - ")}\``,
           },
           {
-            name: `${Emojis.Dinheiro} **Economy**`,
-            value: `\`${Economy.map((x) => `${x}`).join(" - ")}\``,
+            name: `${Emojis.Dinheiro} **Economia**`,
+            value: ` \`${Economia.map((x) => `${x}`).join(" - ")}\``,
           },
           {
-            name: `${Emojis.Gapple} **Fun**`,
-            value: `\`${Fun.map((x) => `${x}`).join(" - ")}\``,
+            name: `${Emojis.Gapple} **Diversão**`,
+            value: ` \`${Diversão.map((x) => `${x}`).join(" - ")}\``,
           },
           {
-            name: `${Emojis.Id} **Information**`,
-            value: `\`${Information.map((x) => `${x}`).join(" - ")}\``,
+            name: `${Emojis.Id} **Informação**`,
+            value: ` \`${Informação.map((x) => `${x}`).join(" - ")}\``,
           },
           {
-            name: `${Emojis.Pergunta} **Miscellaneous**`,
-            value: `\`${Miscellaneous.map((x) => `${x}`).join(" - ")}\``,
+            name: `${Emojis.Pergunta} **Outros**`,
+            value: ` \`${Outros.map((x) => `${x}`).join(" - ")}\``,
           }
         );
 

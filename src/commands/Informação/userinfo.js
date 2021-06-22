@@ -10,7 +10,7 @@ module.exports = class Userinfo extends Command {
 
     this.name = "userinfo";
     this.aliases = ["uinfo", "ui"];
-    this.category = "Information";
+    this.category = "Informação"
     this.description = "Comando para que eu envie suas informações técnicas!";
     this.usage = "userinfo";
 
@@ -98,22 +98,17 @@ module.exports = class Userinfo extends Command {
                 ? `${Emojis.Coroa} ${flags.replace("-", " ")}${user.user.username}`
                 : `${flags} ${user.user.username}`
             }\n**Informações Pessoais:**`,
-            value: `**${Emojis.Bust} Tag:**\n\`${user.user.tag}\`
-                    **${Emojis.Id} Id:**\n\`${user.user.id}\`
-                    **${Emojis.Calendario} Criação da conta:**\n${created}\n`
+            value: `**${Emojis.Bust} Tag:**\n\`${user.user.tag}\`\n**${Emojis.Id} Id:**\n\`${user.user.id}\`\n**${Emojis.Calendario} Criação da conta:**\n${created}\n`
           },
           {
             name: `**Informações do Status**`,
-            value: `**${Emojis.Dado} Jogando:**\n\`${presence}\`
-                    **${Emojis.Wifi} Dispositivo:**\n${device}
-                    **${Emojis.Robo} É um BOT?:**\n${
+            value: `**${Emojis.Dado} Jogando:**\n\`${presence}\`\n**${Emojis.Wifi} Dispositivo:**\n${device}\n**${Emojis.Robo} É um BOT?:**\n${
               user.user.bot ? "Sim" : "Não"
             }\n`,
           },
           {
             name: `**Informações do Servidor**`,
-            value: `**${Emojis.Calendario} Entrada no Servidor:**\n${joined}
-                    **${Emojis.Id} Cargos:**\n${roles}\n`,
+            value: `**${Emojis.Calendario} Entrada no Servidor:**\n${joined}\n**${Emojis.Id} Cargos:**\n${roles}\n`,
           }
         )
         .setThumbnail(user.user.displayAvatarURL({ dynamic: true }))

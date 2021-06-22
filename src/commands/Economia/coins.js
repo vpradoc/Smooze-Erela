@@ -9,7 +9,7 @@ module.exports = class Coins extends Command {
 
     this.name = "coins";
     this.aliases = ["dinheiro"];
-    this.category = "Economy";
+    this.category = "Economia";
     this.description = "Comando para saber quantos coins você tem!";
     this.usage = "coins";
 
