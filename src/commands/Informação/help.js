@@ -24,6 +24,7 @@ module.exports = class Help extends Command {
       const Config = [];
       const Economia = [];
       const Diversão = [];
+      const Moderação = []
       const Informação = [];
       const Outros = [];
       const { commands } = message.client;
@@ -97,6 +98,8 @@ module.exports = class Help extends Command {
             Informação.push(command.name);
           else if (command.category === "Outros")
             Outros.push(command.name);
+            else if (command.category === "Moderação")
+            Moderação.push(command.name);
         });
 
         HELP.addFields(
@@ -109,12 +112,16 @@ module.exports = class Help extends Command {
             value: ` \`${Economia.map((x) => `${x}`).join(" - ")}\``,
           },
           {
-            name: `${Emojis.Gapple} **Diversão**`,
+            name: `${Emojis.Dado} **Diversão**`,
             value: ` \`${Diversão.map((x) => `${x}`).join(" - ")}\``,
           },
           {
             name: `${Emojis.Id} **Informação**`,
             value: ` \`${Informação.map((x) => `${x}`).join(" - ")}\``,
+          },
+          {
+            name: `${Emojis.Robo} **Moderação**`,
+            value: ` \`${Moderação.map((x) => `${x}`).join(" - ")}\``,
           },
           {
             name: `${Emojis.Pergunta} **Outros**`,
