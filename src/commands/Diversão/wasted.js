@@ -23,6 +23,6 @@ module.exports = class Wasted extends Command {
     const Member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
     const Data = await Random.Wasted({ Image: Member.user.displayAvatarURL({ format: "jpg" }), Color: process.env.EMBED_COLOR});
 
-    return message.channel.send(Data);
+    return message.quote(Data);
   }
 }

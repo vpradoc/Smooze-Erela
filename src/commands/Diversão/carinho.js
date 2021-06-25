@@ -23,12 +23,12 @@ module.exports = class Carinho extends Command {
       this.client.users.cache.get(args[0]) || message.mentions.members.first();
 
     if (!user) {
-      message.channel.send(
-        `${Emojis.Errado} - ${message.author}, você deve escolher um membro para fazer carinho!`
+      message.quote(
+        `${Emojis.Errado} - Você deve escolher um membro para fazer carinho!`
       );
     } else if (user === message.author) {
-      message.channel.send(
-        `${Emojis.Errado} - ${message.author}, você não pode fazer carinho em sí mesmo!`
+      message.quote(
+        `${Emojis.Errado} - Você não pode fazer carinho em sí mesmo!`
       );
     } else {
       const gif = await fetch("https://nekos.life/api/v2/img/pat").then((res) =>
@@ -48,7 +48,7 @@ module.exports = class Carinho extends Command {
         )
         .setImage(gif.url);
 
-      message.channel.send(embed);
+      message.quote(embed);
     }
   }
 };

@@ -25,10 +25,10 @@ module.exports = class Clima extends Command {
         // 'C' can be changed to 'F' for farneheit results
         if (error) return;
         if (!args[0])
-          return message.channel.send("Por favor, coloque um local!");
+          return message.quote("Por favor, coloque um local!");
 
         if (result === undefined || result.length === 0)
-          return message.channel.send("Localização inválida!");
+          return message.quote("Localização inválida!");
 
         var current = result[0].current;
         var location = result[0].location;
@@ -71,7 +71,7 @@ module.exports = class Clima extends Command {
             message.author.displayAvatarURL({ dynamic: true })
           );
 
-        message.channel.send(weatherinfo);
+        message.quote(weatherinfo);
       }
     );
   }

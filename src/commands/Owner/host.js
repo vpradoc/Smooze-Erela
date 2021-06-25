@@ -63,6 +63,6 @@ module.exports = class Host extends Command {
         message.author.displayAvatarURL()
       );
 
-    message.channel.send(Embed);
+    message.quote(Embed);
   }
 };

@@ -27,7 +27,7 @@ module.exports = class Coins extends Command {
       let coins = user.coins;
 
       if (err) {
-        message.channel.send("Esta pessoa não possuí conta no meu banco!");
+        message.quote(`${Emojis.Errado} - Esta pessoa não tem uma conta em meu banco!`);
       }
 
       const embed = new discord.MessageEmbed()
@@ -40,7 +40,7 @@ module.exports = class Coins extends Command {
           message.author.displayAvatarURL({ dynamic: true })
         );
 
-      message.channel.send(embed);
+      message.quote(embed);
     });
   }
 };

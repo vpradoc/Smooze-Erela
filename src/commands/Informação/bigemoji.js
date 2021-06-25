@@ -20,7 +20,7 @@ module.exports = class Bigemoji extends Command {
 
   async run(message, args, prefix) {
     if (!args[0])
-      return message.reply(`Coloque um emoji para que eu consiga avaliar!`);
+      return message.quote(`${Emojis.Errado} - Coloque um emoji para que eu consiga avaliar!`);
 
     const emoji =
       message.guild.emojis.cache.find(
@@ -28,8 +28,8 @@ module.exports = class Bigemoji extends Command {
       ) || message.guild.emojis.cache.find((x) => x.name === `${args[0]}`);
 
     if (!emoji)
-      return message.reply(
-        `Coloque um emoji válido para que eu consiga avaliar!`
+      return message.quote(
+        `${Emojis.Errado} - Coloque um emoji válido para que eu consiga avaliar!`
       );
 
     const image = emoji.url;
@@ -47,6 +47,6 @@ module.exports = class Bigemoji extends Command {
         message.author.displayAvatarURL({ dynamic: true })
       );
 
-    if (emoji) return message.channel.send(Embed);
+    if (emoji) return message.quote(Embed);
   }
 };

@@ -71,7 +71,7 @@ module.exports = class Botinfo extends Command {
         message.author.displayAvatarURL({ dynamic: true })
       );
 
-    message.channel.send(embed);
+    message.quote(embed);
   }}
 
   function formatDate(template, date) {

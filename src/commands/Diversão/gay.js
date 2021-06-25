@@ -40,7 +40,7 @@ module.exports = class Entrada extends Command {
       const embed2 = new Discord.MessageEmbed()
         .setColor(process.env.EMBED_COLOR)
         .setDescription(
-          `🌈 | ${message.author} - Eu acho o(a) **${
+          `🌈 - Eu acho o(a) **${
             pessoa.nickname !== null
               ? `${pessoa.nickname}`
               : `${pessoa.user.username}`
@@ -48,13 +48,13 @@ module.exports = class Entrada extends Command {
         );
 
       if (user.gay == "null") {
-        message.channel.send(embed1);
+        message.quote(embed1);
         await User.findOneAndUpdate(
           { _id: pessoa.id },
           { $set: { gay: randomnumber } }
         );
       } else {
-        message.channel.send(embed2);
+        message.quote(embed2);
       }
     });
   }

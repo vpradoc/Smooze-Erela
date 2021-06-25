@@ -43,6 +43,6 @@ module.exports = class Avatar extends Command {
         message.author.displayAvatarURL({ dynamic: true })
       );
 
-    message.channel.send(EMBED);
+    message.quote(EMBED);
   }
 };

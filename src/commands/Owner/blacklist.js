@@ -22,13 +22,13 @@ if (message.author.id !== "680943469228982357") return;
 User.findOne({ _id: args[0] }, async (err, user) => {
 
   if(!user.blacklist) {
-      message.channel.send(`${Emojis.Smooze} - O usuário foi adicionado a blacklist com sucesso!`)
+      message.quote(`${Emojis.Smooze} - O usuário foi adicionado a blacklist com sucesso!`)
       await User.findOneAndUpdate(
         { _id: user.id },
         { $set: { blacklist: true } }
       );
   } else if(user.blacklist) {
-      message.channel.send(`${Emojis.Smooze} - O usuário foi removido da blacklist com sucesso!`)
+      message.quote(`${Emojis.Smooze} - O usuário foi removido da blacklist com sucesso!`)
       await User.findOneAndUpdate({_id: user.id}, {$set: {blacklist: false}})
   }
     

@@ -36,8 +36,8 @@ module.exports = class Help extends Command {
           commands.find((c) => c.aliases && c.aliases.includes(name));
 
         if (!command) {
-          return message.channel.send(
-            `${message.author}, não encontrei nenhum comando com o nome \`${name}\``
+          return message.quote(
+            `${Emojis.Errado} - Não encontrei nenhum comando com o nome \`${name}\``
           );
         }
 
@@ -70,7 +70,7 @@ module.exports = class Help extends Command {
             message.author.displayAvatarURL({ dynamic: true })
           );
 
-        message.channel.send(EMBED1);
+        message.quote(EMBED1);
       } else {
         const HELP = new MessageEmbed()
           .setAuthor(
@@ -129,7 +129,7 @@ module.exports = class Help extends Command {
           }
         );
 
-        await message.channel.send(HELP);
+        await message.quote(HELP);
       }
     });
   }

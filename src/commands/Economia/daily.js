@@ -3,7 +3,7 @@ const moment = require("moment");
 const mongoose = require("mongoose");
 require("moment-duration-format");
 const Command = require("../../structures/Command.js");
-
+const Emojis = require('../../utils/Emojis')
 module.exports = class Daily extends Command {
   constructor(client) {
     super(client);
@@ -29,7 +29,7 @@ module.exports = class Daily extends Command {
       if (daily !== null && cooldown - (Date.now() - daily) > 0) {
         let time = cooldown - (Date.now() - daily);
 
-        return message.channel.send(
+        return message.quote(
           `Você deve esperar **${moment
             .duration(time)
             .format(
@@ -37,10 +37,10 @@ module.exports = class Daily extends Command {
             )}** para resgatar seu prêmio diário novamente`
         );
       } else {
-        message.channel.send(
+        message.quote(
           `${
-            message.author
-          }, você resgatou seu prêmio diário de hoje e conseguiu **${coins}** coins. \nAgora você possuí **${
+            Emojis.Certo
+          } - Você resgatou seu prêmio diário de hoje e conseguiu **${coins}** coins. \nAgora você possuí **${
             atual + coins
           }** coins em sua conta!`
         );

@@ -117,7 +117,7 @@ module.exports = class Userinfo extends Command {
           message.author.displayAvatarURL({ dynamic: true })
         );
 
-      message.channel.send(USERINFO);
+      message.quote(USERINFO);
     } catch (err) {
       console.log(`ERRO NO COMANDO USERINFO\nERROR: ${err}`);
     }

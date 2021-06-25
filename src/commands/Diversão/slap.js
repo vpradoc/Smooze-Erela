@@ -27,12 +27,12 @@ module.exports = class Slap extends Command {
     message.mentions.members.first()
 
   if (!user) {
-    message.channel.send(
-      `${Emojis.Errado} - ${message.author}, você deve escolher um membro para levar o tapa!`
+    message.quote(
+      `${Emojis.Errado} - Você deve escolher um membro para levar o tapa!`
     );
   } else if (user === message.author) {
-    message.channel.send(
-      `${Emojis.Errado} - ${message.author}, você não pode dar um tapa em sí mesmo!`
+    message.quote(
+      `${Emojis.Errado} - Você não pode dar um tapa em sí mesmo!`
     );
   } else {
     const gif = await fetch("https://nekos.life/api/v2/img/slap").then((res) =>
@@ -52,7 +52,7 @@ module.exports = class Slap extends Command {
       )
       .setImage(gif.url);
 
-    message.channel.send(embed);
+    message.quote(embed);
   }
 };
 }

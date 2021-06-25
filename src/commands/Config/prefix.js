@@ -1,6 +1,6 @@
 const Guild = require("../../database/Schemas/Guild");
 const Command = require("../../structures/Command.js");
-
+const Emojis = require('../../utils/Emojis')
 module.exports = class Prefix extends Command {
   constructor(client) {
     super(client);
@@ -21,21 +21,25 @@ module.exports = class Prefix extends Command {
     Guild.findOne({ _id: message.guild.id }, async (err, server) => {
       let prefixo = args[0];
 
+      if (!message.member.hasPermission("MANAGE_GUILD")) {
+        return message.quote(`${Emojis.Errado} - Você não tem a permissão necessária (\`MANAGE_GUILD\`)para executar esse comando!`)
+      }
+
       if (!prefixo) {
-        return message.channel.send(
-          `${message.author}, coloque algo para que o prefixo seja alterado!`
+        return message.quote(
+          `${Emojis.Errado} - Coloque algo para que o prefixo seja alterado!`
         );
       } else if (prefixo.length > 6) {
-        return message.channel.send(
-          `${message.author}, o prefixo deve ter no máximo **6** dígitos!`
+        return message.quote(
+          `${Emojis.Errado} - O prefixo deve ter no máximo **6** dígitos!`
         );
       } else if (prefixo == server.prefix) {
-        return message.channel.send(
-          `${message.author}, o prefixo que você escolheu já está em uso!`
+        return message.quote(
+          `${Emojis.Errado} - O prefixo que você escolheu já está em uso!`
         );
       } else {
-        message.channel.send(
-          `${message.author}, o prefixo foi alterado para **${prefixo}** com sucesso!`
+        message.quote(
+          `${Emojis.Certo} - O prefixo foi alterado para **${prefixo}** com sucesso!`
         );
 
         await Guild.findOneAndUpdate(

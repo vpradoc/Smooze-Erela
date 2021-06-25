@@ -62,7 +62,7 @@ module.exports = class Serverinfo extends Command {
 
           if(message.guild.bannerURL !== "null" ) SERVERINFO.setImage(message.guild.bannerURL({dynamic: true, format: "jpg", size: 2048}))
 
-      message.channel.send(SERVERINFO);
+      message.quote(SERVERINFO);
     } catch (err) {
       console.log(`Erro ao executar o comando serverinfo [${err}]`);
     }

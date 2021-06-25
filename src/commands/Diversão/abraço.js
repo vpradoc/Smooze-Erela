@@ -23,12 +23,12 @@ module.exports = class Abraço extends Command {
       this.client.users.cache.get(args[0]) || message.mentions.members.first();
 
     if (!user) {
-      message.channel.send(
-        `${Emojis.Errado} - ${message.author}, você deve escolher um membro para ganhar um abraço!`
+      message.quote(
+        `${Emojis.Errado} - Você deve escolher um membro para ganhar um abraço!`
       );
     } else if (user === message.author) {
-      message.channel.send(
-        `${Emojis.Errado} - ${message.author}, você não pode dar um abraço em sí mesmo!`
+      message.quote(
+        `${Emojis.Errado} - Você não pode dar um abraço em sí mesmo!`
       );
     } else {
       const gif = await fetch("https://nekos.life/api/v2/img/hug").then((res) =>
@@ -48,7 +48,7 @@ module.exports = class Abraço extends Command {
         )
         .setImage(gif.url);
 
-      message.channel.send(embed);
+      message.quote(embed);
     }
   }
 };

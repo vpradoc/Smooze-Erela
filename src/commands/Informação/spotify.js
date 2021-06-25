@@ -25,8 +25,8 @@ module.exports = class Spotify extends Command {
       message.author;
 
     if (!user.presence.activities.find((f) => f.name === "Spotify")) {
-      return message.channel.send(
-        `${message.author}, este membro não está escutando nenhuma música no **Spotify** no momento, ou então está usando um status personalizado.`
+      return message.quote(
+        `${Emojis.Errado} - Este membro não está escutando nenhuma música no **Spotify** no momento, ou então está usando um status personalizado.`
       );
     } else {
       if (user.presence.activities.find((x) => x.name === "Spotify")) {
@@ -61,7 +61,7 @@ module.exports = class Spotify extends Command {
             message.author.avatarURL()
           );
 
-        message.channel.send(embed);
+        message.quote(embed);
       }
     }
   }

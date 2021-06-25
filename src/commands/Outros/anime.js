@@ -23,8 +23,8 @@ module.exports = class Anime extends Command {
     const search = args.join(" ");
 
     if (!search)
-      return message.channel.send(
-        `${message.author}, insira o nome do anime que deseja pesquisar.`
+      return message.quote(
+        `${Emojis.Errado} - Insira o nome do anime que deseja pesquisar.`
       );
 
     const data = await malScraper.getInfoFromName(search);
@@ -102,9 +102,9 @@ module.exports = class Anime extends Command {
         true
       );
 
-    message.channel.send(message.author, ANIME).catch((err) => {
+    message.quote(message.author, ANIME).catch((err) => {
       console.log(err);
-      return message.channel.send(`${message.author}, anime não encontrado.`);
+      return message.quote(`${Emojis.Errado} - Anime não encontrado.`);
     });
   }
 };

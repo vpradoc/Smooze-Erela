@@ -1,5 +1,6 @@
 const discord = require('discord.js')
 const Command = require('../../structures/Command.js')
+const Emojis = require('../../utils/Emojis')
 
 module.exports = class CreateChannel extends Command {
     constructor(client) {
@@ -34,26 +35,26 @@ module.exports = class CreateChannel extends Command {
         .setColor(process.env.EMBED_COLOR)
         .setThumbnail('https://cdn.discordapp.com/attachments/797207262782816339/804140377652199434/imgbot.png')
         .setTitle('Escolha um tipo de canal para ser criado!')
-        .addField(`**Canal de texto**`, `Emoji: 💬`)
-        .addField(`**Canal de voz**`, `Emoji: 🔊`)
+        .addField(`**Canal de texto**`, `Emoji: ${Emojis.Balão}`)
+        .addField(`**Canal de voz**`, `Emoji: ${Emojis.Microfone}`)
         .setTimestamp()
         .setFooter(`${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }))
 
     const msg = await message.channel.send(Embed);
 
-    await msg.react('💬')
-    await msg.react('🔊')
-    const filter = (reaction, user) => (reaction.emoji.name === '🔊' || reaction.emoji.name === '💬') && (user.id === message.author.id);
+    await msg.react('855892525033062460')
+    await msg.react('855895180216500234')
+    const filter = (reaction, user) => (reaction.emoji.id === '855895180216500234' || reaction.emoji.id === '855892525033062460') && (user.id === message.author.id);
     msg.awaitReactions(filter, { max: 1 })
         .then((collected) => {
             collected.map((emoji) => {
-                switch (emoji._emoji.name) {
-                    case '💬':
+                switch (emoji._emoji.id) {
+                    case '855892525033062460':
                         msg.delete()
                         message.guild.channels.create(`${nome}`)
                         message.reply(`**${nome}** Criado com sucesso!`)
                         return
-                    case '🔊':
+                    case '855895180216500234':
                         msg.delete()
                         message.guild.channels.create(`${nome}`, {
                             type: 'voice'

@@ -1,5 +1,6 @@
 const discord = require('discord.js')
 const Command = require('../../structures/Command.js')
+const Emojis = require('../../utils/Emojis')
 
 module.exports = class RemoveChannel extends Command {
     constructor(client) {
@@ -34,26 +35,26 @@ module.exports = class RemoveChannel extends Command {
         .setColor('#FFFF00')
         .setThumbnail('https://cdn.discordapp.com/attachments/797207262782816339/804140377652199434/imgbot.png')
         .setTitle(`Você quer mesmo deletar o canal ${canal.name}?`)
-        .addField(`**Sim**`, `Emoji: ✅`)
-        .addField(`**Não**`, `Emoji: ❌`)
+        .addField(`**Sim**`, `Emoji: ${Emojis.Certo}`)
+        .addField(`**Não**`, `Emoji: ${Emojis.Errado}`)
         .setTimestamp()
         .setFooter(`${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }))
 
     const msg = await message.channel.send(Embed);
 
-    await msg.react('✅')
-    await msg.react('❌')
-    const filter = (reaction, user) => (reaction.emoji.name === '❌' || reaction.emoji.name === '✅') && (user.id === message.author.id);
+    await msg.react('855890757873303572')
+    await msg.react('855890773827518466')
+    const filter = (reaction, user) => (reaction.emoji.name === '855890773827518466' || reaction.emoji.name === '855890757873303572') && (user.id === message.author.id);
     msg.awaitReactions(filter, { max: 1 })
         .then((collected) => {
             collected.map((emoji) => {
-                switch (emoji._emoji.name) {
-                    case '✅':
+                switch (emoji._emoji.id) {
+                    case '855890757873303572':
                         msg.delete()
                         canal.delete()
                         message.reply(`**\`${canal.name}\`** Deletado com sucesso!`)
                         return
-                    case '❌':
+                    case '855890773827518466':
                         msg.delete()
                         message.reply(`Ação finalizada com sucesso!`)
                 }
