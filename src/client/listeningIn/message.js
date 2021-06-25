@@ -20,7 +20,7 @@ module.exports = class {
 
 
     try {
-      const server = await Guild.findOne({ _id: message.guild.id });
+      let server = await Guild.findOne({ _id: message.guild.id });
       let user = await User.findOne({_id: message.author.id});
       const client = await ClientS.findOne({ _id: this.client.user.id });
 
@@ -32,14 +32,16 @@ module.exports = class {
         await User.create({ _id: message.author.id, gay: Math.floor(Math.random() *100) });
 
       if (!server) {
-        await Guild.create({ _id: message.guild.id, prefix: process.env.PREFIX })}
+        await Guild.create({_id: message.guild.id})}
       if (!client)
         await ClientS.create({
           _id: this.client.user.id,
           manutenção: false,
         });
 
-        var prefix = prefix
+        server = await Guild.findOne({ _id: message.guild.id });
+
+        var prefix = server.prefix
 
       if(message.content.match(GetMention(this.client.user.id))) {
         const embed = new discord.MessageEmbed()
@@ -97,7 +99,7 @@ module.exports = class {
       const comando = await Command.findOne({ _id: cmd.name });
 
       if (comando) {
-        if (message.author.id !== process.env.OWNER_ID) {
+        if (message.author.id !== '680943469228982357') {
           if (comando.manutenção)
             return message.quote(
               `${message.author}, o comando **\`${cmd.name}\`** está em manutenção no momento.`

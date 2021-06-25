@@ -18,7 +18,7 @@ module.exports = class Manu extends Command {
   }
 
   async run(message, args, prefix, author) {
-    if (message.author.id !== process.env.OWNER_ID) return;
+    if (message.author.id !== '680943469228982357') return;
 
     let re = args.slice(2).join(" ");
 
