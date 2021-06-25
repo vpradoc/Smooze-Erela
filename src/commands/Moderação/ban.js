@@ -31,84 +31,79 @@ module.exports = class Ban extends Command {
       message.mentions.members.first())
 
   if (!Banido) {
-    return message.reply(`${Emojis.Errado} - Por favor, coloque alguém para aplicar o ban!`).then(m => m.delete({ timeout: 5000 }))
+    return message.channel.send(`${Emojis.Errado} - ${message.author}, por favor coloque alguém para que eu aplique o ban!`)
   }
-
 
   //Membro não encontrado!
   if (!Banido) {
-    return message.reply(`${Emojis.Errado} - Por favor, coloque um(a) usuário(a) válido para que eu aplique o ban!`).then(m => m.delete({ timeout: 5000 }))
+    return message.channel.send(`${Emojis.Errado} - ${message.author}, por favor coloque um(a) usuário(a) válido para que eu aplique o ban!`)
   }
 
   //A pessoa não pode banir ela mesma!
   if (message.author.id === Banido.id) {
-    return message.reply(`${Emojis.Errado} - Você não pode aplicar o ban em sí mesmo!`).then(m => m.delete({ timeout: 5000 }))
+    return message.channel.send(`${Emojis.Errado} - ${message.author}, você não pode aplicar o ban em sí mesmo!`)
   }
 
   //O Bot não pode banir este membro!
   if (!Banido.kickable) {
-    return message.reply(`${Emojis.Errado} - Eu não tenho permissão de banir este membro!`).then(m => m.delete(5000))
+    return message.channel.send(`${Emojis.Errado} - ${message.author}, eu não tenho permissão de banir este membro!`)
   }
 
   const Motivo = args[1]
 
-  if(!args[1]) {
-      Motivo = "Não informado"
+  if(!Motivo) {
+    return message.channel.send(`${Emojis.Errado} - ${message.author}, coloque um motivo para o ban!`)
   }
 
-  const Embedban = new Discord.MessageEmbed()
+  message.channel.send(`${Emojis.Certo} - ${message.author}, gostaria mesmo de banir o membro **${Banido}**, com o motivo \`${Motivo}\`?\nPara banir de forma silenciosa, basta reagir com ${Emojis.SoundOff}`).then(async (msg) => {
+    await msg.react(Emojis.Certo);
+    await msg.react(Emojis.Errado)
+    await msg.react(Emojis.SoundOff)
+
+    const Embedban = new Discord.MessageEmbed()
     .setColor(process.env.EMBED_COLOR)
-    .setThumbnail(Banido.avatarURL)
+    .setThumbnail(message.guild.iconURL({dynamic: true}))
+    .setFooter(
+      `Pedido por ${message.author.username}`,
+      message.author.displayAvatarURL({ dynamic: true })
+    )
+    .setTimestamp()
     .setTitle(Banido.username)
     .setDescription(`**FOI BANIDO COM SUCESSO!**`)
     .addField(`>**Motivo:**`, Motivo)
     .addField(`>**Autor:**`, message.author.username)
-    .setFooter(
-        `Pedido por ${message.author.username}`,
-        message.author.displayAvatarURL({ dynamic: true })
-      )
 
-  const embedconfirm = new Discord.MessageEmbed()
+    const Embedbanido = new Discord.MessageEmbed()
     .setColor(process.env.EMBED_COLOR)
-    .setThumbnail(Banido.avatarURL)
-    .setTitle(`${message.author.username},`)
-    .setDescription(`**Você que banir ${user.username} mesmo?**`)
-    .addField(`**Motivo:**`, Motivo)
-    .addField(`**Autor:**`, message.author.username)
-    .setFooter(
-        `Pedido por ${message.author.username}`,
-        message.author.displayAvatarURL({ dynamic: true })
-      )
+    .setThumbnail(message.guild.iconURL({dynamic: true}))
+    .setTimestamp()
+    .setTitle(Banido.username)
+    .setDescription(`**Você foi banido do servidor!**`)
+    .addField(`>**Motivo:**`, Motivo)
+    .addField(`>**Autor:**`, message.author.username)
 
-  message.channel.send(embedconfirm).then(async (msg) => {
-    for (emoji of ["✅", "❌"]) await msg.react(emoji);
-    msg
-      .awaitReactions(
-        (reaction, user) =>
-          user.id == message.author.id &&
-          ["✅", "❌"].includes(reaction.emoji.name),
-        { max: 1 }
-
-      )
-      .then(async (collected) => {
-        if (collected.first().emoji.name == "✅") {
-
-          message.delete()
-
-          Banido.ban(args.slice(1).join(" "))
-
-            .catch(err => {
-              if (error) return message.channel.send('Houve um problema...')
+    const filter = (reaction, user) => (reaction.emoji.id === `855890757873303572` || reaction.emoji.id === `855890773827518466` || reaction.emoji.id === `857764132827430942`) && (user.id === message.author.id);
+    msg.awaitReactions(filter, { max: 1 })
+        .then((collected) => {
+            collected.map((emoji) => {
+                switch (emoji._emoji.id) {
+                    case '855890757873303572':
+                      msg.delete()
+                      Banido.ban(Motivo)
+                      message.channel.send(Embedban)
+                      Banido.send(Embedbanido)
+                      return
+                    case '855890773827518466':
+                      msg.delete()
+                      return message.channel.send(`${Emojis.Certo} - ${message.author}, o ban foi cancelado com sucesso!`)
+                      
+                    case '857764132827430942':
+                      msg.delete()
+                      Banido.Ban(Motivo) 
+                      Banido.send(Embedbanido)
+                      return 
+                }
             })
-          message.channel.send(Embedban);
-          await Banido.send(Embedban)
-
-        }
-        if (collected.first().emoji.name == "❌") {
-
-          message.delete()
-          message.reply(`${Emojis.Certo} - Ban cancelado!`).then(m => m.delete({ timeout: 5000 }))
-        }
       });
   });
 
