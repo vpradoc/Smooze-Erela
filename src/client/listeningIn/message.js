@@ -1,8 +1,10 @@
-const Guild = require('../../database/Schemas/Guild')
 const User = require('../../database/Schemas/User')
+const Guild = require('../../database/Schemas/Guild')
 const discord = require("discord.js");
 const GetMention = (id) => new RegExp(`^<@!?${id}>( |)$`);
 const Emojis = require("../../utils/Emojis");
+const Command = require('../../database/Schemas/Command');
+const coldoown = new Set()
 
 module.exports = class {
   constructor(client) {
@@ -15,7 +17,6 @@ try {
   Guild.findOne({_id: message.guild.id}, async (err, server) => {
   User.findOne({_id: message.author.id}, async (err, user) => {
   if(message.author.bot == true) return
-  if(user.blacklist === true) return
 
 
   if(server){
@@ -52,15 +53,48 @@ try {
 
   if (message.content.indexOf(prefix) !== 0) return;
   const author = message.author
-  let messageArray = message.content.split(" ");
-  let cmd = messageArray[0];
-  let args = messageArray.slice(1);
-  let cmdFile =
-    this.client.commands.get(cmd.slice(prefix.length)) ||
-    this.client.commands.get(this.client.aliases.get(cmd.slice(prefix.length)));
-  if(cmdFile) {
-    return cmdFile.run(message, args, prefix, author)
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+      const command = args.shift().toLowerCase();
+      const cmd =
+        this.client.commands.get(command) ||
+        this.client.commands.get(this.client.aliases.get(command));
+
+        if (!cmd) return;
+        if (coldoown.has(message.author.id))
+        return message.channel.send(
+          `${Emojis.Tempo} - ${message.author}, você deve aguardar **5 segundos** para usar outro comando.`
+        );
+
+  Command.findOne({_id: command}, async (err, comando) => {
+
+    if (comando) {
+      if (message.author.id !== process.env.OWNER_ID) {
+        if (comando.manutenção)
+          return message.channel.send(
+            `${message.author}, o comando **\`${cmd.name}\`** está em manutenção no momento.`
+          );
+      }
+      cmd.run(message, args, prefix, author);
+      var num = comando.usages;
+      num = num + 1;
+
+      await Command.findOneAndUpdate({_id: command}, {$set: {usages: num}})
+    
+    } else {
+      await Command.create({_id: command, usages: 1, manutencao: false})
+      message.channel.send(`${message.author}, por favor utilize o comando novamente!`)
+      console.log(`O comando ${command} teve seu documento criado na database!`)
+    }
+
+  })
+
+  if (!["680943469228982357"].includes(message.author.id)) {
+    coldoown.add(message.author.id);
+    setTimeout(() => {
+      coldoown.delete(message.author.id);
+    }, 5000);
   }
+
 } else {
   User.create({_id: message.author.id, gay: Math.floor(Math.random() *100)})
 } 

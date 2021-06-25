@@ -54,7 +54,7 @@ module.exports = class Help extends Command {
               name: "**Aliases**",
               value: `\`${command.aliases
                 .join(", ")
-                .replace("  ", "Não tem!")}\``,
+                .replace(``, "Não tem!")}\``,
             },
             {
               name: "**Descrição:**",
@@ -62,7 +62,7 @@ module.exports = class Help extends Command {
             },
             {
               name: "**Como usar**",
-              value: command.usage.replace("<prefix>", server.prefix),
+              value:`${server.prefix}${command.usage}`,
             }
           )
           .setFooter(

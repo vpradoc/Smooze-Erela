@@ -1,0 +1,89 @@
+const CommandC = require("../../database/Schemas/Command"),
+  ClientS = require("../../database/Schemas/Client");
+const Command = require("../../structures/Command");
+const Emojis = require('../../utils/Emojis')
+
+module.exports = class Manu extends Command {
+  constructor(client) {
+    super(client);
+    this.client = client;
+
+    this.name = "manu";
+    this.category = "Owner";
+    this.description = "Comando para colocar outros comandos em manutenção";
+    this.usage = "eval <código>";
+    this.aliases = ["manu"];
+
+    this.enabled = true;
+    this.guildOnly = true;
+  }
+
+  async run(message, args, prefix, author ) {
+    if (message.author.id !== process.env.OWNER_ID) return;
+
+
+    if (args[0] == "bot") {
+      ClientS.findOne({ _id: this.client.user.id }, async (err, cliente) => {
+        if (cliente.manutenção) {
+          await ClientS.findOneAndUpdate(
+            { _id: this.client.user.id },
+            { $set: { manutenção: false} }
+          );
+          return message.channel.send(
+            `${Emojis.Certo} - ${message.author}, fui retirado da manutenção com sucesso.`
+          );
+        } else {
+          message.channel.send(
+            `${Emojis.Certo} - ${message.author}, fui colocado em manutenção com sucesso.`
+          );
+          await ClientS.findOneAndUpdate(
+            { _id: this.client.user.id },
+            { $set: { manutenção: true} }
+          );
+        }
+      });
+
+      return;
+    }
+    if (args[0] == "set") {
+      if (!args[1]) {
+        return message.channel.send(
+          `${Emojis.Errado} - ${message.author}, insira o nome do comando para prosseguir.`
+        );
+      }
+
+      const command = args[1].toLowerCase();
+      const cmd =
+        this.client.commands.get(command) ||
+        this.client.commands.get(this.client.aliases.get(command));
+
+      const name = cmd.help.name;
+
+      CommandC.findOne({ _id: name }, async (err, comando) => {
+        if (comando) {
+          if (comando.manutenção) {
+            await CommandC.findOneAndUpdate(
+              { _id: name },
+              { $set: { manutenção: false} }
+            );
+            return message.channel.send(
+              `${Emojis.Certo} - ${message.author}, retirei o comando **\`${name}\`** da manutenção com sucesso.`
+            );
+          } else {
+            await CommandC.findOneAndUpdate(
+              { _id: name },
+              { $set: { manutenção: true} }
+            );
+            return message.channel.send(
+              `${Emojis.Certo} - ${message.author}, coloquei o comando **\`${name}\`** em manutenção com sucesso.`
+            );
+          }
+        } else {
+          message.channel.send(
+            `${Emojis.Errado} - ${message.author}, não encontrei nenhum comando com o nome **\`${name}\`**.`
+          );
+        }
+      });
+    }
+  }
+};
