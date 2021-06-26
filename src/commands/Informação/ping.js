@@ -19,7 +19,7 @@ module.exports = class Ping extends Command {
   async run(message, args, prefix) {
 
     message.channel.send(`${Emojis.Wifi} - Calculando!`).then(m =>{
-      var ping = message.createdTimestamp - message.createdTimestamp;
+      var ping = m.createdTimestamp - message.createdTimestamp;
       var botPing = Math.round(this.client.pi);
 
       m.edit(`**${Emojis.Smooze} | Meu ping:** \`${ping}\`ms\n**${Emojis.Heroku} | Heroku:** \`${this.client.ws.ping}\`ms`);
