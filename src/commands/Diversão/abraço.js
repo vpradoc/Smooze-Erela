@@ -26,7 +26,7 @@ module.exports = class Abraço extends Command {
       message.quote(
         `${Emojis.Errado} - Você deve escolher um membro para ganhar um abraço!`
       );
-    } else if (user === message.author) {
+    } else if (user.id === message.author.id) {
       message.quote(
         `${Emojis.Errado} - Você não pode dar um abraço em sí mesmo!`
       );

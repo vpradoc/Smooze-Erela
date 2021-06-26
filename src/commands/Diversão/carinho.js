@@ -26,7 +26,7 @@ module.exports = class Carinho extends Command {
       message.quote(
         `${Emojis.Errado} - Você deve escolher um membro para fazer carinho!`
       );
-    } else if (user === message.author) {
+    } else if (user.id === message.author.id) {
       message.quote(
         `${Emojis.Errado} - Você não pode fazer carinho em sí mesmo!`
       );

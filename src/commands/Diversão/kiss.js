@@ -26,7 +26,7 @@ module.exports = class Kiss extends Command {
       message.quote(
         `${Emojis.Errado} - Você deve escolher um membro para levar o beijo!`
       );
-    } else if (user === message.author) {
+    } else if (user.id === message.author.id) {
       message.quote(
         `${Emojis.Errado} - Você não pode dar um beijo em sí mesmo!`
       );
