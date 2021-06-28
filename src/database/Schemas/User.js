@@ -12,7 +12,13 @@ let userSchema = new Schema({
     xp: {type: Number, default: 1},
     level: {type: Number, default: 1},
     nextLevel: {type: Number, default: 100},
-  }
+  },
+  marry: {
+    time: { type: Number, default: 0 },
+    user: { type: String, default: "null" },
+    has: { type: Boolean, default: false },
+  },
+  
 });
 
 const User = mongoose.model("Users", userSchema);

@@ -42,6 +42,7 @@ module.exports = class {
         server = await Guild.findOne({ _id: message.guild.id });
 
         var prefix = server.prefix
+        if(user.blacklist) return 
 
       if(message.content.match(GetMention(this.client.user.id))) {
         const embed = new discord.MessageEmbed()
@@ -102,13 +103,13 @@ module.exports = class {
         if (message.author.id !== '680943469228982357') {
           if (comando.manutenção)
             return message.quote(
-              `${message.author}, o comando **\`${cmd.name}\`** está em manutenção no momento.`
+              `${Emojis.Smooze} - O comando **\`${cmd.name}\`** está em manutenção no momento!`
             );
 
           if (client.manutenção) {
-            return message.quote(
-              `${message.author}, no momento eu me encontro em manutenção, tente novamente mais tarde.`
-            );
+            const embedcmanu = new ClientEmbed()
+            .setDescription(`**${message.author.tag}**, eu me encontro em manutenção no momento.\nPor favor, tente novamente mais tarde!`)
+            return message.quote(embedcmanu);
           }
         }
        

@@ -30,7 +30,9 @@ Dinheiro: "<:dinheiro:852258064957833226>",
 Coin: "<:moeda:856668495214018560>",
 Gapple: "<a:gapple:802244065881096223>",
 Balão: "<:balao:855892525033062460>",
-SoundOff: "<:soundoff:857764132827430942>"
+SoundOff: "<:soundoff:857764132827430942>",
+Anel: "<:anel:859087629865320448>",
+Flushed: "😳"
 
 
 }
