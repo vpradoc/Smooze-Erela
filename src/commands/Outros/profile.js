@@ -101,7 +101,7 @@ module.exports = class Profile extends Command {
       ctx.textAlign = "left";
       ctx.font = '37px "Bebas"';
       ctx.fillStyle = "rgb(253, 255, 252)";
-      await Utils.renderEmoji(ctx, `${Emojis.Dinheiro}Coins:`, 200, 100);
+      await Utils.renderEmoji(ctx, `${Emojis.Coin}Coins:`, 200, 100);
       await Utils.renderEmoji(ctx, `${Emojis.Dado}Level:`, 200, 145);
       await Utils.renderEmoji(ctx, `${Emojis.Id}XP:`, 200, 190);
 

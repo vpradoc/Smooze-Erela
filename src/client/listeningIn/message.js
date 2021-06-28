@@ -113,7 +113,6 @@ module.exports = class {
           }
         }
        
-       
         cmd.run(message, args, prefix, author);
         var num = comando.usages;
         num = num + 1;
@@ -144,4 +143,4 @@ module.exports = class {
       if (err) console.error(err);
     }
   }
-};
+}
