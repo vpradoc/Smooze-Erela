@@ -8,15 +8,21 @@ module.exports = class {
 async run() {
   const status = [
     {
-      name: `${this.client.users.cache.size} usuários!`,
+      type: 'WATCHING',
+      name: `${this.client.users.cache.size} Usuários!`, 
     },
     {
-      name: `${this.client.guilds.cache.size} servidores!`,
+      type: 'PLAYING',
+      name: `${this.client.guilds.cache.size} Servidores!`, 
+    },
+    {
+      type: 'COMPETING',
+      name: `${this.client.commands.size - this.client.commands.filter((x) => x.category == "Owner").size} Comandos!`, 
     },
   ];
   setInterval(() => {
     var randomStatus = status[Math.floor(Math.random() * status.length)];
-    this.client.user.setActivity(randomStatus.name);
+    this.client.user.setActivity(randomStatus.name, {type: randomStatus.type});
   }, 10 * 1000);
 
   this.client.user.setStatus("idle");
