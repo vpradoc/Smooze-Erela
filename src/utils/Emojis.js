@@ -34,6 +34,6 @@ SoundOff: "<:soundoff:857764132827430942>",
 Anel: "<:anel:859087629865320448>",
 Flushed: "😳",
 Coração: "❤️",
-
+Akinator: "<:akinator:859452978490900480>",
 
 }

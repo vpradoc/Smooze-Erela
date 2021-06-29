@@ -45,7 +45,7 @@ module.exports = class Akinator extends Command {
 akinator.add(message.author.id);
 
 message.channel
-  .send(`${message.author}, estou começando sua partida.`)
+  .send(`${Emojis.Tempo} - ${message.author}, estou começando sua partida!`)
   .then(async (x) => {
     // ================= Parte para iniciar o Game
     const region = "pt";
@@ -56,11 +56,12 @@ message.channel
     const EMBED = new discord.MessageEmbed()
       .setColor(process.env.EMBED_COLOR)
       .setTitle(`${aki.currentStep + 1}ª Pergunta`)
-      .setThumbnail("https://i.imgur.com/6MPgU4x.png")
+      .setThumbnail("https://pt.akinator.mobi/bundles/elokencesitemobile/images/akinator.png?v94")
       .addField(
         aki.question,
         aki.answers.map((x, f) => `${emojiimage[f]} | ${x}`).join("\n")
-      );
+      )
+      .addField(`Caso queira cancelar:`, `${Emojis.Smooze} | Termina sua partida!`)
 
     message.channel.send(EMBED).then(async (msg) => {
       x.delete();
@@ -80,7 +81,8 @@ message.channel
         .on("collect", async ({ emoji, users }) => {
           users.remove(message.author).catch(() => null);
 
-          if (emoji.id === "803618840433000488") return collector.stop();
+          if (emoji.id === "803618840433000488") return message.quote(`${Emojis.Certo} - Partida finalizada!`), await collector.stop() 
+
 
           await aki.step(emojis.indexOf(emoji.id));
 
@@ -115,10 +117,10 @@ message.channel
                   collected.first().content
                 );
 
-                message.channel.send(
+                message.quote(
                   isWinner
-                    ? `Como eu já sabia, acertei mais uma vez...`
-                    : `Ok, ok você ganhou dessa vez... Nos vemos na próxima!`
+                    ? `${Emojis.Akinator} - Como eu já sabia, acertei mais uma vez...`
+                    : `${Emojis.Akinator} - Ok, ok você ganhou dessa vez... Nos vemos na próxima!`
                 );
               })
               .catch(() => null);
@@ -127,13 +129,12 @@ message.channel
               new discord.MessageEmbed()
                 .setColor(process.env.EMBED_COLOR)
                 .setTitle(`${aki.currentStep + 1}ª Pergunta`)
-                .setThumbnail(`https://i.imgur.com/6MPgU4x.png`)
+                .setThumbnail(`https://pt.akinator.mobi/bundles/elokencesitemobile/images/akinator.png?v94`)
                 .addField(
                   aki.question,
-                  aki.answers
-                    .map((x, f) => `${emojiimage[f]} | ${x}`)
-                    .join("\n")
+                  aki.answers.map((x, f) => `${emojiimage[f]} | ${x}`).join("\n")
                 )
+                .addField(`Caso queira cancelar:`, `${Emojis.Smooze} | Termina sua partida!`)
             );
           }
         });

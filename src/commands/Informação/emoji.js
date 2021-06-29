@@ -54,7 +54,7 @@ module.exports = class Emoji extends Command {
         `${emoji.animated !== true ? `Não` : "Sim"}`,
         false
       )
-      .addField(`**Identificador:**`, `${IDENTIFICADOR}`, true)
+      .addField(`**Identificador:**`, `\`<:${IDENTIFICADOR}>\``, true)
       .addField(
         "**Data da criação:**",
         dateformat("DD/MM/YYYY, às HH:mm:ss", Tempo)
