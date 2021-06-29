@@ -31,7 +31,7 @@ module.exports = class Manu extends Command {
         if (cliente.manutenção) {
           await ClientS.findOneAndUpdate(
             { _id: this.client.user.id },
-            { $set: { manutenção: false, reason: "" } }
+            { $set: { manutenção: false} }
           );
           return message.quote(
             `${Emojis.Certo} - Fui retirado da manutenção com sucesso.`
@@ -42,7 +42,7 @@ module.exports = class Manu extends Command {
           );
           await ClientS.findOneAndUpdate(
             { _id: this.client.user.id },
-            { $set: { manutenção: true, reason: reason } }
+            { $set: { manutenção: true} }
           );
         }
       });
@@ -68,7 +68,7 @@ module.exports = class Manu extends Command {
           if (comando.manutenção) {
             await CommandC.findOneAndUpdate(
               { _id: name },
-              { $set: { manutenção: false, reason: "" } }
+              { $set: { manutenção: false} }
             );
             return message.quote(
               `${Emojis.Certo} - Retirei o comando **\`${name}\`** da manutenção com sucesso.`
@@ -76,7 +76,7 @@ module.exports = class Manu extends Command {
           } else {
             await CommandC.findOneAndUpdate(
               { _id: name },
-              { $set: { manutenção: true, reason: reason } }
+              { $set: { manutenção: true} }
             );
             return message.quote(
               `${Emojis.Certo} - Coloquei o comando **\`${name}\`** em manutenção com sucesso.`

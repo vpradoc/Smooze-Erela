@@ -42,6 +42,9 @@ module.exports = class {
         server = await Guild.findOne({ _id: message.guild.id });
 
         var prefix = server.prefix
+
+        user = await User.findOne({_id: message.author.id});
+        
         if(user.blacklist) return 
 
       if(message.content.match(GetMention(this.client.user.id))) {

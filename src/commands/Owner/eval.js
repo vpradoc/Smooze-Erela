@@ -20,11 +20,12 @@ module.exports = class Eval extends Command {
     if (!args[0]) return;
 
     let litchdelicia = args.join(" ");
-    let litchtotoso = eval(litchdelicia);
+    let litchtotoso = eval(litchdelicia)
     if (typeof litchtotoso !== "string")
       litchtotoso = require("util").inspect(litchtotoso, { depth: 0 });
     message.quote(
       `Entrada: \`\`\`js\n${litchdelicia}\`\`\`\n Saída: \`\`\`js\n${litchtotoso}\`\`\``
-    );
+    )
   }
-};
+}  
+
