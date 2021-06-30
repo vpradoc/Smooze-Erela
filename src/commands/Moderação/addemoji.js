@@ -32,6 +32,20 @@ module.exports = class AddEmoji extends Command {
     if (!link)
         return message.quote(`${Emojis.Errado} - Por favor, coloque o **link** de um emoji para ser adicionado!`)
 
+
+        function itsALink(Text) {
+      var res = Text.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+      if(res == null)
+        return false
+      else
+        return true
+        
+}
+
+      if(!itsALink(link)) {
+        return message.quote(`${Emojis.Errado} - Por favor, coloque um link válido!`)
+      }
+
         await message.quote(
             "> Escreva o nome do emoji abaixo:\n> Tempo de Resposta:`1 minuto`"
           );

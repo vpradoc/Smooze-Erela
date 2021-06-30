@@ -13,6 +13,8 @@ registerFont("src/assets/fonts/Segoe UI Black.ttf", {
   family: "Segoe UI Black",
 });
 const Utils = require("../../utils/Util");
+const ClientEmbed = require('../../structures/ClientEmbed');
+const User = require("../../database/Schemas/User");
 
 module.exports = class Ship extends Command {
   constructor(client) {
@@ -31,19 +33,18 @@ module.exports = class Ship extends Command {
 
   async run(message, args, prefix) {
     const porcentagem = Math.floor(Math.random() * 100);
+
     const User1 =
       this.client.users.cache.get(args[0]) ||
-      message.mentions.members.first() ||
-      message.author;
+      message.mentions.users.first() || this.client.user
+      
     const User2 =
-      this.client.users.cache.get(args[1]) ||
-      message.mentions.members.first(-1) || this.client.user
+    this.client.users.cache.get(args[1]) || message.mentions.users.array()[1] ||
+     message.author
+
 
     const canvas = createCanvas(384, 128);
     const ctx = canvas.getContext("2d");
-    if (!User2) {
-      return message.quote(`${Emojis.Errado} - Por favor, escolha + alguém!`);
-    }
     //========================// Import Background //========================//
 
     const background = await loadImage("./src/assets/img/png/ship.png");
@@ -51,31 +52,51 @@ module.exports = class Ship extends Command {
 
     //========================// Import Coração //========================//
 
+    if(porcentagem >= 90) {
     ctx.textAlign = "left";
     ctx.font = '100px "Segoe UI Black"';
-    await Utils.renderEmoji(ctx, Emojis.Coração, 100, 100, 100, 100);
-
-
+    await Utils.renderEmoji(ctx, Emojis.Anel, 130, 100, 100, 100);
+    }
+    else if(porcentagem >= 75) {
+      ctx.textAlign = "left";
+    ctx.font = '100px "Segoe UI Black"';
+    await Utils.renderEmoji(ctx, Emojis.Coração, 130, 100, 100, 100);
+    }
+    else if(porcentagem >= 45) {
+      ctx.textAlign = "left";
+    ctx.font = '100px "Segoe UI Black"';
+    await Utils.renderEmoji(ctx, '😏', 130, 100, 100, 100);
+    }
+    else if(porcentagem <= 44) {
+      ctx.textAlign = "left";
+    ctx.font = '100px "Segoe UI Black"';
+    await Utils.renderEmoji(ctx, '😭', 130, 100, 100, 100);
+    }
     //========================// Import Avatar //========================//
 
     const avatar = await loadImage(
-        User1.displayAvatarURL({ format: "jpeg", size: 2048 })
+        User1.displayAvatarURL({ format: "png", size: 2048 })
       );
-      ctx.drawImage(avatar, 15, 10, 100, 100);
+      ctx.drawImage(avatar, 0, 0, 130, 130);
 
       const avatar1 = await loadImage(
-        User2.displayAvatarURL({ format: "jpeg", size: 2048 })
+        User2.displayAvatarURL({ format: "png", size: 2048 })
       );
-      ctx.drawImage(avatar1, 25, 30, 100, 100);
+      ctx.drawImage(avatar1, 255, 0, 130, 130);
 
 
     //========================// Create Image //========================//
 
-    const attach = new MessageAttachment(
-        canvas.toBuffer(),
-        `SmoozeShip_.png`
-      );
+    const attachment = new MessageAttachment(canvas.toBuffer(), 'SmoozeShip.png');
 
-      message.quote(attach);
+    var mensagem = porcentagem <= 5 ? `${porcentagem}% Infelizmente esse casal é impossivel` : porcentagem <= 10 ? `${porcentagem}% [█████-----] Talvez um dia dê certo` : porcentagem <= 50 ? `${porcentagem}% [███████-----] Se o ${message.author}, tomasse alguma atitude` : porcentagem <= 70 ? `${porcentagem}% [███████----] Deveriam se casar agora ` : porcentagem <= 100 ? `${porcentagem}% [██████████] Casal perfeito, vão ficar juntos para sempre` : `Casal perfeito, vão ficar juntos para sempre`
+
+      const Embed = new ClientEmbed(message.author)
+      .addField(`Será que temos um novo casal?`, `\`${User1.username}\` + \`${User2.username}\`\n${mensagem}`)
+      .attachFiles(attachment)
+      .setImage("attachment://SmoozeShip.png")
+      
+      message.quote(Embed);
+
   }
 };
