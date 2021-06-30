@@ -22,11 +22,11 @@ module.exports = class Akinator extends Command {
   async run(message, args, prefix) {
     const emojiimage = [
         Emojis.Certo,
-      Emojis.Errado,
-      Emojis.Pergunta,
-      Emojis.Pensando,
-      Emojis.Nervoso,
-      Emojis.Smooze,
+        Emojis.Errado,
+        Emojis.Pergunta,
+        Emojis.Pensando,
+        Emojis.Nervoso,
+        Emojis.Smooze,
     ];
     const emojis = [
         "855890757873303572",
