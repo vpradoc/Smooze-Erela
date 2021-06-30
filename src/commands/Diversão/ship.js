@@ -22,10 +22,9 @@ module.exports = class Ship extends Command {
     this.client = client;
 
     this.name = "ship";
-    this.aliases = [];
     this.category = "Diversão";
     this.description = "Comando para calcular se aquele casal daria certo!";
-    this.usage = "ship";
+    this.usage = "ship <user>";
 
     this.enabled = true;
     this.guild = true;

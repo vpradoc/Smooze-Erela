@@ -10,8 +10,7 @@ module.exports = class Manu extends Command {
     this.name = "manu";
     this.category = "Owner";
     this.description = "Comando para colocar outros comandos em manutenção";
-    this.usage = "eval <código>";
-    this.aliases = ["manu"];
+    this.usage = "manu <comando>"
 
     this.enabled = true;
     this.guildOnly = true;

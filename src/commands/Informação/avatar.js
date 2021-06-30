@@ -1,5 +1,6 @@
 const discord = require("discord.js");
 const Command = require("../../structures/Command.js");
+const Emojis = require('../../utils/Emojis')
 
 module.exports = class Avatar extends Command {
   constructor(client) {
@@ -11,7 +12,7 @@ module.exports = class Avatar extends Command {
     this.category = "Informação";
     this.description =
       "Comando para que eu envite o avatar de um(a) usuário(a)!";
-    this.usage = "avatar";
+    this.usage = "avatar <user>";
 
     this.enabled = true;
     this.guild = true;
@@ -35,7 +36,7 @@ module.exports = class Avatar extends Command {
       .setTitle(`${user.nickname ? user.nickname : user.user.username}`)
       .setColor(process.env.EMBED_COLOR)
       .setDescription(
-        `<:camera:797207483248410704> Clique **[aqui](${avatar})** para baixar o avatar.`
+        `${Emojis.Camera} Clique **[aqui](${avatar})** para baixar o avatar.`
       )
       .setImage(avatar)
       .setFooter(

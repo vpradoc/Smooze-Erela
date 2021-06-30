@@ -9,10 +9,9 @@ module.exports = class Reverse extends Command {
     this.client = client;
 
     this.name = "reverse";
-    this.aliases = [];
     this.category = "Diversão";
     this.description = "Comando para que eu mande uma mensagem ao contrário!";
-    this.usage = "reverse";
+    this.usage = "reverse <msg>";
 
     this.enabled = true;
     this.guild = true;

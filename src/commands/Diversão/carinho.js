@@ -12,7 +12,7 @@ module.exports = class Carinho extends Command {
     this.aliases = ["pat"];
     this.category = "Diversão";
     this.description = "Comando para fazer um carinho em um(a) usuário(a)!";
-    this.usage = "entrada";
+    this.usage = "carinho <user>";
 
     this.enabled = true;
     this.guild = true;

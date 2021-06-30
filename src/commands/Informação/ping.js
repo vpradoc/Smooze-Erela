@@ -7,7 +7,6 @@ module.exports = class Ping extends Command {
     this.client = client;
 
     this.name = "ping";
-    this.aliases = [];
     this.category = "Informação"
     this.description = "Comando para que eu envie informações sobre meu ping!";
     this.usage = "ping";

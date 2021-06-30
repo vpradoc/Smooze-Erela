@@ -13,7 +13,7 @@ module.exports = class Marry extends Command {
     this.aliases = ["casar"];
     this.category = "Diversão";
     this.description = "Comando para casar com um(a) usuário(a)!";
-    this.usage = "marry";
+    this.usage = "marry <user>";
 
     this.enabled = true;
     this.guild = true;

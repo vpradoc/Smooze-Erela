@@ -8,10 +8,9 @@ module.exports = class Entrada extends Command {
     this.client = client;
 
     this.name = "gay";
-    this.aliases = [];
     this.category = "Diversão";
     this.description = "Comando para saber se o quanto gay é um(a) usuário(a)!";
-    this.usage = "gay";
+    this.usage = "gay <user>";
 
     this.enabled = true;
     this.guild = true;

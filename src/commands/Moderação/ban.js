@@ -7,10 +7,9 @@ module.exports = class Ban extends Command {
       this.client = client;
   
       this.name = "ban";
-      this.aliases = [];
       this.category = "Moderação";
       this.description = "Comando para banir um(a) membro(a)!";
-      this.usage = "ban";
+      this.usage = "ban <user>";
   
       this.enabled = true;
       this.guild = true;

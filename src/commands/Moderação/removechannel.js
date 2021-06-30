@@ -11,7 +11,7 @@ module.exports = class RemoveChannel extends Command {
       this.aliases = ['rchannel'];
       this.category = "Moderação";
       this.description = "Comando para que eu delete um canal!";
-      this.usage = "removechannel";
+      this.usage = "removechannel <id/menção>";
   
       this.enabled = true;
       this.guild = true;

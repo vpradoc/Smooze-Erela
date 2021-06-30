@@ -11,7 +11,6 @@ module.exports = class Host extends Command {
     this.client = client;
 
     this.name = "host";
-    this.aliases = [];
     this.category = "Owner";
     this.description =
       "Comando para que eu envie informações sobre a hospedagem!";

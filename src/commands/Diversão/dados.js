@@ -10,7 +10,6 @@ module.exports = class Dados extends Command {
     this.client = client;
 
     this.name = "dados";
-    this.aliases = [];
     this.category = "Diversão";
     this.description = "Comando para que eu jogue os dados!";
     this.usage = "dados";

@@ -10,7 +10,7 @@ module.exports = class SlowMode extends Command {
     this.aliases = ["modolento"];
     this.category = "Moderação";
     this.description = "Comando para que eu ative o modo lento no canal!";
-    this.usage = "slowmode";
+    this.usage = "slowmode <tempo>";
 
     this.enabled = true;
     this.guild = true;

@@ -6,10 +6,9 @@ module.exports = class Eval extends Command {
     this.client = client;
 
     this.name = "eval";
-    this.aliases = [];
     this.category = "Owner";
     this.description = "Comando para que eu avalie algo!";
-    this.usage = "eval";
+    this.usage = "eval <código>";
 
     this.enabled = true;
     this.guild = true;

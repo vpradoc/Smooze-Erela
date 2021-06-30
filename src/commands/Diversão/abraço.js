@@ -12,7 +12,7 @@ module.exports = class Abraço extends Command {
     this.aliases = ["hug"];
     this.category = "Diversão";
     this.description = "Comando para abraçar um(a) usuário(a)!";
-    this.usage = "hug";
+    this.usage = "hug <user>";
 
     this.enabled = true;
     this.guild = true;

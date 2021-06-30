@@ -11,7 +11,7 @@ module.exports = class Coins extends Command {
     this.aliases = ["dinheiro"];
     this.category = "Economia";
     this.description = "Comando para saber quantos coins você tem!";
-    this.usage = "coins";
+    this.usage = "coins <user>";
 
     this.enabled = true;
     this.guild = true;
@@ -43,11 +43,4 @@ module.exports = class Coins extends Command {
       message.quote(embed);
     });
   }
-};
-exports.help = {
-  name: "coins",
-  aliases: ["dinheiro"],
-  description: "Comando para saber quantos coins você tem!",
-  usage: "<prefix>daily",
-  category: "Economy",
 };

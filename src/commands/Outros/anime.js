@@ -10,10 +10,9 @@ module.exports = class Anime extends Command {
     this.client = client;
 
     this.name = "anime";
-    this.aliases = [];
     this.category = "Outros";
     this.description = "Comando para que eu envie informações de um anime!";
-    this.usage = "anime";
+    this.usage = "anime <nome>";
 
     this.enabled = true;
     this.guild = true;

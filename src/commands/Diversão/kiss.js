@@ -12,7 +12,7 @@ module.exports = class Kiss extends Command {
     this.aliases = ["beijar"];
     this.category = "Diversão";
     this.description = "Comando para dar um beijo em um(a) usuário(a)!";
-    this.usage = "kiss";
+    this.usage = "kiss <user>";
 
     this.enabled = true;
     this.guild = true;

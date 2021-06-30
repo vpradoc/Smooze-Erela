@@ -12,7 +12,7 @@ module.exports = class Clima extends Command {
     this.category = "Informação"
     this.description =
       "Comando para que eu envie informações do clima de uma cidade!";
-    this.usage = "clima";
+    this.usage = "clima <cidade>";
 
     this.enabled = true;
     this.guild = true;

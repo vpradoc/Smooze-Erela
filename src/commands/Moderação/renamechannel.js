@@ -7,10 +7,9 @@ module.exports = class RenameChannel extends Command {
       this.client = client;
   
       this.name = "renamechannel";
-      this.aliases = [];
       this.category = "Moderação";
       this.description = "Comando para que eu renomeie um canal!";
-      this.usage = "renamechannel";
+      this.usage = "renamechannel <id/menção>";
   
       this.enabled = true;
       this.guild = true;

@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const Guild = require("../../database/Schemas/Guild");
 const Command = require("../../structures/Command.js");
 const Emojis = require("../../utils/Emojis");
-
+const ClientEmbed = require('../../structures/ClientEmbed')
 module.exports = class Help extends Command {
   constructor(client) {
     super(client);
@@ -18,7 +18,7 @@ module.exports = class Help extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
+  async run(message, args, prefix, author) {
     Guild.findOne({ _id: message.guild.id }, async (err, server) => {
       const data = [];
       const Config = [];
@@ -41,7 +41,7 @@ module.exports = class Help extends Command {
           );
         }
 
-        const EMBED1 = new MessageEmbed()
+        const EMBED1 = new ClientEmbed(author)
           .setTitle(`Informações sobre o comando:`)
           .setThumbnail(this.client.user.displayAvatarURL({ size: 2048 }))
           .setColor(process.env.EMBED_COLOR)
@@ -52,9 +52,7 @@ module.exports = class Help extends Command {
             },
             {
               name: "**Aliases**",
-              value: `\`${command.aliases
-                .join(", ")
-                .replace(``, "Não tem!")}\``,
+              value: `\`${command.aliases}\``,
             },
             {
               name: "**Descrição:**",
@@ -72,29 +70,25 @@ module.exports = class Help extends Command {
 
         message.quote(EMBED1);
       } else {
-        const HELP = new MessageEmbed()
+        const HELP = new ClientEmbed(author)
           .setAuthor(
             "Smooze - Lista de Comandos",
-            `https://cdn.discordapp.com/avatars/700681803098226778/733d9ad9f1b6e7f9048587b0594103ae.webp?size=2048`
+            this.client.user.displayAvatarURL()
           )
           .setColor(process.env.EMBED_COLOR)
-          .setThumbnail(this.client.user.displayAvatarURL({ size: 2048 }))
-          .setFooter(
-            `${message.author.tag}`,
-            message.author.displayAvatarURL({ dynamic: true })
-          )
-          .setTimestamp();
+
 
           const ownerc = this.client.commands.filter((x) => x.category == "Owner").size
         HELP.setDescription(`Olá ${message.author.username}, sou o **\`Smooze\`**, um bot criado em JavaScript.
     Posso executar comandos diversos para fazer com que meus usuários se sintam a vontade em seus servidores. No momento eu conto com \`${this.client.commands.size - ownerc}\` funcionalidades.\n
-    Para saber mais sobre algum dos comandos listados abaixo, utilize **${prefix}help <comando>**! \n`);
+    Para saber mais sobre algum dos comandos listados abaixo, utilize **${prefix}help <comando>**! \n\n`);
         commands.map((command) => {
           if (command.category === "Config")
             Config.push(command.name);
           else if (command.category === "Economia")
             Economia.push(command.name);
-          else if (command.category === "Diversão") Diversão.push(command.name);
+          else if (command.category === "Diversão") 
+            Diversão.push(command.name);
           else if (command.category === "Informação")
             Informação.push(command.name);
           else if (command.category === "Outros")
@@ -109,11 +103,11 @@ module.exports = class Help extends Command {
             value: ` \`${Config.map((x) => `${x}`).join(" - ")}\``,
           },
           {
-            name: `${Emojis.Dinheiro} **Economia**`,
+            name: `${Emojis.Coin} **Economia**`,
             value: ` \`${Economia.map((x) => `${x}`).join(" - ")}\``,
           },
           {
-            name: `${Emojis.Dado} **Diversão**`,
+            name: `${Emojis.Toy} **Diversão**`,
             value: ` \`${Diversão.map((x) => `${x}`).join(" - ")}\``,
           },
           {

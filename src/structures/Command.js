@@ -6,7 +6,7 @@ module.exports = class Command {
         this.category = "Categoria"
         this.description = "Descrição"
         this.usage = "Sem Informação"
-        this.aliases = []
+        this.aliases = ["Sem alternativas!"]
 
         this.enabled = true
         this.guildOnly = true

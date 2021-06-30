@@ -7,10 +7,9 @@ module.exports = class Blacklist extends Command {
     this.client = client;
 
     this.name = "blacklist";
-    this.aliases = [];
     this.category = "Owner";
     this.description = "Comando para adicionar algum usuário na blacklist!";
-    this.usage = "blacklist";
+    this.usage = "blacklist <user>";
 
     this.enabled = true;
     this.guild = true;

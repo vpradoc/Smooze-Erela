@@ -12,7 +12,7 @@ module.exports = class Userinfo extends Command {
     this.aliases = ["uinfo", "ui"];
     this.category = "Informação"
     this.description = "Comando para que eu envie suas informações técnicas!";
-    this.usage = "userinfo";
+    this.usage = "userinfo <id/menção>";
 
     this.enabled = true;
     this.guild = true;

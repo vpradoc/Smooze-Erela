@@ -9,10 +9,9 @@ module.exports = class AddEmoji extends Command {
       this.client = client;
   
       this.name = "addemoji";
-      this.aliases = [];
       this.category = "Moderação";
       this.description = "Comando para que eu adicione um emoji ao servidor!";
-      this.usage = "addemoji";
+      this.usage = "addemoji <link>";
   
       this.enabled = true;
       this.guild = true;

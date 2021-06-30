@@ -8,10 +8,10 @@ module.exports = class CreateChannel extends Command {
       this.client = client;
   
       this.name = "createchannel";
-      this.aliases = ['cchanel'];
+      this.aliases = ['cchanel', 'criarcanal'];
       this.category = "Moderação";
       this.description = "Comando para que eu crie um canal!";
-      this.usage = "createchannel";
+      this.usage = "createchannel <nome>";
   
       this.enabled = true;
       this.guild = true;

@@ -9,10 +9,9 @@ module.exports = class Wasted extends Command {
     this.client = client;
 
     this.name = "wasted";
-    this.aliases = [];
     this.category = "Diversão";
     this.description = "Use este comando para criar um Wasted com a foto de um(a) usuário(a)!";
-    this.usage = "dados";
+    this.usage = "wasted <user>";
 
     this.enabled = true;
     this.guild = true;

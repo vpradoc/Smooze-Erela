@@ -9,7 +9,7 @@ module.exports = class Divorce extends Command {
     this.name = "divorce";
     this.category = "Diversão";
     this.description = "Comando para se divorciar!";
-    this.usage = "divorce";
+    this.usage = "divorce <user>";
     this.aliases = ["divorcio", "divorciar"];
 
     this.enabled = true;
