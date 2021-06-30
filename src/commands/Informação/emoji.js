@@ -47,14 +47,14 @@ module.exports = class Emoji extends Command {
       )
       .setColor(process.env.EMBED_COLOR)
       .setThumbnail(image)
-      .addField(`${Emojis.Robo} - **Nome:**`, `${Nome}`, true)
-      .addField(`${Emojis.Id}**ID:**`, `${id}`, true)
+      .addField(`${Emojis.Robo} **Nome:**`, `${Nome}`, true)
+      .addField(`${Emojis.Id} **ID:**`, `${id}`, true)
       .addField(
-        `${Emojis.CD}**É ANIMADO?:**`,
+        `${Emojis.CD} **É ANIMADO?:**`,
         `${emoji.animated !== true ? `Não` : "Sim"}`,
         false
       )
-      .addField(`${Emojis.Id}**Identificador:**`, `\`<:${IDENTIFICADOR}>\``, true)
+      .addField(`${Emojis.Id} **Identificador:**`, `\`<:${IDENTIFICADOR}>\``, true)
       .addField(
         `${Emojis.Calendario} **Data da criação:**`,
         dateformat("DD/MM/YYYY, às HH:mm:ss", Tempo)
