@@ -21,10 +21,10 @@ module.exports = class BobForte extends Command {
     super(client);
     this.client = client;
 
-    this.name = "bobforte";
+    this.name = "bob";
     this.category = "Imagens";
     this.description = "A personalidade do Bob muda de acordo com suas escolhas...";
-    this.usage = "bobforte";
+    this.usage = "bob";
 
 
     this.enabled = true;
