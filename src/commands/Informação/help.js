@@ -26,6 +26,7 @@ module.exports = class Help extends Command {
       const Diversão = [];
       const Moderação = []
       const Informação = [];
+      const Imagens = [];
       const Outros = [];
       const { commands } = message.client;
 
@@ -89,6 +90,8 @@ module.exports = class Help extends Command {
             Economia.push(command.name);
           else if (command.category === "Diversão") 
             Diversão.push(command.name);
+            else if (command.category === "Imagens") 
+            Imagens.push(command.name);
           else if (command.category === "Informação")
             Informação.push(command.name);
           else if (command.category === "Outros")
@@ -109,6 +112,10 @@ module.exports = class Help extends Command {
           {
             name: `${Emojis.Toy} **Diversão**`,
             value: ` \`${Diversão.map((x) => `${x}`).join(" - ")}\``,
+          },
+          {
+            name: `${Emojis.Camera} **Imagens**`,
+            value: ` \`${Imagens.map((x) => `${x}`).join(" - ")}\``,
           },
           {
             name: `${Emojis.Id} **Informação**`,
