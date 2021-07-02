@@ -81,8 +81,6 @@ module.exports = class {
           { _id: message.author.id },
           { $set: { "Exp.xp": 0, "Exp.level": level + 1 } }
         );
-
-        message.channel.send(`${message.author}, você acaba de subir para o level **${level + 1}**!`)
     message.react(`🎆`)
       }
 
