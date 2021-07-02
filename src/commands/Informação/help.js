@@ -80,9 +80,7 @@ module.exports = class Help extends Command {
 
 
           const ownerc = this.client.commands.filter((x) => x.category == "Owner").size
-        HELP.setDescription(`Olá ${message.author.username}, sou o **\`Smooze\`**, um bot criado em JavaScript.
-    Posso executar comandos diversos para fazer com que meus usuários se sintam a vontade em seus servidores. No momento eu conto com \`${this.client.commands.size - ownerc}\` funcionalidades.\n
-    Para saber mais sobre algum dos comandos listados abaixo, utilize **${server.prefix}help <comando>**! \n\n`);
+        HELP.setDescription(`Olá ${message.author.username}, sou o **\`Smooze\`**!\nPosso executar comandos diversos para fazer com que meus usuários se sintam a vontade em seus servidores. No momento eu conto com \`${this.client.commands.size - ownerc}\` funcionalidades.\n\nPara saber mais sobre algum dos comandos listados abaixo, utilize **${server.prefix}help <comando>**! \n\n`);
         commands.map((command) => {
           if (command.category === "Config")
             Config.push(command.name);

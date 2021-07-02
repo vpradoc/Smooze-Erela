@@ -27,8 +27,10 @@ module.exports = class Marry extends Command {
         _id: message.author.id,
       });
 
-      
-    if (!user) {
+      if(doc.marry.has) {
+        message.quote(
+            `${Emojis.Errado} - Você já se encontra comprometido(a)!`
+        )} else if (!user) {
       message.quote(
         `${Emojis.Errado} - Você deve escolher um(a) usuário(a) para casar-se!`
       );
@@ -40,10 +42,6 @@ module.exports = class Marry extends Command {
         message.quote(
             `${Emojis.Errado} - Você não pode se casar comigo!`
           );
-    } else if(doc.marry.has) {
-        message.quote(
-            `${Emojis.Errado} - Você já se encontra comprometido(a)!`
-        )
     }
 
     const target = await User.findOne({ _id: user.id });
@@ -71,7 +69,7 @@ module.exports = class Marry extends Command {
           .then(async (collected) => {
             if (collected.first().emoji.id === '855890757873303572') {
               message.quote(
-                `${Emojis.Anel} - ${message.author}, o(a) aceitou seu pedido de casamento, parabéns!`
+                `${Emojis.Anel} - ${message.author}, o(a) ${user} aceitou seu pedido de casamento, parabéns!`
               );
 
               await User.findOneAndUpdate(
