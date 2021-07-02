@@ -9,15 +9,15 @@ async run() {
   const status = [
     {
       type: 'WATCHING',
-      name: `${this.client.users.cache.size} Usuários!`, 
+      name: `${this.client.users.cache.size} Usuários! | @Smooze ajuda!`, 
     },
     {
       type: 'PLAYING',
-      name: `${this.client.guilds.cache.size} Servidores!`, 
+      name: `${this.client.guilds.cache.size} Servidores! | @Smooze ajuda!`, 
     },
     {
       type: 'COMPETING',
-      name: `${this.client.commands.size - this.client.commands.filter((x) => x.category == "Owner").size} Comandos!`, 
+      name: `${this.client.commands.size - this.client.commands.filter((x) => x.category == "Owner").size} Comandos! | @Smooze ajuda!`, 
     },
   ];
   setInterval(() => {

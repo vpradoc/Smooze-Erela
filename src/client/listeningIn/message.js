@@ -41,7 +41,11 @@ module.exports = class {
 
         server = await Guild.findOne({ _id: message.guild.id });
 
-        var prefix = server.prefix
+        const prefixMention = new RegExp(`^<@!?${this.client.user.id}> `);
+        var prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : server.prefix
+
+
+        
 
         user = await User.findOne({_id: message.author.id});
         
@@ -51,7 +55,7 @@ module.exports = class {
         const embed = new discord.MessageEmbed()
         .setColor('#FFFF00')
         .setThumbnail(`https://cdn.discordapp.com/attachments/693473291158945805/852181118047617104/imgbot.png`)
-        .setDescription(`Olá sou o Smooze! Um BOT programado utilizando a linguagem \`JavaScript\`. \nCaso queira saber minha lita de comandos, digite **${prefix}ajuda**!\n
+        .setDescription(`Olá sou o Smooze! Um BOT programado utilizando a linguagem \`JavaScript\`. \nCaso queira saber minha lita de comandos, digite **${server.prefix}ajuda**!\n
         ${Emojis.Id} **Links Úteis**\n**[Meu Criador](https://github.com/Splitze)**\n**[Meu Convite](https://discord.com/oauth2/authorize?client_id=700681803098226778&permissions=20887631278&scope=bot)**`)
         
         .setFooter(`Smooze`, this.client.user.displayAvatarURL())
