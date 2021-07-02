@@ -27,7 +27,7 @@ module.exports = class Avatar extends Command {
 
     const avatar = user.user.displayAvatarURL({
       dynamic: true,
-      format: "jpg",
+      format: "png",
       size: 2048,
     });
 

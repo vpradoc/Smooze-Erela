@@ -44,14 +44,14 @@ module.exports = class Botinfo extends Command {
         } \n${Emojis.Calendario} Data da criação: **${formatDate(
           "DD/MM/YYYY",
           date
-        )}**\n👤 Usuários: **${usersize}**\n🏠 Servidores: **${servsize}**`
+        )}**\n${Emojis.Bust} Usuários: **${usersize}**\n${Emojis.Casa} Servidores: **${servsize}**`
       )
       .addField(
         `**Informações Técnicas**`,
         `${Emojis.DJs} Livraria: **Discord.Js - v${discord.version}** \n${
           Emojis.Node
         } Versão do Node: **[${process.version}](https://nodejs.org/en/)**\n${
-          Emojis.Cama
+          Emojis.Uptime
         } Tempo online: **${uptime}**\n${Emojis.Engrenagem} RAM Usada: **${(
           process.memoryUsage().heapUsed /
           1024 /
