@@ -8,11 +8,6 @@ let userSchema = new Schema({
   daily: { type: Number, default: 0 },
   about: {type: String, default: "null"},
   gay: {type: String, default:'null'},
-  Exp: {
-    xp: {type: Number, default: 1},
-    level: {type: Number, default: 1},
-    nextLevel: {type: Number, default: 100},
-  },
   marry: {
     time: { type: Number, default: 0 },
     user: { type: String, default: "null" },

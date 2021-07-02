@@ -59,7 +59,6 @@ module.exports = class Profile extends Command {
       if(!user) {
         return message.quote(`${Emojis.Errado} - Não tenho informações sobre este usuário!`)
       }
-      let nextLevel = user.Exp.nextLevel * user.Exp.level;
 
      
       //========================// Import Background //========================//
@@ -102,21 +101,13 @@ module.exports = class Profile extends Command {
       ctx.font = '37px "Bebas"';
       ctx.fillStyle = "rgb(253, 255, 252)";
       await Utils.renderEmoji(ctx, `${Emojis.Coin}Coins:`, 200, 100);
-      await Utils.renderEmoji(ctx, `${Emojis.Dado}Level:`, 200, 145);
-      await Utils.renderEmoji(ctx, `${Emojis.Id}XP:`, 200, 190);
 
-      // Coins/XP
+      // Coins/
 
       ctx.textAlign = "left";
       ctx.font = '38px "BebasNeue"';
       ctx.fillStyle = "rgb(253, 255, 0)";
       ctx.fillText(`${Utils.toAbbrev(user.coins)}`, 331, 100);
-      ctx.fillText(`${user.Exp.level}`, 333, 147);
-      ctx.fillText(
-        `${Utils.toAbbrev(user.Exp.xp)}/${Utils.toAbbrev(nextLevel)}`,
-        289,
-        192
-      );
 
        // Casamento
 

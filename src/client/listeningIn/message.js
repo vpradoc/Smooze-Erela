@@ -65,28 +65,6 @@ module.exports = class {
       
       user = await User.findOne({_id: message.author.id});
 
-      let xp = user.Exp.xp
-      let level = user.Exp.level;
-      let nextLevel = user.Exp.nextLevel * level;
-
-      let xpGive = Math.floor(Math.random() * 5) + 1;
-
-      await User.findOneAndUpdate(
-        { _id: message.author.id },
-        {
-          $set: {
-            "Exp.xp": xp + xpGive,
-          },
-        }
-      );
-
-      if (xp >= nextLevel) {
-        await User.findOneAndUpdate(
-          { _id: message.author.id },
-          { $set: { "Exp.xp": 0, "Exp.level": level + 1 } }
-        );
-    message.react(`🎆`)
-      }
 
       if (message.content.indexOf(prefix) !== 0) return;
       const author = message.author;
