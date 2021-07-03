@@ -10,6 +10,7 @@ registerFont("src/assets/fonts/arial.ttf", { family: "Arial" });
 registerFont("src/assets/fonts/Segoe UI Black.ttf", {
   family: "Segoe UI Black",
 });
+const moment = require("moment");
 const Utils = require("../../utils/Util");
 const Emojis = require("../../utils/Emojis");
 
@@ -54,7 +55,11 @@ module.exports = class Profile extends Command {
         .replace("-", "");
 
     User.findOne({ _id: USER.id }, async (err, user) => {
-      const canvas = createCanvas(1024, 768);
+
+
+      if (!user.marry.has) {
+
+      const canvas = createCanvas(700, 1200);
       const ctx = canvas.getContext("2d");
       if(!user) {
         return message.quote(`${Emojis.Errado} - Não tenho informações sobre este usuário!`)
@@ -63,8 +68,8 @@ module.exports = class Profile extends Command {
      
       //========================// Import Background //========================//
 
-      const background = await loadImage("./src/assets/img/png/bg1.png");
-      ctx.drawImage(background, 0, 0, 1024, 768);
+      const background = await loadImage("./src/assets/img/png/profile.png");
+      ctx.drawImage(background, 0, 0, 700, 1200);
 
       //========================// Import BreakLines //========================//
 
@@ -84,86 +89,60 @@ module.exports = class Profile extends Command {
       // Username
 
       ctx.textAlign = "left";
-      ctx.font = '50px "Segoe UI Black"';
-      ctx.fillStyle = "rgb(253, 255, 0)";
+      ctx.font = '60px "Segoe UI Black"';
+      ctx.fillStyle = "rgb(32, 34, 37)"
+
       await Utils.renderEmoji(
         ctx,
-        USER.username.length > 20
-          ? USER.username.slice(0, 20) + "..."
+        USER.username.length > 13
+          ? USER.username.slice(0, 13)+"..."
           : USER.username,
-        200,
-        60
+          270, 317
       );
 
-      // Titles
+      // Identifier
 
       ctx.textAlign = "left";
-      ctx.font = '37px "Bebas"';
-      ctx.fillStyle = "rgb(253, 255, 252)";
-      await Utils.renderEmoji(ctx, `${Emojis.Coin}Coins:`, 200, 100);
-
-      // Coins/
-
-      ctx.textAlign = "left";
-      ctx.font = '38px "BebasNeue"';
-      ctx.fillStyle = "rgb(253, 255, 0)";
-      ctx.fillText(`${Utils.toAbbrev(user.coins)}`, 331, 100);
-
-       // Casamento
-
-      if (user.marry.has) {
-
-      ctx.textAlign = "center";
-      ctx.font = '27px "Montserrat"';
-      ctx.fillStyle = "rgb(76, 48, 114)";
-        const casado = this.client.users.cache.get(user.marry.user).tag
-      ctx.fillText("Casado com", 530, 150);
-
-      ctx.textAlign = "center";
-      ctx.font = '27px "Segoe UI"'
-      ctx.fillStyle = "rgb(76, 48, 114)";
-      ctx.fillText(
-          casado,
-          530,
-          175
-        );
-      }
+      ctx.font = '55px "Bebas"';
+      ctx.fillStyle = "rgb(86, 86, 87)";
+      await Utils.renderEmoji(ctx, `#${USER.discriminator}`, 580, 390);
 
       // Flags
 
       ctx.textAlign = "left";
       ctx.font = '45px "Segoe UI Black"';
-      await Utils.renderEmoji(ctx, user.marry.has ? Emojis.Anel+flags.replace("-", " ") : flags.replace("-", " "), 760, 120, 15, 5);
+      await Utils.renderEmoji(ctx, user.marry.has ? Emojis.Anel+flags.replace("-", " ") : flags.replace("-", " "), 270, 390, 0, 0);
+
 
       // Titles
 
       ctx.textAlign = "left";
-      ctx.font = '40px "BebasNeue"';
-      ctx.fillStyle = "rgb(255, 255, 0)";
-      ctx.fillText("Sobre Mim:", 30, 630);
+      ctx.font = '50px "BebasNeue"';
+      ctx.fillStyle = "rgb(142, 142, 142)";
+      ctx.fillText("Sobre Mim:", 68, 840);
 
       // Sobre
 
       ctx.textAlign = "left";
-      ctx.font = '30px "BebasNeue"';
+      ctx.font = '40px "BebasNeue"';
       ctx.fillStyle = "rgb(253, 255, 252)";
       await Utils.renderEmoji(
         ctx,
         addBreakLines(
           user.about == "null"
-            ? `Use ${prefix}sobremim <msg> para alterar essa mensagem!`
+            ? `O Smooze é muito legal! Sabia que usando ${prefix}sobre <msg> você pode mudar essa mensagem?!`
             : user.about,
-          60
+          35
         ),
-        30,
-        635
+        68,
+        855
       );
 
       //========================// Import Avatar //========================//
 
-      ctx.arc(100, 95, 85, 0, Math.PI * 2, true);
-      (ctx.lineWidth = 9), 5;
-      ctx.strokeStyle = "#ffff00";
+      ctx.arc(133, 331, 120, 0, Math.PI * 2, true);
+      (ctx.lineWidth = 23), 5;
+      ctx.strokeStyle = "#009cff";
       ctx.stroke();
       ctx.closePath();
       ctx.clip();
@@ -171,9 +150,9 @@ module.exports = class Profile extends Command {
       const avatar = await loadImage(
         USER.displayAvatarURL({ format: "jpeg", size: 2048 })
       );
-      ctx.drawImage(avatar, 15, 10, 175, 175);
+      ctx.drawImage(avatar, 10, 205, 250, 250);
 
-      //========================// Create Image //========================//
+      //========================// Create Image //========================// 
 
       const attach = new MessageAttachment(
         canvas.toBuffer(),
@@ -181,6 +160,152 @@ module.exports = class Profile extends Command {
       );
 
       message.quote(attach);
-    });
+    }
+    
+
+
+
+
+
+
+      else {
+
+        const canvas1 = createCanvas(700, 1200);
+        const ctx1 = canvas1.getContext("2d");
+        if(!user) {
+        return message.quote(`${Emojis.Errado} - Não tenho informações sobre este usuário!`)
+      }
+
+      const casado = this.client.users.cache.get(user.marry.user)
+
+      const avatar1 = await loadImage(
+        casado.displayAvatarURL({ format: "png", size: 2048 })
+      );
+      ctx1.drawImage(avatar1, 64, 510, 215, 215);
+     
+      //========================// Import Background //========================//
+
+      const background = await loadImage("./src/assets/img/png/profilec.png");
+      ctx1.drawImage(background, 0, 0, 700, 1200);
+
+      // Identifier
+
+      ctx1.textAlign = "left";
+      ctx1.font = '45px "Bebas"';
+      ctx1.fillStyle = "rgb(255, 255, 255)";
+      await Utils.renderEmoji(ctx1, `${Emojis.Anel} Casado com:`, 285, 555);
+      // Identifier
+
+      ctx1.textAlign = "left";
+      ctx1.font = '30px "Bebas"';
+      ctx1.fillStyle = "rgb(255, 255, 255)";
+      await Utils.renderEmoji(ctx1, `${casado.tag}`, 300, 585);
+
+      // Identifier
+
+      ctx1.textAlign = "left";
+      ctx1.font = '30px "Bebas"';
+      ctx1.fillStyle = "rgb(255, 255, 255)";
+      await Utils.renderEmoji(ctx1, `${moment.duration(Date.now() - user.marry.time)
+      .format("M [Meses] d [Dias] h [Horas] m [Minutos] s [Segundos]")}`, 300, 615);
+
+      //========================// Import BreakLines //========================// 310, 542 moment
+            
+
+      function addBreakLines(str, max) {
+        max = max + 1;
+        for (let i = 0; i < str.length / max; i++) {
+          str =
+            str.substring(0, max * i) +
+            `\n` +
+            str.substring(max * i, str.length);
+        }
+        return str;
+      }
+
+      //========================// Texts //========================//
+
+      // Username
+
+      ctx1.textAlign = "left";
+      ctx1.font = '60px "Segoe UI Black"';
+      ctx1.fillStyle = "rgb(32, 34, 37)"
+
+      await Utils.renderEmoji(
+        ctx1,
+        USER.username.length > 13
+          ? USER.username.slice(0, 13)+"..."
+          : USER.username,
+          270, 317
+      );
+
+      // Identifier
+
+      ctx1.textAlign = "left";
+      ctx1.font = '55px "Bebas"';
+      ctx1.fillStyle = "rgb(86, 86, 87)";
+      await Utils.renderEmoji(ctx1, `#${USER.discriminator}`, 580, 390);
+
+      // Flags
+
+      ctx1.textAlign = "left";
+      ctx1.font = '45px "Segoe UI Black"';
+      await Utils.renderEmoji(ctx1, user.marry.has ? Emojis.Anel+flags.replace("-", " ") : flags.replace("-", " "), 270, 390, 0, 0);
+
+
+      // Titles
+
+      ctx1.textAlign = "left";
+      ctx1.font = '50px "BebasNeue"';
+      ctx1.fillStyle = "rgb(142, 142, 142)";
+      ctx1.fillText("Sobre Mim:", 68, 840);
+
+      // Sobre
+
+      ctx1.textAlign = "left";
+      ctx1.font = '40px "BebasNeue"';
+      ctx1.fillStyle = "rgb(253, 255, 252)";
+      await Utils.renderEmoji(
+        ctx1,
+        addBreakLines(
+          user.about == "null"
+            ? `O Smooze é muito legal! Sabia que usando ${prefix}sobre <msg> você pode mudar essa mensagem?!`
+            : user.about,
+          35
+        ),
+        68,
+        855
+      );
+
+      //========================// Import Avatar //========================//
+
+      ctx1.arc(133, 331, 120, 0, Math.PI * 2, true);
+      (ctx1.lineWidth = 23), 5;
+      ctx1.strokeStyle = "#009cff";
+      ctx1.stroke();
+      ctx1.closePath();
+      ctx1.clip();
+
+      const avatar2 = await loadImage(
+        USER.displayAvatarURL({ format: "jpeg", size: 2048 })
+      );
+      ctx1.drawImage(avatar2, 10, 205, 250, 250);
+
+      //========================// Create Image //========================// 
+
+      const attach = new MessageAttachment(
+        canvas1.toBuffer(),
+        `SmoozeProfile_.png`
+      );
+
+      message.quote(attach);
+
+
+
+
+
+      }
+  
+  });
   }
 };

@@ -28,9 +28,9 @@ module.exports = class About extends Command {
         return message.quote(
           `${Emojis.Errado} - Você não inseriu o que deseja colocar em sua biografia.`
         );
-      } else if (about.length > 180) {
+      } else if (about.length > 210) {
         return message.quote(
-          `${Emojis.Errado} - A sua biografia deve ter menos de 180 caracteres.`
+          `${Emojis.Errado} - A sua biografia deve ter menos de 210 caracteres.`
         );
       } else if (usuario.about == about) {
         return message.quote(
