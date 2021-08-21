@@ -1,6 +1,6 @@
 const Command = require("../../structures/Command");
-const Emojis = require("../../utils/Emojis");
-const User = require('../../database/Schemas/User')
+emojis = require("../../utils/Emojis");
+const User = require("../../database/Schemas/User");
 module.exports = class Divorce extends Command {
   constructor(client) {
     super(client);
@@ -16,37 +16,32 @@ module.exports = class Divorce extends Command {
     this.guildOnly = true;
   }
 
-  async run(message, args, prefix, author ) {
+  async run(message, args, prefix, author) {
     const doc = await User.findOne({
       _id: message.author.id,
     });
 
-    const par = this.client.users.cache.get(doc.marry.user).tag
-
     if (!doc.marry.has)
-      return message.quote(`${Emojis.Errado} - Você não está casado!`);
+      return message.reply(`${emojis.Errado} **|** Você não está casado!`);
+
+    const par = this.client.users.cache.get(doc.marry.user).tag;
+
+    const filter = (reaction, user) => {
+      return (
+        user.id == doc.id && ["855890757873303572", "855890773827518466"].includes(reaction.emoji.id)
+      );
+    };
 
     message.channel
-      .send(
-        `${
-          message.author
-        }, você deve divorciar do(a) **\`${par}\`**?`
-      )
-      .then(async (msg) => {
-        for (let emoji of ['855890757873303572', '855890773827518466']) await msg.react(emoji);
-
-        msg
-          .awaitReactions(
-            (reaction, member) =>
-              member.id === message.author.id &&
-              ['855890757873303572', '855890773827518466'].includes(reaction.emoji.id),
-            { max: 1 }
-          )
+      .send(`${message.author}, você quer se divorciar do(a) **\`${par}\`**?`)
+      .then(async (msgReact) => {
+        for (let emoji of [emojis.Certo, emojis.Errado]) await msgReact.react(emoji);
+      
+        msgReact
+          .awaitReactions({ filter: filter, max: 1 })
           .then(async (collected) => {
-            if (collected.first().emoji.id === '855890757873303572') {
-              message.quote(
-                `${Emojis.Certo} - Você se divorciou com sucesso.`
-              );
+            if (collected.first().emoji.id === "855890757873303572") {
+              message.reply(`${emojis.Certo} **|** Você se divorciou com sucesso.`);
 
               await User.findOneAndUpdate(
                 { _id: message.author.id },
@@ -68,18 +63,15 @@ module.exports = class Divorce extends Command {
                   },
                 }
               );
+              return msgReact.delete();
 
-              return msg.delete();
             }
+      
+            if (collected.first().emoji.id === "855890773827518466") {
+              msgReact.delete();
 
-            if (collected.first().emoji.id === '855890773827518466') {
-              msg.delete();
-
-              return message.quote(
-                `${Emojis.Certo} - Divorcio cancelado!`
-              );
+              return message.reply(`${emojis.Certo} **|** Divorcio cancelado!`);
             }
           });
       });
-  }
-};
+  }}

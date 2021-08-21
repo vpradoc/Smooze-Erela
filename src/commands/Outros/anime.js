@@ -1,9 +1,8 @@
 const malScraper = require("mal-scraper");
-const translate = require("@iamtraction/google-translate");
 const moment = require("moment");
-const discord = require("discord.js");
 const Command = require("../../structures/Command.js");
-
+const ClientEmbed = require("../../structures/ClientEmbed.js");
+const Emojis = require('../../utils/Emojis')
 module.exports = class Anime extends Command {
   constructor(client) {
     super(client);
@@ -18,26 +17,25 @@ module.exports = class Anime extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
+  async run(message, args, prefix, author) {
     const search = args.join(" ");
 
     if (!search)
-      return message.quote(
-        `${Emojis.Errado} - Insira o nome do anime que deseja pesquisar.`
+      return message.reply(
+        `${Emojis.Errado} **|** Insira o nome do anime que deseja pesquisar.`
       );
 
     const data = await malScraper.getInfoFromName(search);
 
     const date = data.aired.split(" to ").map((x) => x.replace(",", ""));
 
-    const ANIME = new discord.MessageEmbed()
-      .setColor(process.env.EMBED_COLOR)
+    const ANIME = new ClientEmbed(author)
       .setDescription(`**[${data.title}](${data.url})**`)
       .setThumbnail(data.picture)
       .addFields(
         {
           name: `Episódios`,
-          value: data.episodes.toLocaleString(),
+          value: data.episodes.toLocaleString().replace("Unknown", "Em Produção"),
           inline: true,
         },
         {
@@ -101,9 +99,9 @@ module.exports = class Anime extends Command {
         true
       );
 
-    message.quote(message.author, ANIME).catch((err) => {
+    message.reply({ embeds: [ANIME] }).catch((err) => {
       console.log(err);
-      return message.quote(`${Emojis.Errado} - Anime não encontrado.`);
+      return message.reply(`${Emojis.Errado} **|** Anime não encontrado.`);
     });
   }
 };

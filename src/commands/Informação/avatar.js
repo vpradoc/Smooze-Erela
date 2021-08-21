@@ -1,6 +1,6 @@
-const discord = require("discord.js");
 const Command = require("../../structures/Command.js");
-const Emojis = require('../../utils/Emojis')
+const Emojis = require("../../utils/Emojis");
+const ClientEmbed = require("../../structures/ClientEmbed.js");
 
 module.exports = class Avatar extends Command {
   constructor(client) {
@@ -18,12 +18,12 @@ module.exports = class Avatar extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
-    const user = message.guild.member(
-      this.client.users.cache.get(args[0]) ||
-        message.mentions.members.first() ||
-        message.author
-    );
+  async run(message, args, prefix, author) {
+    const user =
+      message.guild.members.cache.get(args[0]) ||
+      message.mentions.members.first() ||
+      message.guild.members.cache.get(message.author.id)
+    
 
     const avatar = user.user.displayAvatarURL({
       dynamic: true,
@@ -31,19 +31,14 @@ module.exports = class Avatar extends Command {
       size: 2048,
     });
 
-    const EMBED = new discord.MessageEmbed()
+    const EMBED = new ClientEmbed(author)
 
       .setTitle(`${user.nickname ? user.nickname : user.user.username}`)
-      .setColor(process.env.EMBED_COLOR)
       .setDescription(
         `${Emojis.Camera} Clique **[aqui](${avatar})** para baixar o avatar.`
       )
-      .setImage(avatar)
-      .setFooter(
-        `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,
-        message.author.displayAvatarURL({ dynamic: true })
-      );
+      .setImage(avatar);
 
-    message.quote(EMBED);
+    message.reply({ embeds: [EMBED] });
   }
 };

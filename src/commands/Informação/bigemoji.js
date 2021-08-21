@@ -1,6 +1,6 @@
-const Discord = require("discord.js");
 const Command = require("../../structures/Command.js");
 const Emojis = require("../../utils/Emojis");
+const ClientEmbed = require("../../structures/ClientEmbed.js");
 
 module.exports = class Bigemoji extends Command {
   constructor(client) {
@@ -18,9 +18,11 @@ module.exports = class Bigemoji extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
+  async run(message, args, prefix, author) {
     if (!args[0])
-      return message.quote(`${Emojis.Errado} - Coloque um emoji para que eu consiga avaliar!`);
+      return message.reply(
+        `${Emojis.Errado} **|** Coloque um emoji para que eu consiga avaliar!`
+      );
 
     const emoji =
       message.guild.emojis.cache.find(
@@ -28,25 +30,16 @@ module.exports = class Bigemoji extends Command {
       ) || message.guild.emojis.cache.find((x) => x.name === `${args[0]}`);
 
     if (!emoji)
-      return message.quote(
-        `${Emojis.Errado} - Coloque um emoji válido para que eu consiga avaliar!`
+      return message.reply(
+        `${Emojis.Errado} **|** Coloque um emoji válido para que eu consiga avaliar!`
       );
 
     const image = emoji.url;
-    const IDENTIFICADOR = emoji.identifier;
-    const Nome = emoji.name;
-    const id = emoji.id;
-    const animado = emoji.animated;
-    const Tempo = emoji.createdAt;
-    const Embed = new Discord.MessageEmbed()
-      .setDescription(`**${Emojis.Dado} Aqui está seu emoji:**`)
-      .setColor(process.env.EMBED_COLOR)
-      .setImage(image)
-      .setFooter(
-        `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,
-        message.author.displayAvatarURL({ dynamic: true })
-      );
 
-    if (emoji) return message.quote(Embed);
+    const Embed = new ClientEmbed(author)
+      .setDescription(`**${Emojis.Dado} Aqui está seu emoji:**`)
+      .setImage(image);
+
+    if (emoji) return message.reply({ embeds: [Embed] });
   }
 };

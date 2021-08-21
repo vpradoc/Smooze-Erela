@@ -32,12 +32,12 @@ module.exports = class Manu extends Command {
             { _id: this.client.user.id },
             { $set: { manutenção: false} }
           );
-          return message.quote(
-            `${Emojis.Certo} - Fui retirado da manutenção com sucesso.`
+          return message.reply(
+            `${Emojis.Certo} » Fui retirado da manutenção com sucesso.`
           );
         } else {
-          message.quote(
-            `${Emojis.Certo} - Fui colocado em manutenção com sucesso.`
+          message.reply(
+            `${Emojis.Certo} » Fui colocado em manutenção com sucesso.`
           );
           await ClientS.findOneAndUpdate(
             { _id: this.client.user.id },
@@ -50,8 +50,8 @@ module.exports = class Manu extends Command {
     }
     if (args[0] == "set") {
       if (!args[1]) {
-        return message.quote(
-          `${Emojis.Errado} - Insira o nome do comando para prosseguir.`
+        return message.reply(
+          `${Emojis.Errado} » Insira o nome do comando para prosseguir.`
         );
       }
 
@@ -69,21 +69,21 @@ module.exports = class Manu extends Command {
               { _id: name },
               { $set: { manutenção: false} }
             );
-            return message.quote(
-              `${Emojis.Certo} - Retirei o comando **\`${name}\`** da manutenção com sucesso.`
+            return message.reply(
+              `${Emojis.Certo} » Retirei o comando **\`${name}\`** da manutenção com sucesso.`
             );
           } else {
             await CommandC.findOneAndUpdate(
               { _id: name },
               { $set: { manutenção: true} }
             );
-            return message.quote(
-              `${Emojis.Certo} - Coloquei o comando **\`${name}\`** em manutenção com sucesso.`
+            return message.reply(
+              `${Emojis.Certo} » Coloquei o comando **\`${name}\`** em manutenção com sucesso.`
             );
           }
         } else {
-          message.quote(
-            `${Emojis.Errado} - Não encontrei nenhum comando com o nome **\`${name}\`**.`
+          message.reply(
+            `${Emojis.Errado} » Não encontrei nenhum comando com o nome **\`${name}\`**.`
           );
         }
       });

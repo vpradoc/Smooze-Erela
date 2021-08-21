@@ -1,6 +1,5 @@
 const Command = require("../../structures/Command.js");
-const ClientEmbed = require('../../structures/ClientEmbed')
-const Emojis = require('../../utils/Emojis')
+const Emojis = require("../../utils/Emojis");
 module.exports = class GuildBanner extends Command {
   constructor(client) {
     super(client);
@@ -17,16 +16,21 @@ module.exports = class GuildBanner extends Command {
   }
 
   async run(message, args, prefix, author) {
-
-    if(!message.member.hasPermission('MANAGE_CHANNELS')) {
-        return message.quote(`${Emojis.Errado} - Você não tem a permissão (\`MANAGE_CHANNELS\`) necessária!`)
+    if (!message.member.permissions.has("MANAGE_CHANNELS")) {
+      return message.reply(
+        `${Emojis.Errado} **|** Você não tem a permissão necessária (\`MANAGE_CHANNELS\`)!`
+      );
     }
-    if(!message.guild.me.hasPermission('MANAGE_CHANNELS')) {
-        return message.quote(`${Emojis.Errado} - Eu não tenho a permissão para modificar canais!`)
-}
+    if (!message.guild.me.permissions.has("MANAGE_CHANNELS")) {
+      return message.reply(
+        `${Emojis.Errado} **|** Eu não tenho a permissão para modificar canais (\`MANAGE_CHANNELS\`)!`
+      );
+    }
 
-    message.quote(`${Emojis.Certo} - Canal bloqueado com sucesso!`)
-    await message.channel.updateOverwrite(message.channel.guild.roles.everyone, { VIEW_CHANNEL: true, SEND_MESSAGES: false })
-    
-}  
+    message.reply(`${Emojis.Certo} **|** Canal bloqueado com sucesso!`);
+    await message.channel.updateOverwrite(
+      message.channel.guild.roles.everyone,
+      { VIEW_CHANNEL: true, SEND_MESSAGES: false }
+    );
   }
+};

@@ -1,7 +1,7 @@
 const weather = require("weather-js");
 const Command = require("../../structures/Command.js");
-const Discord = require("discord.js");
-
+const ClientEmbed = require("../../structures/ClientEmbed.js");
+const Emojis = require("../../utils/Emojis");
 module.exports = class Clima extends Command {
   constructor(client) {
     super(client);
@@ -9,7 +9,7 @@ module.exports = class Clima extends Command {
 
     this.name = "clima";
     this.aliases = ["tempo"];
-    this.category = "Informação"
+    this.category = "Informação";
     this.description =
       "Comando para que eu envie informações do clima de uma cidade!";
     this.usage = "clima <cidade>";
@@ -18,60 +18,63 @@ module.exports = class Clima extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
+  async run(message, args, prefix, author) {
     weather.find(
       { search: args.join(" "), degreeType: "C" },
       function (error, result) {
-        // 'C' can be changed to 'F' for farneheit results
+        
         if (error) return;
-        if (!args[0])
-          return message.quote("Por favor, coloque um local!");
-
+        if (!args[0]) {
+          message.reply(`${Emojis.Errado} **|** Por favor, escolha uma cidade!`);
+        return}
         if (result === undefined || result.length === 0)
-          return message.quote("Localização inválida!");
+          return message.reply(`${Emojis.Errado} **|** Por favor, escolha uma cidade válida!`);
 
         var current = result[0].current;
         var location = result[0].location;
 
-        const weatherinfo = new Discord.MessageEmbed()
-          .setTitle(`:map:  Clima em \`${current.observationpoint}\``)
-          .setThumbnail(current.imageURL)
-          .setColor(
-            current.temperature < 20 ? "#00BFFF" : process.env.EMBED_COLOR
-          )
-          .addField(
-            "<:marcador:852537673511600138> Fuso Horário:",
-            `${location.timezone}`,
-            true
-          )
-          .addField("☁️ Sensação Térmica:", `${current.feelslike}°`, true)
-          .addField("🌡️ Unidade de Medida:", "Celsius", true)
-          .addField("💦 Umidade do Ar:", `${current.humidity}%`, true)
-          .addField(
-            "<:termometro:852534998430253126> Temperatura:",
-            `${current.temperature}°`,
-            true
-          )
-          .addField(
-            "🌪️ Ventos:",
-            current.winddisplay.replace(
-              "East",
-              "Leste",
-              "West",
-              "Oeste",
-              "North",
-              "Norte",
-              "South",
-              "Sul"
-            ),
-            true
-          )
-          .setFooter(
-            `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,
-            message.author.displayAvatarURL({ dynamic: true })
-          );
+        //----//
+        const cidade = current.observationpoint
+        const image = current.imageURL
+        const fuso = location.timezone
+        const sensação = current.feelslike+"°"
+        const medida = "Celsius"
+        const umidade = current.humidity
+        const temperatura = current.temperature
+        const ventos = current.winddisplay.replace(
+          "East",
+          "Leste",
+          "West",
+          "Oeste",
+          "North",
+          "Norte",
+          "South",
+          "Sul"
+        )
 
-        message.quote(weatherinfo);
+        const weatherinfo = new ClientEmbed(author)
+          
+         .setTitle(`${Emojis.Bussola} ${cidade}`)
+         .setThumbnail(image)
+         .addField(`${Emojis.Fuso} Fuso Horário:`,
+          fuso,
+          true
+        )
+        .addField(`${Emojis.Nuvem} Sensação Térmica:`, sensação, true)
+        .addField(`${Emojis.Celsius} Unidade de Medida:`, medida, true)
+        .addField(`${Emojis.Umidade} Umidade do AR:`, umidade, true)
+        .addField(
+          `${Emojis.Termometro} Temperatura:`,
+          temperatura,
+          true
+        )
+        .addField(
+          `${Emojis.Ventos} Ventos:`, ventos,
+          true
+        );
+          
+
+        message.reply({ embeds: [weatherinfo] });
       }
     );
   }

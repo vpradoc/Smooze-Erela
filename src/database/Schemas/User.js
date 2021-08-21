@@ -4,8 +4,6 @@ const Schema = mongoose.Schema;
 let userSchema = new Schema({
   _id: { type: String },
   blacklist: {type: Boolean, default: false},
-  coins: { type: Number, default: 0 },
-  daily: { type: Number, default: 0 },
   about: {type: String, default: "null"},
   gay: {type: String, default:'null'},
   marry: {

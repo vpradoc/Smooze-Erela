@@ -1,6 +1,6 @@
 const Command = require("../../structures/Command.js");
-const ClientEmbed = require('../../structures/ClientEmbed')
-const Emojis = require('../../utils/Emojis')
+const ClientEmbed = require("../../structures/ClientEmbed");
+const Emojis = require("../../utils/Emojis");
 module.exports = class GuildBanner extends Command {
   constructor(client) {
     super(client);
@@ -17,18 +17,19 @@ module.exports = class GuildBanner extends Command {
   }
 
   async run(message, args, prefix, author) {
-
-
-    if(message.guild.banner === null) {
-        return message.quote(`${Emojis.Errado} - Este servidor não conta com um banner!`)
-}
-
+    if (message.guild.banner === null) {
+      return message.reply(
+        `${Emojis.Errado} **|** Este servidor não conta com um banner!`
+      );
+    }
 
     const embed = new ClientEmbed(author)
-    .setTitle(`Banner de ${message.guild.name}`, message.guild.iconURL({dynamic: true}))
-    .setImage(`${message.guild.bannerURL({dynamic: true, size: 4096})}`)
-    
-    message.quote(embed)
-}  
-  }
+      .setTitle(
+        `Banner de ${message.guild.name}`,
+        message.guild.iconURL({ dynamic: true })
+      )
+      .setImage(`${message.guild.bannerURL({ dynamic: true, size: 4096 })}`);
 
+    message.reply({ embeds: [embed] });
+  }
+};

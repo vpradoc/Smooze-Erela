@@ -1,9 +1,9 @@
 const moment = require("moment");
 const discord = require("discord.js");
-const duration = require("moment-duration-format");
 const os = require("os");
 const Emojis = require("../../utils/Emojis");
 const Command = require("../../structures/Command.js");
+const ClientEmbed = require("../../structures/ClientEmbed.js");
 
 module.exports = class Botinfo extends Command {
   constructor(client) {
@@ -12,7 +12,7 @@ module.exports = class Botinfo extends Command {
 
     this.name = "botinfo";
     this.aliases = ["binfo", "bi"];
-    this.category = "Informação"
+    this.category = "Informação";
     this.description = "Comando para que eu envie as informações do BOT!";
     this.usage = "botinfo";
 
@@ -20,7 +20,7 @@ module.exports = class Botinfo extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
+  async run(message, args, prefix, author) {
     const inline = true;
     const botAvatar = this.client.user.displayAvatarURL();
     const date = this.client.user.createdAt;
@@ -33,8 +33,7 @@ module.exports = class Botinfo extends Command {
       .replace("minsutos", "minutos");
     const usersize = this.client.users.cache.size;
 
-    const embed = new discord.MessageEmbed()
-      .setColor("#FFFF00")
+    const embed = new ClientEmbed(author)
       .setThumbnail(botAvatar)
       .setAuthor(`Smooze`, this.client.user.displayAvatarURL())
       .addField(
@@ -44,13 +43,18 @@ module.exports = class Botinfo extends Command {
         } \n${Emojis.Calendario} Data da criação: **${formatDate(
           "DD/MM/YYYY",
           date
-        )}**\n${Emojis.Bust} Usuários: **${usersize}**\n${Emojis.Casa} Servidores: **${servsize}**`
+        )}**\n${Emojis.Bust} Usuários: **${usersize}**\n${
+          Emojis.Casa
+        } Servidores: **${servsize}**`
       )
       .addField(
         `**Informações Técnicas**`,
-        `${Emojis.DJs} Livraria: **Discord.Js - v${discord.version}** \n${
-          Emojis.Node
-        } Versão do Node: **[${process.version}](https://nodejs.org/en/)**\n${
+        `${Emojis.DJs} Livraria: **Discord.Js - v${discord.version.replace(
+          "13.0.0-dev.610b0b4.1625357028",
+          "13.0.0"
+        )}** \n${Emojis.Node} Versão do Node: **[${
+          process.version
+        }](https://nodejs.org/en/)**\n${
           Emojis.Uptime
         } Tempo online: **${uptime}**\n${Emojis.Engrenagem} RAM Usada: **${(
           process.memoryUsage().heapUsed /
@@ -65,20 +69,19 @@ module.exports = class Botinfo extends Command {
       .addField(
         `**Meu Convite**`,
         `**[Me coloque em seu servidor!](https://discord.com/oauth2/authorize?client_id=700681803098226778&permissions=20887631278&scope=bot)**`
-      )
-      .setFooter(
-        `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,
-        message.author.displayAvatarURL({ dynamic: true })
       );
 
-    message.quote(embed);
-  }}
-
-  function formatDate(template, date) {
-    var specs = 'YYYY:MM:DD:HH:mm:ss'.split(':')
-    date = new Date(date || Date.now() - new Date().getTimezoneOffset() * 6e4)
-    return date.toISOString().split(/[-:.TZ]/).reduce(function (template, item, i) {
-      return template.split(specs[i]).join(item)
-    }, template)
-  
+    message.reply({ embeds: [embed] });
+  }
 };
+
+function formatDate(template, date) {
+  var specs = "YYYY:MM:DD:HH:mm:ss".split(":");
+  date = new Date(date || Date.now() - new Date().getTimezoneOffset() * 6e4);
+  return date
+    .toISOString()
+    .split(/[-:.TZ]/)
+    .reduce(function (template, item, i) {
+      return template.split(specs[i]).join(item);
+    }, template);
+}

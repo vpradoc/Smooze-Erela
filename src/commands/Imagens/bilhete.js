@@ -1,4 +1,3 @@
-
 const Command = require("../../structures/Command");
 const { loadImage, registerFont, createCanvas } = require("canvas");
 registerFont("src/assets/fonts/Montserrat-Black.ttf", { family: "Montserrat" });
@@ -10,8 +9,6 @@ registerFont("src/assets/fonts/arial.ttf", { family: "Arial" });
 registerFont("src/assets/fonts/Segoe UI Black.ttf", {
   family: "Segoe UI Black",
 });
-const Utils = require("../../utils/Util");
-const Emojis = require("../../utils/Emojis");
 
 const { MessageAttachment, Util } = require("discord.js");
 
@@ -24,8 +21,7 @@ module.exports = class Bilhete extends Command {
     this.category = "Imagens";
     this.description = "Quando teu amigo de escola te manda a cola errada...";
     this.usage = "bilhete <@user>";
-    this.aliases = ['cola']
-
+    this.aliases = ["cola"];
 
     this.enabled = true;
     this.guildOnly = true;
@@ -37,31 +33,28 @@ module.exports = class Bilhete extends Command {
       message.mentions.users.first() ||
       message.author;
 
-      const canvas = createCanvas(400, 378);
-      const ctx = canvas.getContext("2d");
+    const canvas = createCanvas(400, 378);
+    const ctx = canvas.getContext("2d");
 
     //========================// Import BreakLines //========================//
 
-
     const avatar = await loadImage(
-        USER.displayAvatarURL({ format: "png", size: 2048 })
-      );
-      ctx.drawImage(avatar, 182, 215, 145, 105);
+      USER.displayAvatarURL({ format: "png", size: 2048 })
+    );
+    ctx.drawImage(avatar, 182, 215, 145, 105);
 
-     
-      //========================// Import Background //========================//
+    //========================// Import Background //========================//
 
-      const background = await loadImage("./src/assets/img/png/bilhete.png");
-      ctx.drawImage(background, 0, 0, 400, 378);
+    const background = await loadImage("./src/assets/img/png/bilhete.png");
+    ctx.drawImage(background, 0, 0, 400, 378);
 
+    //========================// Create Image //========================//
 
-      //========================// Create Image //========================//
+    const attach = new MessageAttachment(
+      canvas.toBuffer(),
+      `SmoozeProfile_.png`
+    );
 
-      const attach = new MessageAttachment(
-        canvas.toBuffer(),
-        `SmoozeProfile_.png`
-      );
-
-      message.quote(attach);
-    };
-}
+    message.reply({files: [attach]});
+  }
+};

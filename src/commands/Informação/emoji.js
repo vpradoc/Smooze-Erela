@@ -1,6 +1,6 @@
-const Discord = require("discord.js");
 const Command = require("../../structures/Command.js");
 const Emojis = require("../../utils/Emojis");
+const ClientEmbed = require("../../structures/ClientEmbed.js");
 
 module.exports = class Emoji extends Command {
   constructor(client) {
@@ -8,8 +8,8 @@ module.exports = class Emoji extends Command {
     this.client = client;
 
     this.name = "emoji";
-    this.aliases = ['emojiinfo'];
-    this.category = "Informação"
+    this.aliases = ["emojiinfo"];
+    this.category = "Informação";
     this.description = "Comando para que eu envie informações de um emoji!";
     this.usage = "emoji <emoji>";
 
@@ -17,10 +17,10 @@ module.exports = class Emoji extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
+  async run(message, args, prefix, author) {
     if (!args[0])
-      return message.quote(
-        `${Emojis.Errado} - Coloque um emoji válido para que eu consiga avaliar!`
+      return message.reply(
+        `${Emojis.Errado} **|** Coloque um emoji válido para que eu consiga avaliar!`
       );
 
     const emoji =
@@ -29,8 +29,8 @@ module.exports = class Emoji extends Command {
       ) || message.guild.emojis.cache.find((x) => x.name === `${args[0]}`);
 
     if (!emoji)
-      return message.quote(
-        `${Emojis.Errado} - Coloque um emoji válido para que eu consiga avaliar!`
+      return message.reply(
+        `${Emojis.Errado} **|** Coloque um emoji válido para que eu consiga avaliar!`
       );
 
     const image = emoji.url;
@@ -39,13 +39,8 @@ module.exports = class Emoji extends Command {
     const id = emoji.id;
     const animado = emoji.animated;
     const Tempo = emoji.createdAt;
-    const Embed = new Discord.MessageEmbed()
+    const Embed = new ClientEmbed(author)
       .setTitle(`Aqui estão as informações de **${Nome}**`)
-      .setFooter(
-        `Pedido por ${message.author.tag}`,
-        message.author.displayAvatarURL
-      )
-      .setColor(process.env.EMBED_COLOR)
       .setThumbnail(image)
       .addField(`${Emojis.Robo} **Nome:**`, `${Nome}`, true)
       .addField(`${Emojis.Id} **ID:**`, `${id}`, true)
@@ -54,17 +49,17 @@ module.exports = class Emoji extends Command {
         `${emoji.animated !== true ? `Não` : "Sim"}`,
         false
       )
-      .addField(`${Emojis.Id} **Identificador:**`, `\`<:${IDENTIFICADOR}>\``, true)
+      .addField(
+        `${Emojis.Id} **Identificador:**`,
+        `\`<:${IDENTIFICADOR}>\``,
+        true
+      )
       .addField(
         `${Emojis.Calendario} **Data da criação:**`,
         dateformat("DD/MM/YYYY, às HH:mm:ss", Tempo)
-      )
-      .setFooter(
-        `Pedido por: ${message.author.tag} || ID: ${message.author.id}`,
-        message.author.displayAvatarURL({ dynamic: true })
       );
 
-    if (emoji) return message.quote(Embed);
+    if (emoji) return message.reply({ embeds: [Embed] });
 
     function dateformat(template, date) {
       var specs = "YYYY:MM:DD:HH:mm:ss".split(":");
@@ -74,7 +69,7 @@ module.exports = class Emoji extends Command {
       return date
         .toISOString()
         .split(/[-:.TZ]/)
-        .reduce( function (template, item, i) {
+        .reduce(function (template, item, i) {
           return template.split(specs[i]).join(item);
         }, template);
     }

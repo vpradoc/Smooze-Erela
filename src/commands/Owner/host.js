@@ -1,9 +1,10 @@
-const discord = require("discord.js");
 const moment = require("moment");
-const duration = require("moment-duration-format");
 const os = require("os");
 const Command = require("../../structures/Command.js");
 const Emojis = require("../../utils/Emojis");
+const ClientEmbed = require("../../structures/ClientEmbed.js");
+const { version } = require("moment");
+const Guild = require('../../database/Schemas/Guild')
 
 module.exports = class Host extends Command {
   constructor(client) {
@@ -20,48 +21,34 @@ module.exports = class Host extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
+  async run(message, args, prefix, author) {
+    if (message.author.id !== "680943469228982357") return;
+
+    const startDB = process.hrtime();
+    await Guild
+      .findOne({ _id: message.guild.id })
+      .then((x) => x.prefix);
+    const stopDB = process.hrtime(startDB);
+    const pingdb = Math.round((stopDB[0] * 1e9 + stopDB[1]) / 1e6) + "ms";
+
+    const nome = os.hostname
+
     const uptime = moment
       .duration(this.client.uptime)
       .format("h [horas] m [minutos] e s [segundos]")
       .replace("minsutos", "minutos");
 
-    const Embed = new discord.MessageEmbed()
-      .setColor("#FFFF00")
-      .setTitle(`Informações da Hospedagem`)
-      .setThumbnail(`${this.client.user.displayAvatarURL()}`)
-      .addField(
-        `${Emojis.Heroku} **HOST**`,
-        `\`\`\`\n(${os.hostname})\`\`\``,
-        false
-      )
-      .addField(
-        `${Emojis.Engrenagem} **RAM Usada**`,
-        `\`\`\`\n${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(
-          2
-        )} MB\`\`\``,
-        true
-      )
-      .addField(
-        `${Emojis.Linux} **Sistema Operacional**`,
-        `\`\`\`\n${os.platform}  Versão: ${os.release}\`\`\``,
-        true
-      )
-      .addField(
-        `${Emojis.Cama} **Estou acordado à**`,
-        `\`\`\`\n${uptime}\`\`\``,
-        true
-      )
-      .addField(
-        `${Emojis.Wifi} **Ping**`,
-        `\`\`\`\n${this.client.ws.ping}ms\`\`\``
-      )
-      .setTimestamp()
-      .setFooter(
-        `Pedido por ${message.author.username}`,
-        message.author.displayAvatarURL()
-      );
+    const ram = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(
+      2
+    )
+    const SO = os.platform
+    const version = os.release
+    const ping = this.client.ws.ping + "ms"
 
-    message.quote(Embed);
+    const Embed = new ClientEmbed(author)
+      .setTitle(`${Emojis.Toy} Dados da Operação:`)
+      .setThumbnail(`${this.client.user.displayAvatarURL({size: 2048})}`)
+      .setDescription(`${Emojis.Id} **ID DO SISTEMA:**\n\`${nome}\`\n${Emojis.Uptime} **TEMPO DE FUNCIONAMENTO:**\n${uptime}\n${Emojis.Engrenagem} **RAM USADA:**\n\`${ram}\`\n${Emojis.Linux} **SISTEMA OPERACIONAL:**\n\`${SO} v${version}\`\n${Emojis.Wifi} **PING:**\n\`${ping}\`\n\n${Emojis.DB} **DATABASE:**\n${Emojis.Dado} **PING:**\n\`${pingdb}\``)
+    message.reply({ embeds: [Embed] });
   }
 };

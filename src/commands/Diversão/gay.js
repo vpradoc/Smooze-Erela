@@ -1,6 +1,6 @@
-const Discord = require("discord.js");
 const User = require("../../database/Schemas/User");
 const Command = require("../../structures/Command.js");
+const ClientEmbed = require("../../structures/ClientEmbed.js");
 
 module.exports = class Entrada extends Command {
   constructor(client) {
@@ -16,27 +16,24 @@ module.exports = class Entrada extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
-    const pessoa = message.guild.member(
-      this.client.users.cache.get(args[0]) ||
-        message.mentions.members.first() ||
-        message.author
-    );
+  async run(message, args, prefix, author) {
+    const pessoa = 
+      message.guild.members.cache.get(args[0]) ||
+      message.mentions.members.first() ||
+      message.guild.members.cache.get(message.author.id)
 
     User.findOne({ _id: pessoa.id }, async function (err, user) {
       const randomnumber = Math.floor(Math.random() * 100);
 
-      const embed1 = new Discord.MessageEmbed()
-        .setColor(process.env.EMBED_COLOR)
-        .setDescription(
-          `🌈 | ${message.author} - Eu acho o(a) **${
-            pessoa.nickname !== null
-              ? `${pessoa.nickname}`
-              : `${pessoa.user.username}`
-          }** ${randomnumber}% gay!`
-        );
+      const embed1 = new ClientEmbed(author).setDescription(
+        `🌈 | ${message.author} **|** Eu acho o(a) **${
+          pessoa.nickname !== null
+            ? `${pessoa.nickname}`
+            : `${pessoa.user.username}`
+        }** ${randomnumber}% gay!`
+      );
 
-      const embed2 = new Discord.MessageEmbed()
+      const embed2 = new ClientEmbed(author)
         .setColor(process.env.EMBED_COLOR)
         .setDescription(
           `🌈 - Eu acho o(a) **${
@@ -47,13 +44,13 @@ module.exports = class Entrada extends Command {
         );
 
       if (user.gay == "null") {
-        message.quote(embed1);
+        message.reply({ embeds: [embed1] });
         await User.findOneAndUpdate(
           { _id: pessoa.id },
           { $set: { gay: randomnumber } }
         );
       } else {
-        message.quote(embed2);
+        message.reply({ embeds: [embed2] });
       }
     });
   }

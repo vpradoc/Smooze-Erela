@@ -22,22 +22,30 @@ module.exports = class About extends Command {
 
     User.findOne({ _id: author.id }, async (err, usuario) => {
 
-      if (about === "null") {
-        return message.quote(`${Emojis.Errado} - Coloque algo válido!`);
+      if (about === "reset") {
+        message.reply(`${Emojis.Certo} **|** Biografia resetada com sucesso!`);
+        await User.findOneAndUpdate(
+          { _id: message.author.id },
+          { $set: { about: `O Smooze é muito legal! Sabia que usando ${prefix}sobre <msg> você pode mudar essa mensagem?!` } }
+        );
+      return
+      }
+      else if (about === "null") {
+        return message.reply(`${Emojis.Errado} **|** Coloque algo válido!`);
       } else if (!about) {
-        return message.quote(
-          `${Emojis.Errado} - Você não inseriu o que deseja colocar em sua biografia.`
+        return message.reply(
+          `${Emojis.Errado} **|** Você não inseriu o que deseja colocar em sua biografia.`
         );
       } else if (about.length > 210) {
-        return message.quote(
-          `${Emojis.Errado} - A sua biografia deve ter menos de 210 caracteres.`
+        return message.reply(
+          `${Emojis.Errado} **|** A sua biografia deve ter menos de 210 caracteres.`
         );
       } else if (usuario.about == about) {
-        return message.quote(
-          `${Emojis.Errado} - A biografia que você inseriu é a mesma setada atualmente.`
+        return message.reply(
+          `${Emojis.Errado} **|** A biografia que você inseriu é a mesma setada atualmente.`
         );
       } else
-        message.quote(`${Emojis.Certo} - Seu sobre foi alterado com sucesso.`);
+        message.reply(`${Emojis.Certo} **|** Seu sobre foi alterado com sucesso.`);
       await User.findOneAndUpdate(
         { _id: message.author.id },
         { $set: { about: about } }

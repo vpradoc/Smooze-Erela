@@ -1,7 +1,6 @@
 const Command = require("../../structures/Command.js");
-const User = require("../../database/Schemas/User");
 const Emojis = require("../../utils/Emojis.js");
-const path = require('path')
+const path = require("path");
 module.exports = class Blacklist extends Command {
   constructor(client) {
     super(client);
@@ -17,23 +16,23 @@ module.exports = class Blacklist extends Command {
   }
 
   async run(message, args, prefix) {
+    if (message.author.id !== '680943469228982357') return;
+    
     if (!args[0])
-      return message.quote(
-        `${Emojis.Errado} - Você precisa inserir um comando para dar reload.`
+      return message.reply(
+        `${Emojis.Errado} » Você precisa inserir um comando para dar reload.`
       );
     const cmd =
       this.client.commands.get(args[0]) ||
       this.client.commands.get(this.client.aliases.get(args[0]));
     if (!cmd)
-      return message.quote(
-        `${Emojis.Errado} - Você precisa inserir um comando para dar reload.`
+      return message.reply(
+        `${Emojis.Errado} » Você precisa inserir um comando para dar reload.`
       );
     const cmdname = cmd.name;
     const cmdFile = path.parse(`../../commands/${cmd.category}/${cmdname}.js`);
     if (!cmdFile.ext || cmdFile.ext !== ".js")
-      return message.quote(
-        `${Emojis.Errado} - Isso não é um comando.`
-      );
+      return message.reply(`${Emojis.Errado} » Isso não é um comando.`);
     await this.client.commands.delete(cmdname);
     const reload = async (commandPath, commandName) => {
       let props = new (require(`${commandPath}/${commandName}`))(this);
@@ -43,8 +42,8 @@ module.exports = class Blacklist extends Command {
     };
     const response = reload(cmdFile.dir, `${cmdFile.name}${cmdFile.ext}`);
     if (response)
-      return message.quote(
-        `${Emojis.Certo} -  O comando **${cmdname}** foi recarregado com sucesso.`
+      return message.reply(
+        `${Emojis.Certo} »  O comando **${cmdname}** foi recarregado com sucesso.`
       );
   }
 };

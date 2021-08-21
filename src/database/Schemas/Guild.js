@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 let guildSchema = new Schema({
     _id: {type: String, required: true},
-    prefix: {type: String, default: "s."},
+    prefix: {type: String, default: "sp."},
     entrada: {
         modelo: {type: String, default: "null"},
         status: {type: Boolean, default: false},

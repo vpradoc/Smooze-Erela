@@ -1,7 +1,7 @@
-const Discord = require("discord.js");
 const Command = require("../../structures/Command.js");
 const Emojis = require("../../utils/Emojis");
-
+const ClientEmbed = require("../../structures/ClientEmbed.js");
+const { MessageEmbed, MessageButton, MessageActionRow} = require('discord.js')
 module.exports = class Spotify extends Command {
   constructor(client) {
     super(client);
@@ -9,7 +9,7 @@ module.exports = class Spotify extends Command {
 
     this.name = "spotify";
     this.aliases = ["sptf"];
-    this.category = "Informação"
+    this.category = "Informação";
     this.description =
       "Comando para que eu envie informações da musica que um usuário está ouvindo!";
     this.usage = "spotify <user>";
@@ -18,15 +18,15 @@ module.exports = class Spotify extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
+  async run(message, args, prefix, author) {
     const user =
       message.mentions.users.first() ||
       this.client.users.cache.get(args[0]) ||
       message.author;
 
     if (!user.presence.activities.find((f) => f.name === "Spotify")) {
-      return message.quote(
-        `${Emojis.Errado} - Este membro não está escutando nenhuma música no **Spotify** no momento, ou então está usando um status personalizado.`
+      return message.reply(
+        `${Emojis.Errado} **|** Este membro não está escutando nenhuma música no **Spotify** no momento, ou então está usando um status personalizado.`
       );
     } else {
       if (user.presence.activities.find((x) => x.name === "Spotify")) {
@@ -41,13 +41,11 @@ module.exports = class Spotify extends Command {
         let trackAlbum = spotify.assets.largeText;
         let trackTIME = spotify.timestamps.end - spotify.timestamps.start;
 
-        const embed = new Discord.MessageEmbed()
+        const embed = new ClientEmbed(author)
           .setAuthor(
             `Informações da música que o ${user.username} está ouvindo agora`
           )
-          .setColor(process.env.EMBED_COLOR)
           .setThumbnail(`${trackIMG}`)
-          .setTimestamp()
           .addField(`${Emojis.Fone} Música: `, `${trackName}`, true)
           .addField(`${Emojis.Disco} Álbum:`, `${trackAlbum}`, true)
           .addField(`${Emojis.Microfone} Autor: `, `${trackAuthor}`, false)
@@ -55,13 +53,11 @@ module.exports = class Spotify extends Command {
             "<:spotify:797207602513575967> Ouça no Spotify: ",
             `Clique **[aqui](${trackURL})** para escutar junto!`,
             false
-          )
-          .setFooter(
-            `Pedido por ${message.author.username}`,
-            message.author.avatarURL()
           );
+        
+           message.reply({embeds: [embed]})
 
-        message.quote(embed);
+        
       }
     }
   }

@@ -11,7 +11,4 @@ module.exports = class ClientEmbed extends Discord.MessageEmbed {
           );
 
     }
-
-
-
 }

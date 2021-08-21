@@ -1,47 +1,49 @@
-const discord = require('discord.js')
-const Command = require('../../structures/Command.js')
-const Emojis = require('../../utils/Emojis')
+const Command = require("../../structures/Command.js");
+const Emojis = require("../../utils/Emojis");
 module.exports = class RenameChannel extends Command {
-    constructor(client) {
-      super(client);
-      this.client = client;
-  
-      this.name = "renamechannel";
-      this.category = "Moderação";
-      this.description = "Comando para que eu renomeie um canal!";
-      this.usage = "renamechannel <id/menção>";
-  
-      this.enabled = true;
-      this.guild = true;
-    }
-  
-    async run(message, args, prefix) {
+  constructor(client) {
+    super(client);
+    this.client = client;
 
-    if (!message.member.hasPermission('MANAGE_CHANNELS'))
-        return message.reply(`${Emojis.Errado} - Você não tem as permissões necessárias para **RENOMEAR** canais!`)
+    this.name = "renamechannel";
+    this.category = "Moderação";
+    this.description = "Comando para que eu renomeie um canal!";
+    this.usage = "renamechannel <id/menção>";
 
-    if (!message.guild.me.hasPermission('MANAGE_CHANNELS'))
-        return message.reply(`${Emojis.Errado} - Eu não tenho as permissões necessárias para **RENOMEAR** canais!`)
+    this.enabled = true;
+    this.guild = true;
+  }
 
-        const canal = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]) 
+  async run(message, args, prefix, author) {
+
+    const user1 = message.author
+
+    if (!message.member.permissions.has("MANAGE_CHANNELS"))
+      return message.reply(
+        `${Emojis.Errado} **|** Você não tem as permissões necessárias para **RENOMEAR** canais!`
+      );
+
+    if (!message.guild.me.permissions.has("MANAGE_CHANNELS"))
+      return message.reply(
+        `${Emojis.Errado} **|** Eu não tenho as permissões necessárias para **RENOMEAR** canais!`
+      );
+
+    const canal =
+      message.mentions.channels.first() ||
+      message.guild.channels.cache.get(args[0]);
 
     if (!canal)
-        return message.reply(`${Emojis.Errado} - Por favor, coloque o **ID/NOME** de um canal para ser renomeado!`)
+      return message.reply(
+        `${Emojis.Errado} **|** Por favor, coloque o **ID/NOME** de um canal para ser renomeado!`
+      );
 
-        await message.channel.send(
-            "> Escreva o nome do canal abaixo:\n> Tempo de Resposta:`1 minuto`"
-          );
-    
-          var nome = message.channel.createMessageCollector(
-            (x) => x.author.id == message.author.id,
-            { time: 60000 * 2, max: 1 }
-          );
 
-          nome.on("collect", async (c) => {
-            nome = c.content;
-         
-          canal.setName(nome)
-          await message.reply(`${Emojis.Certo} - Canal renomeado com sucesso!`)
-        });
-        }
+    const nome = args.slice(1).join(' ')
+    if(!nome) {
+    return message.reply(`${Emojis.Errado} **|** Por favor, escolha o nome do canal!`)
     }
+      canal.setName(nome);
+
+      await message.reply(`${Emojis.Certo} **|** Canal renomeado com sucesso!`)
+    }}
+    

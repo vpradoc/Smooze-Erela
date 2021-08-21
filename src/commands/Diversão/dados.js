@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const mongoose = require("mongoose");
-const User = require("../../database/Schemas/User");
 const Emojis = require("../../utils/Emojis");
 const Command = require("../../structures/Command.js");
 
@@ -21,8 +18,8 @@ module.exports = class Dados extends Command {
   async run(message, args, prefix) {
     const result = Math.floor(Math.random() * 6);
 
-    message.quote(
-      `${Emojis.Dado} - Você jogou os dados e obteve como resultado o número **${result}**`
+    message.reply(
+      `${Emojis.Dado} **|** Você jogou os dados e obteve como resultado o número **${result}**`
     );
   }
 };

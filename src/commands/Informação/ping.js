@@ -1,13 +1,14 @@
 const Command = require("../../structures/Command.js");
-const ws = require('ws')
-const Emojis = require('../../utils/Emojis.js')
+const Emojis = require("../../utils/Emojis.js");
+const User = require("../../database/Schemas/User");
+
 module.exports = class Ping extends Command {
   constructor(client) {
     super(client);
     this.client = client;
 
     this.name = "ping";
-    this.category = "Informação"
+    this.category = "Informação";
     this.description = "Comando para que eu envie informações sobre meu ping!";
     this.usage = "ping";
 
@@ -15,14 +16,21 @@ module.exports = class Ping extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
+  async run(message, args, prefix, author) {
 
-    message.channel.send(`${Emojis.Wifi} - Calculando!`).then(m =>{
+    const start = process.hrtime()
+    const doc = await User.findOne({_id: message.author.id});
+    const name = doc.name
+    const stop = process.hrtime(start)
+    const pingm = Math.round((stop[0] * 1e9 + stop[1]) / 1e6)
+
+    message.channel.send(`${Emojis.Wifi} **|** Calculando!`).then((m) => {
       var ping = m.createdTimestamp - message.createdTimestamp;
       var botPing = Math.round(this.client.pi);
 
-      m.edit(`**${Emojis.Smooze} | Meu ping:** \`${ping}\`ms\n**${Emojis.Heroku} | Heroku:** \`${this.client.ws.ping}\`ms`);
-  });
-
+      m.edit(
+        `**🏓 | Meu ping:** \`${ping}\`ms\n**${Emojis.Wifi} | MongoDB:** \`${pingm}\`ms`
+      );
+    });
   }
 };

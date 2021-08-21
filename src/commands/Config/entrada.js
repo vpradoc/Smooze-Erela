@@ -1,7 +1,7 @@
-const discord = require("discord.js");
 const Emojis = require("../../utils/Emojis");
 const Guild = require("../../database/Schemas/Guild");
 const Command = require("../../structures/Command.js");
+const ClientEmbed = require("../../structures/ClientEmbed.js");
 
 module.exports = class Entrada extends Command {
   constructor(client) {
@@ -19,10 +19,10 @@ module.exports = class Entrada extends Command {
     this.guild = true;
   }
 
-  async run(message, args, prefix) {
-    if (!message.member.hasPermission("MANAGE_GUILD"))
-      return message.quote(
-        `${Emojis.Errado} - Você precisa da permissão \`MANAGE_GUILD\` para executar o comando!`
+  async run(message, args, prefix, author) {
+    if (!message.member.permissions.has("MANAGE_GUILD"))
+      return message.reply(
+        `${Emojis.Errado} **|** Você precisa da permissão \`MANAGE_GUILD\` para executar o comando!`
       );
 
     Guild.findOne({ _id: message.guild.id }, async (err, server) => {
@@ -32,16 +32,16 @@ module.exports = class Entrada extends Command {
           message.guild.channels.cache.find((x) => x.id == args[1]);
 
         if (!canal) {
-          return message.quote(
-            `${Emojis.Errado} - Por favor escolha um canal para que seja setado o sistema!`
+          return message.reply(
+            `${Emojis.Errado} **|** Por favor escolha um canal para que seja setado o sistema!`
           );
         } else if (canal.id === server.entrada.channel) {
-          return message.quote(
-            `${Emojis.Errado} - O canal escolhido já está em uso!`
+          return message.reply(
+            `${Emojis.Errado} **|** O canal escolhido já está em uso!`
           );
         } else {
-          message.quote(
-            `${Emojis.Certo} - O canal **<#${canal.id}>** receberá as mensagens de entrada apartir de agora!`
+          message.reply(
+            `${Emojis.Certo} **|** O canal **<#${canal.id}>** receberá as mensagens de entrada apartir de agora!`
           );
           await Guild.findOneAndUpdate(
             { _id: message.guild.id },
@@ -57,20 +57,20 @@ module.exports = class Entrada extends Command {
         const options = ["mensagem", "embed", "card"];
 
         if (!options.some((x) => x === tipo.toLowerCase())) {
-          return message.quote(
-            `${Emojis.Errado} - Por favor escolha um tipo de mensagem válido **<embed/mensagem/card>**!`
+          return message.reply(
+            `${Emojis.Errado} **|** Por favor escolha um tipo de mensagem válido **<embed/mensagem/card>**!`
           );
         } else if (!tipo) {
-          return message.quote(
-            `${Emojis.Errado} - Por favor escolha um tipo de mensagem **<embed/mensagem/card>**.`
+          return message.reply(
+            `${Emojis.Errado} **|** Por favor escolha um tipo de mensagem **<embed/mensagem/card>**.`
           );
         } else if (tipo === server.entrada.modelo) {
-          return message.quote(
-            `${Emojis.Errado} - O tipo de mensagem escolhido já está em uso!`
+          return message.reply(
+            `${Emojis.Errado} **|** O tipo de mensagem escolhido já está em uso!`
           );
         } else {
-          message.quote(
-            `${Emojis.Certo} - Agora as mensagens de entrada serão no formato ${tipo}!`
+          message.reply(
+            `${Emojis.Certo} **|** Agora as mensagens de entrada serão no formato ${tipo}!`
           );
           await Guild.findOneAndUpdate(
             { _id: message.guild.id },
@@ -78,14 +78,13 @@ module.exports = class Entrada extends Command {
           );
         }
         if (tipo === "embed") {
-          const embedconfig = new discord.MessageEmbed()
-            .setColor(process.env.EMBED_COLOR)
+          const embedconfig = new ClientEmbed(author)
             .setTitle(`Configuração da Embed`)
             .addField(
               `Os utilitários do \`${server.prefix}entrada help\` podem ser aplicados!`,
               `**${server.prefix}entrada avatar** - Adiciona o avatar do membro na embed\n**${server.prefix}entrada titulo** - Muda o título da embed\n**${server.prefix}entrada description** - Define uma mensagem para a embed\n**${server.prefix}entrada imagem** - Define uma imagem para a embed!`
             );
-          return message.quote(embedconfig);
+          return message.reply({ embeds: [embedconfig] });
         }
         return;
       }
@@ -94,20 +93,20 @@ module.exports = class Entrada extends Command {
         let msg = args.slice(1).join(" ");
 
         if (!msg) {
-          return message.quote(
-            `${Emojis.Errado} - Você não inseriu nenhuma mensagem!`
+          return message.reply(
+            `${Emojis.Errado} **|** Você não inseriu nenhuma mensagem!`
           );
         } else if (msg.lenght > 100) {
           return message.chennel.send(
-            `${Emojis.Errado} - A mensagem escolhida é muito grande! O limite é de 100 caracteres.`
+            `${Emojis.Errado} **|** A mensagem escolhida é muito grande! O limite é de 100 caracteres.`
           );
         } else if (msg === server.entrada.msg) {
-          return message.quote(
-            `${Emojis.Errado} - A mensagem escolhida já está em uso!`
+          return message.reply(
+            `${Emojis.Errado} **|** A mensagem escolhida já está em uso!`
           );
         } else {
-          message.quote(
-            `${Emojis.Certo} - A mensagem foi alterada para \`\`\`diff\n- ${msg}\`\`\``
+          message.reply(
+            `${Emojis.Certo} **|** A mensagem foi alterada para \`\`\`diff\n- ${msg}\`\`\``
           );
           await Guild.findOneAndUpdate(
             { _id: message.guild.id },
@@ -122,17 +121,15 @@ module.exports = class Entrada extends Command {
         const imagem = args[1];
 
         if (server.entrada.modelo !== "embed") {
-          return message.quote(
-            `${Emojis.Errado} - O sistema de entrada deve estar em formato \`embed\`!`
+          return message.reply(
+            `${Emojis.Errado} **|** O sistema de entrada deve estar em formato \`embed\`!`
           );
         } else if (imagem === server.entrada.embedimage) {
-          return message.quote(
-            `${Emojis.Errado} - A imagem escolhida já se encontra em uso!`
+          return message.reply(
+            `${Emojis.Errado} **|** A imagem escolhida já se encontra em uso!`
           );
         } else {
-          message.quote(
-            `${Emojis.Certo} - Imagem definida com sucesso!`
-          );
+          message.reply(`${Emojis.Certo} **|** Imagem definida com sucesso!`);
           await Guild.findOneAndUpdate(
             { _id: message.guild.id },
             { $set: { "entrada.embedimage": imagem } }
@@ -143,17 +140,15 @@ module.exports = class Entrada extends Command {
 
       if (args[0] == "avatar") {
         if (server.entrada.modelo !== "embed") {
-          return message.quote(
-            `${Emojis.Errado} - O sistema de entrada deve estar em formato \`embed\`!`
+          return message.reply(
+            `${Emojis.Errado} **|** O sistema de entrada deve estar em formato \`embed\`!`
           );
         } else if (server.entrada.embedavatar) {
-          return message.quote(
-            `${Emojis.Errado} - O sistema já se encontra ativo!`
+          return message.reply(
+            `${Emojis.Errado} **|** O sistema já se encontra ativo!`
           );
         } else {
-          message.quote(
-            `${Emojis.Certo} - O sistema foi ativado com sucesso!`
-          );
+          message.reply(`${Emojis.Certo} **|** O sistema foi ativado com sucesso!`);
           await Guild.findOneAndUpdate(
             { _id: message.guild.id },
             { $set: { "entrada.embedavatar": true } }
@@ -163,27 +158,27 @@ module.exports = class Entrada extends Command {
       }
       if (args[0] == "titulo") {
         if (server.entrada.modelo !== "embed") {
-          return message.quote(
-            `${Emojis.Errado} - O sistema de entrada deve estar em formato \`embed\`!`
+          return message.reply(
+            `${Emojis.Errado} **|** O sistema de entrada deve estar em formato \`embed\`!`
           );
         }
         let titulo = args.slice(1).join(" ");
 
         if (!titulo) {
-          return message.quote(
-            `${Emojis.Errado} - Você não inseriu nenhuma mensagem!`
+          return message.reply(
+            `${Emojis.Errado} **|** Você não inseriu nenhuma mensagem!`
           );
         } else if (titulo.lenght > 30) {
           return message.chennel.send(
-            `${Emojis.Errado} - A mensagem escolhida é muito grande! O limite é de 30 caracteres.`
+            `${Emojis.Errado} **|** A mensagem escolhida é muito grande! O limite é de 30 caracteres.`
           );
         } else if (titulo === server.entrada.embedtitulo) {
-          return message.quote(
-            `${Emojis.Errado} - A mensagem escolhida já está em uso!`
+          return message.reply(
+            `${Emojis.Errado} **|** A mensagem escolhida já está em uso!`
           );
         } else {
-          message.quote(
-            `${Emojis.Certo} - A mensagem foi alterada para \`\`\`diff\n- ${titulo}\`\`\``
+          message.reply(
+            `${Emojis.Certo} **|** A mensagem foi alterada para \`\`\`diff\n- ${titulo}\`\`\``
           );
           await Guild.findOneAndUpdate(
             { _id: message.guild.id },
@@ -195,27 +190,27 @@ module.exports = class Entrada extends Command {
 
       if (args[0] == "description") {
         if (server.entrada.modelo !== "embed") {
-          return message.quote(
-            `${Emojis.Errado} - O sistema de entrada deve estar em formato \`embed\`!`
+          return message.reply(
+            `${Emojis.Errado} **|** O sistema de entrada deve estar em formato \`embed\`!`
           );
         }
         let descrição = args.slice(1).join(" ");
 
         if (!descrição) {
-          return message.quote(
-            `${Emojis.Errado} - Você não inseriu nenhuma mensagem!`
+          return message.reply(
+            `${Emojis.Errado} **|** Você não inseriu nenhuma mensagem!`
           );
         } else if (descrição.lenght > 100) {
           return message.chennel.send(
-            `${Emojis.Errado} - A mensagem escolhida é muito grande! O limite é de 100 caracteres.`
+            `${Emojis.Errado} **|** A mensagem escolhida é muito grande! O limite é de 100 caracteres.`
           );
         } else if (descrição === server.entrada.embeddescription) {
-          return message.quote(
-            `${Emojis.Errado} - A mensagem escolhida já está em uso!`
+          return message.reply(
+            `${Emojis.Errado} **|** A mensagem escolhida já está em uso!`
           );
         } else {
-          message.quote(
-            `${Emojis.Certo} - A mensagem foi alterada para \`\`\`diff\n- ${descrição}\`\`\``
+          message.reply(
+            `${Emojis.Certo} **|** A mensagem foi alterada para \`\`\`diff\n- ${descrição}\`\`\``
           );
           await Guild.findOneAndUpdate(
             { _id: message.guild.id },
@@ -229,20 +224,20 @@ module.exports = class Entrada extends Command {
         let msg = args.slice(1).join(" ");
 
         if (!msg) {
-          return message.quote(
-            `${Emojis.Errado} - Você não inseriu nenhuma mensagem!`
+          return message.reply(
+            `${Emojis.Errado} **|** Você não inseriu nenhuma mensagem!`
           );
         } else if (msg.lenght > 100) {
           return message.chennel.send(
-            `${Emojis.Errado} - A mensagem escolhida é muito grande! O limite é de 100 caracteres.`
+            `${Emojis.Errado} **|** A mensagem escolhida é muito grande! O limite é de 100 caracteres.`
           );
         } else if (msg === server.entrada.msg) {
-          return message.quote(
-            `${Emojis.Errado} - A mensagem escolhida já está em uso!`
+          return message.reply(
+            `${Emojis.Errado} **|** A mensagem escolhida já está em uso!`
           );
         } else {
-          message.quote(
-            `${Emojis.Certo} - A mensagem foi alterada para \`\`\`diff\n- ${msg}\`\`\``
+          message.reply(
+            `${Emojis.Certo} **|** A mensagem foi alterada para \`\`\`diff\n- ${msg}\`\`\``
           );
           await Guild.findOneAndUpdate(
             { _id: message.guild.id },
@@ -255,12 +250,10 @@ module.exports = class Entrada extends Command {
 
       if (args[0] == "on") {
         if (server.entrada.status) {
-          message.quote(
-            `${Emojis.Errado} - O sistema já está ativado!`
-          );
+          message.reply(`${Emojis.Errado} **|** O sistema já está ativado!`);
         } else {
-          message.quote(
-            `${Emojis.Certo} - O sistema foi \`ativado\` com sucesso!`
+          message.reply(
+            `${Emojis.Certo} **|** O sistema foi \`ativado\` com sucesso!`
           );
           await Guild.findOneAndUpdate(
             { _id: message.guild.id },
@@ -273,12 +266,10 @@ module.exports = class Entrada extends Command {
 
       if (args[0] == "off") {
         if (!server.entrada.status) {
-          message.quote(
-            `${Emojis.Errado} - O sistema já está desativado!`
-          );
+          message.reply(`${Emojis.Errado} **|** O sistema já está desativado!`);
         } else {
-          message.quote(
-            `${Emojis.Certo} - O sistema foi \`desativado\` com sucesso!`
+          message.reply(
+            `${Emojis.Certo} **|** O sistema foi \`desativado\` com sucesso!`
           );
           await Guild.findOneAndUpdate(
             { _id: message.guild.id },
@@ -290,7 +281,7 @@ module.exports = class Entrada extends Command {
       }
 
       if (args[0] == "help") {
-        let INFO = new discord.MessageEmbed()
+        let INFO = new ClientEmbed(author)
           .setColor(process.env.EMBED_COLOR)
           .setDescription(
             `Mensagem Definida: \`${server.entrada.msg.replace(
@@ -299,19 +290,19 @@ module.exports = class Entrada extends Command {
             )}\``
           )
           .addField(
-            `${Emojis.Smooze} - Informações pré-definidas:`,
-            `\`\`\`{member} - Menciona o usuário\n{name} - Nome do usuário\n{total} - Total de membros do servidor\n{guild} - Nome do servidor\n{quebra} - Quebra a linha\`\`\``
+            `${Emojis.Smooze} **|** Informações pré-definidas:`,
+            `\`\`\`{member} **|** Menciona o usuário\n{name} **|** Nome do usuário\n{total} **|** Total de membros do servidor\n{guild} **|** Nome do servidor\n{quebra} **|** Quebra a linha\`\`\``
           )
           .addField(
             `Estrutura:`,
             `${
               Emojis.Fone
-            } - Canal Escolhido: <#${server.entrada.channel.replace(
+            } **|** Canal Escolhido: <#${server.entrada.channel.replace(
               "null",
               "Nenhum"
-            )}>\n${Emojis.Pergunta} - Status: ${
+            )}>\n${Emojis.Pergunta} **|** Status: ${
               server.entrada.status ? "ativado" : "desativado"
-            }\n${Emojis.Texto} - Tipo: ${server.entrada.modelo.replace(
+            }\n${Emojis.Texto} **|** Tipo: ${server.entrada.modelo.replace(
               "null",
               "Nenhum"
             )}`
@@ -322,29 +313,27 @@ module.exports = class Entrada extends Command {
           )
           .setThumbnail(message.guild.iconURL({ dynamic: true }));
 
-        message.quote(INFO);
-
-        return;
+        return message.reply({ embeds: [INFO] });
       }
 
       if (args[0] == "test") {
         if (!server.entrada.status) {
-          message.quote(
-            `${Emojis.Errado} - O sistema está desativado! Ative-o para realizar o teste.`
+          message.reply(
+            `${Emojis.Errado} **|** O sistema está desativado! Ative-o para realizar o teste.`
           );
         } else {
           this.client.emit("guildMemberAdd", message.member);
-          await message.quote(
-            `${Emojis.Certo} - O mensagem foi enviada no canal escolhido!`
+          await message.reply(
+            `${Emojis.Certo} **|** O mensagem foi enviada no canal escolhido!`
           );
         }
         return;
       }
 
-      let HELP = new discord.MessageEmbed()
+      let HELP = new ClientEmbed(author)
         .setColor(process.env.EMBED_COLOR)
         .setAuthor(
-          `${this.client.user.username} - Sistema de Welcome/Entrada`,
+          `${this.client.user.username} **|** Sistema de Welcome/Entrada`,
           message.guild.iconURL({ dynamic: true })
         )
         .addField(
@@ -359,7 +348,7 @@ module.exports = class Entrada extends Command {
         )
         .setThumbnail(message.guild.iconURL({ dynamic: true }));
 
-      message.quote(HELP);
+      return message.reply({ embeds: [HELP] });
     });
   }
 };

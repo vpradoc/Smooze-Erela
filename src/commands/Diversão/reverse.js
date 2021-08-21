@@ -1,7 +1,5 @@
-const Discord = require("discord.js");
-const User = require("../../database/Schemas/User");
 const Command = require("../../structures/Command.js");
-const Emojis = require('../../utils/Emojis')
+const Emojis = require("../../utils/Emojis");
 
 module.exports = class Reverse extends Command {
   constructor(client) {
@@ -18,15 +16,15 @@ module.exports = class Reverse extends Command {
   }
 
   async run(message, args, prefix) {
+    const fala = args.join(" ");
 
-
-const fala = args.join(" ")
-
-if(!fala)
-message.quote(`${Emojis.Errado} - Por favor, coloque algo para que eu reescreva o mesmo ao contrário!`)
-else
-message.quote(`${Emojis.Balão} ${fala} = **\`${fala.split("").reverse().join("")}\`**`)
-    
-
+    if (!fala)
+      message.reply(
+        `${Emojis.Errado} **|** Por favor, coloque algo para que eu reescreva o mesmo ao contrário!`
+      );
+    else
+      message.reply(
+        `${Emojis.Balão} ${fala} = **\`${fala.split("").reverse().join("")}\`**`
+      );
   }
-}
+};
