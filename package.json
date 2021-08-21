@@ -24,7 +24,6 @@
     "erela.js-spotify": "^1.2.0",
     "fs": "^0.0.1-security",
     "klaw": "^3.0.0",
-    "mal-scraper": "^2.11.3",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^5.13.7",
